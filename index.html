@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SheBlooms — Founder Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:32px 20px 80px}
+
+/* Email capture */
+.email-overlay{position:fixed;inset:0;background:rgba(10,10,8,.6);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.email-overlay.hidden{display:none}
+.email-box{background:#fff;border-radius:20px;padding:36px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.2)}
+.email-logo{display:flex;align-items:center;gap:8px;margin-bottom:24px}
+.email-logo-mark{width:24px;height:24px;background:#657dfe;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.email-logo-mark svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.email-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:#657dfe}
+.email-headline{font-family:'DM Serif Display',serif;font-size:22px;color:#000;margin-bottom:8px;line-height:1.3}
+.email-sub{font-size:13px;color:#555;line-height:1.6;margin-bottom:24px}
+.email-field{margin-bottom:12px}
+.email-field label{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
+.email-field input{width:100%;padding:10px 12px;border:1px solid #d8d9e5;border-radius:8px;font-size:13px;font-family:inherit;color:#000;outline:none;transition:border .15s}
+.email-field input:focus{border-color:#657dfe}
+.email-btn{width:100%;padding:13px;background:#657dfe;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;margin-top:4px}
+.email-btn:hover{background:#4f6de0}
+.email-note{font-size:10px;color:#aaa;text-align:center;margin-top:10px}
+
+/* Brand */
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.brand-mark{width:28px;height:28px;background:#657dfe;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.brand-mark svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:#657dfe}
+.brand-sep{width:1px;height:16px;background:#d8d9e5;margin:0 4px}
+.brand-sub{font-size:13px;color:#555}
+
+/* Top header - sticky */
+.top-header{position:sticky;top:0;z-index:50;background:#F1F1F6;padding:12px 0 10px;margin-bottom:10px}
+.card{background:#fff;border:1px solid #d8d9e5;border-radius:14px;padding:16px 18px}
+.card-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#888;margin-bottom:12px}
+
+/* Score card */
+.score-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#d8d9e5;stroke-width:6}
+.ring-fg{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:175.9;transition:stroke-dashoffset .6s,stroke .4s}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1}
+.ring-num{font-family:'DM Serif Display',serif;font-size:22px;color:#000}
+.ring-label{font-size:9px;color:#888;margin-top:1px}
+.score-meta{flex:1;min-width:0}
+.stage-badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:6px}
+.task-count{font-size:11px;color:#555;margin-bottom:10px}
+.ms-track{height:4px;background:#d8d9e5;border-radius:2px;position:relative;margin-top:2px}
+.ms-fill{height:100%;border-radius:2px;transition:width .6s}
+.ms-pip{width:8px;height:8px;border-radius:50%;border:2px solid #fff;position:absolute;top:-2px;box-shadow:0 0 0 1px #d8d9e5;transition:background .4s}
+.ms-labels{position:relative;height:16px;margin-top:4px}
+.ms-lbl{font-size:8px;color:#aaa;position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ms-lbl:first-child{transform:translateX(0)}
+.ms-lbl:last-child{transform:translateX(-100%)}
+.ms-lbl.cur{color:#000;font-weight:600}
+.raise-strip{background:#F1F1F6;border-radius:10px;padding:9px 11px}
+.raise-eyebrow{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#888;margin-bottom:3px}
+.raise-headline{font-size:13px;font-weight:500;color:#000;margin-bottom:6px}
+.raise-track{height:3px;background:#d8d9e5;border-radius:2px;overflow:hidden;margin-bottom:4px}
+.raise-fill{height:100%;border-radius:2px;background:#657dfe;transition:width .6s}
+.raise-pct{font-size:10px;color:#888}
+
+/* Areas */
+.area-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.area-row:last-child{margin-bottom:0}
+.area-lbl{font-size:11px;font-weight:600;width:auto;flex-shrink:0}
+.area-right{flex:1;min-width:0}
+.area-track{height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden;margin-bottom:2px}
+.area-bar{height:100%;border-radius:2px;transition:width .5s}
+.area-count{font-size:9px;color:#aaa}
+
+/* Grow banner */
+.grow-banner{display:none;align-items:center;gap:14px;background:linear-gradient(135deg,#657dfe,#8a9ffe);border-radius:14px;padding:16px 20px;margin-bottom:14px;cursor:pointer;animation:slidein .4s ease}
+.grow-banner.show{display:flex}
+.grow-banner:hover{opacity:.93}
+@keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.gb-icon{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;color:#fff}
+.gb-text{flex:1}
+.gb-headline{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
+.gb-sub{font-size:11px;color:rgba(255,255,255,.85)}
+.gb-cta{font-size:11px;font-weight:600;color:#657dfe;background:#fff;padding:7px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0;border:none;cursor:pointer;font-family:inherit}
+.gb-cta:hover{background:#eef0ff}
+
+/* Stages */
+.stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:10px;transition:box-shadow .2s}
+.stage:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.st-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .12s}
+.st-hdr:hover{background:#f7f7fb}
+.st-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.st-info{flex:1;min-width:0}
+.st-name{font-size:14px;font-weight:500;color:#000;margin-bottom:1px}
+.st-sub{font-size:11px;color:#888}
+.st-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.st-pts{font-size:12px;font-weight:600}
+.st-tc{font-size:11px;color:#888}
+.st-pb{width:52px;height:3px;background:#d8d9e5;border-radius:2px;overflow:hidden}
+.st-pf{height:100%;border-radius:2px;transition:width .4s}
+.caret{width:7px;height:7px;border-right:1.5px solid #aaa;border-bottom:1.5px solid #aaa;transform:rotate(45deg);transition:transform .2s;flex-shrink:0;margin-top:-2px}
+.caret.up{transform:rotate(-135deg);margin-top:2px}
+.st-body{border-top:1px solid #d8d9e5}
+
+/* NSM */
+.nsm{display:flex;align-items:flex-start;gap:10px;padding:11px 16px;background:#f7f7fb;border-bottom:1px solid #d8d9e5}
+.nsm-bar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:36px}
+.nsm-eye{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#aaa;margin-bottom:2px}
+.nsm-metric{font-size:12px;font-weight:600;color:#000;margin-bottom:2px}
+.nsm-desc{font-size:11px;color:#555;line-height:1.5}
+
+/* Group */
+.grp-hdr{display:flex;align-items:center;gap:8px;padding:7px 16px;background:#f7f7fb;border-top:1px solid #d8d9e5;cursor:pointer;user-select:none;transition:background .12s}
+.grp-hdr:hover{background:#eeeef5}
+.grp-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;flex:1}
+.grp-count{font-size:10px;color:#aaa}
+
+/* Task */
+.task-row{border-top:1px solid #eeeef5;transition:background .1s}
+.task-main{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;transition:background .1s}
+.task-main:hover{background:#f7f7fb}
+.task-row.done .t-title{text-decoration:line-through;color:#aaa}
+.chkbox{width:16px;height:16px;border-radius:4px;border:1.5px solid #d8d9e5;flex-shrink:0;margin-top:2px;background:#fff;cursor:pointer;position:relative;transition:all .15s}
+.chkbox.on{background:#657dfe;border-color:#657dfe}
+.chkbox.on::after{content:'';position:absolute;top:2.5px;left:4px;width:6px;height:3.5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg)}
+.t-body{flex:1;min-width:0}
+.t-title{font-size:12px;color:#000;line-height:1.5;margin-bottom:5px}
+.t-pills{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.pill{font-size:9px;font-weight:500;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.pill-gate{background:#fffaeb;color:#92610a;border:1px solid #e8c86a}
+.pill-ns{background:#fffbf0;color:#7c5e0a;border:1px solid #d4a820}
+.pill-pts{background:#F1F1F6;color:#555}
+.t-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;padding-top:2px}
+.t-btn{font-size:9px;font-weight:600;padding:3px 8px;border-radius:20px;border:1px solid #d8d9e5;background:#fff;color:#888;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.t-btn:hover{background:#F1F1F6;color:#555}
+.t-btn.active{background:#eef0ff;color:#657dfe;border-color:#657dfe}
+
+/* Task detail */
+.t-detail{display:none;padding:0 16px 12px;background:#f7f7fb;border-top:1px solid #eeeef5}
+.task-row.exp-detail .t-detail{display:block}
+.d-sec{margin-bottom:8px;padding-top:10px}
+.d-sec:last-child{margin-bottom:0}
+.d-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin-bottom:3px}
+.d-txt{font-size:11px;color:#333;line-height:1.65}
+
+/* Resources */
+.t-resources{display:none;padding:0 16px 12px}
+.task-row.exp-resources .t-resources{display:block}
+.res-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px;padding-top:10px;border-top:1px solid #eeeef5}
+.res-card{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#fff;border:1px solid #d8d9e5;border-radius:10px;margin-bottom:6px;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+.res-card:hover{border-color:#657dfe;box-shadow:0 2px 8px rgba(101,125,254,.1)}
+.res-card:last-child{margin-bottom:0}
+.res-type{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em}
+.res-type.book{background:#faeeda;color:#854f0b}
+.res-type.video{background:#fbeaf0;color:#993556}
+.res-type.article{background:#e6f1fb;color:#185fa5}
+.res-type.podcast{background:#eeedfe;color:#534ab7}
+.res-type.tool{background:#e1f5ee;color:#0f6e56}
+.res-info{flex:1;min-width:0}
+.res-name{font-size:11px;font-weight:600;color:#000;margin-bottom:2px}
+.res-author{font-size:10px;color:#888;margin-bottom:3px}
+.res-desc{font-size:10px;color:#aaa;line-height:1.5}
+.res-arrow{font-size:14px;color:#d8d9e5;flex-shrink:0;margin-top:6px}
+
+/* Notes */
+.t-notes{display:none;padding:0 16px 12px}
+.task-row.exp-notes .t-notes{display:block}
+.notes-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px;padding-top:10px;border-top:1px solid #eeeef5}
+.notes-prompt{font-size:11px;color:#aaa;margin-bottom:6px;font-style:italic}
+.notes-textarea{width:100%;padding:10px 12px;border:1px solid #d8d9e5;border-radius:8px;font-size:11px;font-family:inherit;color:#000;resize:vertical;min-height:80px;outline:none;transition:border .15s;background:#fff;line-height:1.6}
+.notes-textarea:focus{border-color:#657dfe}
+.notes-link-row{display:flex;gap:8px;margin-top:8px;align-items:center}
+.notes-link-label{font-size:10px;color:#888;font-weight:500;white-space:nowrap}
+.notes-link-input{flex:1;padding:7px 10px;border:1px solid #d8d9e5;border-radius:8px;font-size:11px;font-family:inherit;color:#000;outline:none;transition:border .15s;background:#fff}
+.notes-link-input:focus{border-color:#657dfe}
+.notes-link-input::placeholder{color:#aaa}
+.notes-saved{font-size:9px;color:#0f6e56;margin-top:5px;opacity:0;transition:opacity .3s}
+.notes-saved.show{opacity:1}
+
+/* Gate footer */
+.gate-ftr{padding:9px 16px;border-top:1px solid #e8c86a;background:#fffcf0;font-size:11px;color:#7a5008;line-height:1.5}
+.gate-ftr strong{font-weight:600}
+
+/* Locked stages */
+.locked-stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:10px;opacity:.55}
+.locked-stage-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px}
+.locked-badge{font-size:10px;color:#aaa;font-weight:500;padding:2px 8px;border-radius:20px;background:#F1F1F6}
+.locked-preview{padding:10px 16px 14px;border-top:1px solid #f0ede6}
+.locked-preview-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:8px}
+.locked-task-preview{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:11px;color:#aaa}
+.locked-dot{width:5px;height:5px;border-radius:50%;background:#d8d9e5;flex-shrink:0}
+.locked-upgrade-btn{display:block;width:calc(100% - 32px);margin:8px 16px 14px;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;transition:background .15s}
+.locked-upgrade-btn:hover{background:#4f6de0}
+
+/* Modals */
+.overlay{position:fixed;inset:0;background:rgba(10,10,8,.5);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.18);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.34,1.4,.64,1);position:relative}
+.overlay.show .modal{transform:none}
+.modal-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:26px}
+.modal-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:8px}
+.modal-headline{font-family:'DM Serif Display',serif;font-size:24px;color:#000;margin-bottom:10px;line-height:1.2}
+.modal-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:20px}
+.modal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:14px;background:#F1F1F6;border-radius:10px}
+.modal-feature{display:flex;align-items:center;gap:10px;font-size:12px;color:#222}
+.modal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#657dfe}
+.modal-cta{width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:block;text-align:center;text-decoration:none;transition:background .15s;margin-bottom:8px}
+.mcta-blue{background:#657dfe;color:#fff}
+.mcta-blue:hover{background:#4f6de0}
+.mcta-ghost{background:#F1F1F6;color:#888}
+.mcta-ghost:hover{background:#e8e8f0}
+.modal-x{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:13px;color:#888;font-family:inherit;line-height:28px;text-align:center}
+
+/* Footer */
+.footer{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid #d8d9e5}
+.footer-text{font-size:11px;color:#aaa}
+.reset-btn{font-size:11px;color:#aaa;background:none;border:1px solid #d8d9e5;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit}
+.reset-btn:hover{color:#555}
+
+/* Mobile */
+@media(max-width:600px){
+  .page{padding:16px 12px 60px}
+  .top-header{padding:10px 0 8px}
+  #arealist{grid-template-columns:repeat(3,1fr)!important;gap:6px 8px}
+  .st-tc{display:none}
+  .t-actions{flex-direction:column;gap:3px}
+  .t-btn{font-size:8px;padding:2px 6px}
+}
+</style>
+</head>
+<body>
+
+<!-- Email capture overlay -->
+<div class="email-overlay" id="email-overlay">
+  <div class="email-box">
+    <div class="email-logo">
+      <div class="email-logo-mark"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12"/></svg></div>
+      <span class="email-logo-name">SheBlooms</span>
+    </div>
+    <div class="email-headline">Investment Readiness Journey</div>
+    <div class="email-sub">Track your path to raise. Complete each checkpoint, watch your score climb, and know the exact moment you're ready to raise.</div>
+    <div class="email-field">
+      <label>Your name</label>
+      <input type="text" id="capture-name" placeholder="Ana Silva" autocomplete="name"/>
+    </div>
+    <div class="email-field">
+      <label>Your email</label>
+      <input type="email" id="capture-email" placeholder="ana@startup.com" autocomplete="email"/>
+    </div>
+    <button class="email-btn" onclick="startJourney()">Start my journey</button>
+    <div class="email-note">Your progress is saved and synced across devices.</div>
+  </div>
+</div>
+
+<div class="page">
+  <div class="brand">
+    <div class="brand-mark"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12"/></svg></div>
+    <span class="brand-name">SheBlooms</span>
+    <div class="brand-sep"></div>
+    <span class="brand-sub">Founder Journey</span>
+  </div>
+
+  <div class="top-header">
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-title">Your score</div>
+      <div class="score-row">
+        <div class="ring-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="28"/>
+            <circle class="ring-fg" id="ring" cx="36" cy="36" r="28" stroke="#657dfe" stroke-dashoffset="175.9"/>
+          </svg>
+          <div class="ring-center"><div class="ring-num" id="snum">0</div><div class="ring-label">/ 20</div></div>
+        </div>
+        <div class="score-meta">
+          <div class="stage-badge" id="sbadge">Getting started</div>
+          <div class="task-count" id="tcnt">0 of 13 tasks complete</div>
+          <div class="ms-track"><div class="ms-fill" id="msfill" style="width:0%;background:#657dfe"></div><div id="msdots"></div></div>
+          <div class="ms-labels" id="mslbls"></div>
+        </div>
+      </div>
+      <div class="raise-strip">
+        <div class="raise-eyebrow">Stage 1 Progress</div>
+        <div class="raise-headline" id="stage-progress-text">Complete gate tasks to advance</div>
+        <div class="raise-track"><div class="raise-fill" id="stage-progress-bar" style="width:0%"></div></div>
+        <div class="raise-pct" id="stage-progress-pct">0% of Stage 1 complete</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">How investors see you</div>
+      <div id="arealist" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0 12px;align-items:start"></div>
+    </div>
+  </div>
+
+  <!-- Grow Ready banner -->
+  <div class="grow-banner" id="grow-banner" onclick="openModal('grow-overlay')">
+    <div class="gb-icon">&#10003;</div>
+    <div class="gb-text">
+      <div class="gb-headline">You're Grow Ready!</div>
+      <div class="gb-sub">You've validated your problem. Time to build and find PMF.</div>
+    </div>
+    <button class="gb-cta">Unlock Grow</button>
+  </div>
+
+  <div id="stages-con"></div>
+
+  <div class="footer">
+    <span class="footer-text">SheBlooms Venture &middot; Founder Journey &copy; 2026</span>
+    <button class="reset-btn" onclick="resetAll()">Reset progress</button>
+  </div>
+</div>
+
+<!-- Grow Ready Modal -->
+<div class="overlay" id="grow-overlay">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal('grow-overlay')">&#x2715;</button>
+    <div class="modal-icon" style="background:#eef0ff">&#10003;</div>
+    <div class="modal-tag">Stage 1 Complete</div>
+    <div class="modal-headline">You're Grow Ready.</div>
+    <div class="modal-body">You've validated a real problem with real people. That's the hardest part. Upgrade to Grow to unlock Product Market Fit, Business Model Validation, and the path to Raise.</div>
+    <div class="modal-features">
+      <div class="modal-feature"><div class="modal-dot"></div>Product Market Fit stage unlocked</div>
+      <div class="modal-feature"><div class="modal-dot"></div>Business Model Validation unlocked</div>
+      <div class="modal-feature"><div class="modal-dot"></div>Growth &amp; Raise pathway unlocked</div>
+      <div class="modal-feature"><div class="modal-dot"></div>Accountability circle + mentor office hours</div>
+    </div>
+    <button class="modal-cta mcta-blue" onclick="closeModal('grow-overlay')">Upgrade to Grow</button>
+    <button class="modal-cta mcta-ghost" onclick="closeModal('grow-overlay')">Continue exploring for now</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://fyswympbcriibpewkxnh.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5c3d5bXBiY3JpaWJwZXdreG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjIwMTcsImV4cCI6MjA5Mjc5ODAxN30.l5gy0L9JU_8g0vIjoFWmUqP7T7zyHOsE0wdmkC2kBo0';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const AREAS={
+  market:{label:"Market",c:"#0f6e56",bg:"#e1f5ee"},
+  product:{label:"Product",c:"#185fa5",bg:"#e6f1fb"},
+  traction:{label:"Traction",c:"#993556",bg:"#fbeaf0"},
+  bizmodel:{label:"Biz Model",c:"#854f0b",bg:"#faeeda"},
+  team:{label:"Team",c:"#534ab7",bg:"#eeedfe"}
+};
+
+const MS=[{score:0,label:"Start"},{score:5,label:"Exploring"},{score:12,label:"Validating"},{score:18,label:"Almost"},{score:20,label:"Grow Ready"}];
+const MSC=["#d8d9e5","#ba7517","#657dfe","#185fa5","#0f6e56"];
+const MSBG=["#F1F1F6","#faeeda","#eef0ff","#e6f1fb","#e1f5ee"];
+
+const RESOURCES={
+  1:[
+    {type:'article',title:'How to write a problem statement investors believe',author:'Shreyas Doshi',url:'https://www.lennysnewsletter.com/p/how-to-define-your-problem-statement',desc:'Framework for writing sharp problem statements from a former Stripe & Google PM.'},
+    {type:'video',title:'Obviously Awesome — Positioning your product',author:'April Dunford',url:'https://www.youtube.com/watch?v=OzbPRBaM_Z0',desc:'How problem framing shapes everything that follows — from a world-class positioning expert.'}
+  ],
+  2:[
+    {type:'article',title:'Jobs to Be Done: Theory to Practice',author:'Clayton Christensen — HBR',url:'https://hbr.org/2016/09/know-your-customers-jobs-to-be-done',desc:'Understanding who really has the problem and why they hire solutions — foundational theory.'},
+    {type:'tool',title:'Stakeholder Map Template',author:'Miro',url:'https://miro.com/templates/stakeholder-map/',desc:'Ready-to-use visual template to map all stakeholders around your problem.'}
+  ],
+  6:[
+    {type:'book',title:'The Mom Test',author:'Rob Fitzpatrick',url:'https://www.momtestbook.com/',desc:'The essential guide to customer interviews. Learn to ask questions that get honest answers, not politeness.'},
+    {type:'podcast',title:'How to talk to users — The Mom Test',author:'Rob Fitzpatrick on Lenny's Podcast',url:'https://www.lennysnewsletter.com/p/the-mom-test',desc:'60-min conversation on getting real insights from customer conversations.'},
+    {type:'video',title:'Customer discovery — how to talk to users',author:'Y Combinator',url:'https://www.youtube.com/watch?v=MT4Ig2uqjTc',desc:'Y Combinator on customer discovery before building anything.'}
+  ],
+  4:[
+    {type:'tool',title:'Affinity Mapping Template',author:'Miro',url:'https://miro.com/templates/affinity-diagram/',desc:'Visual tool to group interview insights and find recurring patterns — digital and collaborative.'},
+    {type:'article',title:'How to analyse qualitative research',author:'Nielsen Norman Group',url:'https://www.nngroup.com/articles/affinity-diagram/',desc:'Step-by-step guide to turning interview notes into actionable insights.'}
+  ],
+  5:[
+    {type:'article',title:'Competitive analysis that actually helps startups',author:'First Round Capital',url:'https://review.firstround.com/the-competitive-analysis-that-actually-helps-startups-see-their-market-clearly/',desc:'Framework for mapping alternatives honestly — not just direct competitors.'},
+    {type:'book',title:'Blue Ocean Strategy',author:'W. Chan Kim & Renée Mauborgne',url:'https://www.blueoceanstrategy.com/',desc:'How to find uncontested market space by mapping what alternatives offer and miss.'}
+  ],
+  7:[
+    {type:'article',title:'Finding your Ideal Customer Profile',author:'Lenny Rachitsky',url:'https://www.lennysnewsletter.com/p/finding-your-icp',desc:'Why most ICPs are too vague to be useful, and how to define one that actually guides decisions.'},
+    {type:'video',title:'How to find your ideal customer',author:'April Dunford',url:'https://www.youtube.com/watch?v=q8d9uuPIV-Y',desc:'Identifying the customer type where your product wins every single time.'}
+  ],
+  8:[
+    {type:'article',title:'Elements of enduring companies — Market sizing',author:'Sequoia Capital',url:'https://www.sequoiacap.com/article/elements-of-enduring-companies/',desc:'Sequoia's framework for thinking about market size in a way investors respect.'},
+    {type:'video',title:'How to estimate your market size',author:'First Round Capital',url:'https://www.youtube.com/watch?v=a9N3mpsbdcY',desc:'Bottom-up vs top-down market sizing with real startup examples.'}
+  ],
+  9:[
+    {type:'article',title:'Do Things That Don't Scale',author:'Paul Graham',url:'https://paulgraham.com/ds.html',desc:'Paul Graham's iconic essay on finding early demand the unscalable way — and why it works.'},
+    {type:'article',title:'A guide to finding your first customers',author:'Y Combinator',url:'https://www.ycombinator.com/library/4A-a-guide-to-finding-your-first-customers',desc:'Tactical guide on finding demand signals from people who don't know you yet.'}
+  ],
+  10:[
+    {type:'video',title:'Crazy 8s — Design Sprint Method',author:'Google Ventures',url:'https://www.youtube.com/watch?v=yz4g87XapQ0',desc:'8 sketches in 8 minutes. The fastest way to generate multiple solution ideas without getting stuck.'},
+    {type:'tool',title:'Crazy 8s Template',author:'Miro',url:'https://miro.com/templates/crazy-eights/',desc:'Digital template to run a Crazy 8s session solo or with your co-founder.'}
+  ],
+  11:[
+    {type:'article',title:'How to prototype ideas quickly',author:'IDEO Design Thinking',url:'https://designthinking.ideo.com/blog/prototyping-to-test-learn-iterate',desc:'IDEO's approach to testing solution concepts before writing a single line of code.'},
+    {type:'video',title:'How to run concept tests with users',author:'Y Combinator',url:'https://www.youtube.com/watch?v=MT4Ig2uqjTc',desc:'Getting real reactions to your solution ideas with minimal effort and time.'}
+  ],
+  12:[
+    {type:'book',title:'Obviously Awesome',author:'April Dunford',url:'https://www.aprildunford.com/obviously-awesome',desc:'The definitive book on product positioning — how to articulate what makes your solution different.'},
+    {type:'tool',title:'Value Proposition Canvas',author:'Strategyzer',url:'https://www.strategyzer.com/library/the-value-proposition-canvas',desc:'Visual tool to align your solution with what customers actually care about.'}
+  ],
+  13:[
+    {type:'tool',title:'Business Model Canvas',author:'Strategyzer / Alex Osterwalder',url:'https://www.strategyzer.com/library/the-business-model-canvas',desc:'The one-page business model framework used by millions of founders worldwide.'},
+    {type:'video',title:'Business Model Canvas explained',author:'Alex Osterwalder',url:'https://www.youtube.com/watch?v=QoAOzMTLP5s',desc:'15-min video where Alex Osterwalder walks through each block of the canvas.'}
+  ]
+};
+
+const NOTE_PROMPTS={
+  1:"Write your problem statement: 'People who [context] struggle with [problem] because [reason].'",
+  2:"List your stakeholders and their relation to the problem...",
+  6:"Document your interview findings and the severity scores from each conversation...",
+  4:"What patterns emerged from your interviews? List the top 3-5 recurring themes.",
+  5:"Map the alternatives your customers use today and where they fall short...",
+  7:"Describe your ICP — give them a name, their context, and quote a real interviewee.",
+  8:"Write your TAM estimate and the methodology you used to calculate it.",
+  9:"Document your 3 inorganic demand signals — name, context, and signal type.",
+  10:"Describe your 3 different solutions. What is each one and how does it work?",
+  11:"Which concept resonated most with your 3 testers, and why?",
+  12:"Write your value proposition: 'For [ICP], [product] is the only [category] that [benefit], unlike [alternative] which [limitation].'",
+  13:"Who pays? How much? How often? What is the core revenue logic?"
+};
+
+const D=[{
+  id:1,title:"Problem Validation Fit",color:"#657dfe",bgc:"#eef0ff",
+  subtitle:"0 → 20 pts · 3–6 months",maxPts:20,
+  nsm:{metric:"Pain Severity: 70%+ score 4-5 out of 5",why:"If 70%+ of real strangers rate the pain at 4-5, the problem is worth solving. Below this threshold, no product will generate consistent demand."},
+  gate:"Score ≥20 · Pain severity 70%+ · 3 inorganic demand signals",
+  groups:[
+    {name:"Foundation",tasks:[
+      {id:1,t:"Problem Statement",p:2,a:"market",hasNotes:true,why:"Describes the problem from the customer’s POV in 1 sentence, without mentioning the solution. This is the compass for everything that follows.",how:"Use format: ‘People who [context] struggle with [problem] because [reason].’ The sentence is correct if any external person can identify whether they have the problem without the founder’s help.",ev:"The sentence exists in writing."},
+      {id:2,t:"Stakeholder Mapping",p:3,a:"market",hasNotes:true,why:"Identifies who has the problem, who feels it most intensely, who has decision-making power, and who influences that decision.",how:"Create a diagram with at least 3 stakeholder types. For each: relation to the problem, whether they pay or use, and how intense the pain is.",ev:"Diagram with 3+ stakeholder types, problem relation, and payer vs. user separation."}
+    ]},
+    {name:"Research & Evidence",tasks:[
+      {id:6,t:"Pain Interviews (20+) + Severity Score",p:8,a:"market",g:true,ns:true,hasNotes:true,
+        why:"Conduct 20+ interviews with people who live the problem — not friends, family, or colleagues. At the end of each conversation, ask them to rate the pain intensity on a 1-5 scale. This is the most critical checkpoint of Stage 1: 70%+ must score 4 or 5.",
+        how:"Step 1 — Run each interview for 30 min using the Mom Test (ask about their life, not your idea). Step 2 — At the end of each interview ask: ‘On a scale of 1-5, how intense is this problem for you?’ Document the score. Step 3 — After 20 interviews, calculate: what % scored 4 or 5? If below 70%, revise your segment or problem framing and repeat.",
+        ev:"Record with name, date, 3+ direct quotes per interview, and severity score. 70%+ at 4 or 5."},
+      {id:4,t:"Find the Pattern",p:4,a:"market",hasNotes:true,why:"Synthesize what was learned in interviews and identify patterns: which problems repeat, which phrases appear consistently, what surprises.",how:"Use a thematic analysis matrix: group quotes by recurring theme. Identify the 3–5 truths that appear in 60%+ of conversations.",ev:"Doc with identified patterns, key insights, and supporting quotes."},
+      {id:5,t:"Alternative Mapping",p:3,a:"market",hasNotes:true,why:"Document what people use today to solve the problem: competitors, spreadsheets, WhatsApp, hiring someone, doing nothing.",how:"For each alternative: what works, what fails, cost in time and money. Analysis must be based exclusively on interview data.",ev:"Table with 5+ current alternatives and gap analysis based on interview data."}
+    ]},
+    {name:"ICP & Market Size",tasks:[
+      {id:7,t:"ICP Definition",p:2,a:"market",hasNotes:true,why:"Define a specific archetype of the primary customer. A generic ICP does not guide product or marketing decisions. A specific ICP does.",how:"Based on interview patterns, identify the subgroup that feels the pain most intensely. Give a fictional name, describe the life context, and cite a real interview quote.",ev:"1-page archetype doc with fictional name, context, and a real interviewee quote."},
+      {id:8,t:"TAM Estimate",p:2,a:"market",hasNotes:true,why:"Estimate how many people have the problem. Needs to have a defensible logic. Investors always ask about market size.",how:"Use a bottom-up approach: ICP count × % experiencing the problem × annual revenue per customer.",ev:"TAM/SAM/SOM estimate with cited methodology. Bottom-up preferred."},
+      {id:9,t:"Inorganic Demand Signals (3+)",p:0,a:"market",g:true,hasNotes:true,why:"Identify at least 3 demand signals from people the founder did not previously know. Signals from friends do not count.",how:"Valid signals: someone who spontaneously asked if a solution exists, signed up to a waitlist, or shared the problem on social media.",ev:"3+ demand signals with verifiable origin from previously unknown people."}
+    ]},
+    {name:"Solution Exploration",tasks:[
+      {id:10,t:"Sketch 3 Possible Solutions (Crazy 8s)",p:0,a:"product",hasNotes:true,why:"The first idea is rarely the best. Forcing 3 different options breaks confirmation bias. Use the Crazy 8s method from Google Ventures Design Sprint.",how:"Set a timer for 8 minutes. Sketch 8 different solution ideas quickly. Then select the 3 most distinct ones to develop further.",ev:"Doc with 3 distinct solutions and their value logic."},
+      {id:11,t:"Test 3 Concepts with 3+ People",p:0,a:"product",hasNotes:true,why:"The market decides which solution resonates, not the founder. Testing before building saves months of work in the wrong direction.",how:"Present the 3 concepts (no code) to at least 3 ICP people. Ask: Which seems most useful? Why? What would you change?",ev:"Notes from 3+ tests with feedback on each concept and preference comparison."},
+      {id:12,t:"Choose Winning Solution + Value Prop",p:0,a:"product",hasNotes:true,why:"Commit to one direction based on evidence, not personal preference. A clear value proposition is the foundation of all future communication.",how:"Use format: For [ICP], [product] is the only [category] that [benefit], unlike [alternative] which [limitation].",ev:"Written value proposition justified with reference to test feedback."},
+      {id:13,t:"Sketch Basic Business Model",p:0,a:"bizmodel",hasNotes:true,why:"Define how the business makes money before starting to build. Without this clarity, the product may be built incompatibly with the monetization model.",how:"Answer: who pays? How much? How often? Use the Business Model Canvas from Strategyzer.",ev:"Simple doc: who pays, how much, how often, and the revenue logic."}
+    ]}
+  ]
+}];
+
+const LOCKED_STAGES=[
+  {id:2,title:"Product Market Fit",color:"#185fa5",bgc:"#e6f1fb",subtitle:"21 → 50 pts · 3–6 months",
+   tasks:["Build No-Code MVP","Get 10 users to test it","Test willingness to pay","Week 2 retention >30%","Sean Ellis Test >40%","Month 2 cohort ≥20%"]},
+  {id:3,title:"Business Model Validation",color:"#854f0b",bgc:"#faeeda",subtitle:"51 → 75 pts · 3–6 months",
+   tasks:["First paid transaction","Unit economics (LTV/CAC ≥3:1)","3+ recurring renewals","3-year financial model"]},
+  {id:4,title:"Growth",color:"#3d1a6b",bgc:"#eeedfe",subtitle:"76 → 100 pts · Raise program",
+   tasks:["MoM growth ≥15% x 3 months","Team beyond founders","Complete data room","Investor narrative + pitch"]}
+];
+
+let founderEmail='',founderName='';
+let checked={1:true},expanded={1:true},stOpen={1:true},subOpen={'1-0':true},notes={},links={};
+let growShown=false;
+let saveTimer=null;
+
+const CIRC=175.9,MAX_PTS=20;
+
+function allT(){const r=[];D[0].groups.forEach(g=>g.tasks.forEach(t=>r.push(t)));return r;}
+function gateT(){return allT().filter(t=>t.g);}
+function isGrowReady(){return gateT().every(t=>!!checked[t.id]);}
+function calcScore(){let r=0;allT().forEach(t=>{if(checked[t.id])r+=t.p;});return Math.min(20,r);}
+function totalDone(){return allT().filter(t=>checked[t.id]).length;}
+function aStats(){
+  const s={};Object.keys(AREAS).forEach(k=>s[k]={done:0,total:0});
+  allT().forEach(t=>{if(s[t.a]){s[t.a].total++;if(checked[t.id])s[t.a].done++;}});
+  return s;
+}
+
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+
+function renderTop(score){
+  document.getElementById('snum').textContent=score;
+  document.getElementById('ring').style.strokeDashoffset=CIRC*(1-score/MAX_PTS);
+  document.getElementById('tcnt').textContent=totalDone()+' of 13 tasks complete';
+  const ri=score>=20?4:score>=18?3:score>=12?2:score>=5?1:0;
+  const b=document.getElementById('sbadge');b.textContent=MS[ri].label;b.style.background=MSBG[ri];b.style.color=MSC[ri];
+  document.getElementById('msfill').style.width=(score/20*100)+'%';
+  const dc=document.getElementById('msdots');dc.innerHTML='';
+  MS.forEach((m,i)=>{const p=document.createElement('div');p.className='ms-pip';p.style.left=(m.score/20*100)+'%';p.style.marginLeft='-4px';p.style.background=score>=m.score?MSC[i]:'#d8d9e5';dc.appendChild(p);});
+  const lc=document.getElementById('mslbls');lc.innerHTML='';
+  MS.forEach((m,i)=>{const l=document.createElement('div');l.className='ms-lbl'+(ri===i?' cur':'');l.textContent=m.label;l.style.left=(m.score/20*100)+'%';lc.appendChild(l);});
+  const gateDone=gateT().filter(t=>checked[t.id]).length;const gateTotal=gateT().length;
+  const gp=Math.round(score/20*100);
+  document.getElementById('stage-progress-bar').style.width=gp+'%';
+  document.getElementById('stage-progress-pct').textContent=gp+'% of Stage 1 complete';
+  document.getElementById('stage-progress-text').textContent=isGrowReady()?'Stage 1 complete — You are Grow Ready!':'Complete gate tasks to unlock Grow';
+}
+
+function renderAreas(){
+  const stats=aStats();const al=document.getElementById('arealist');al.innerHTML='';
+  Object.entries(AREAS).forEach(([k,v])=>{
+    const s=stats[k];if(s.total===0)return;
+    const pct=Math.round(s.done/s.total*100);
+    const row=document.createElement('div');row.style.cssText='display:flex;flex-direction:column;gap:4px';
+    row.innerHTML=`<span style="font-size:11px;font-weight:600;color:${v.c}">${v.label}</span><div style="height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${v.c};border-radius:2px;transition:width .5s"></div></div><span style="font-size:9px;color:#aaa">${s.done}/${s.total}</span>`;
+    al.appendChild(row);
+  });
+}
+
+function renderStages(){
+  const con=document.getElementById('stages-con');con.innerHTML='';
+  const score=calcScore();
+
+  D.forEach(st=>{
+    const spts=score;const pct=Math.min(100,Math.round(spts/st.maxPts*100));
+    const allSt=allT();const doneSt=allSt.filter(t=>checked[t.id]).length;
+    const isOpen=!!stOpen[st.id];
+    const div=document.createElement('div');div.className='stage';
+
+    const hdr=document.createElement('div');hdr.className='st-hdr';
+    hdr.innerHTML=`<div class="st-num" style="background:${st.bgc};color:${st.color}">${st.id}</div>
+      <div class="st-info"><div class="st-name">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
+      <div class="st-right">
+        <span class="st-tc">${doneSt}/${allSt.length} tasks</span>
+        <span class="st-pts" style="color:${st.color}">${spts} pts</span>
+        <div class="st-pb"><div class="st-pf" style="width:${pct}%;background:${st.color}"></div></div>
+        <div class="caret${isOpen?' up':''}"></div>
+      </div>`;
+    hdr.onclick=()=>{stOpen[st.id]=!stOpen[st.id];renderStages();};
+    div.appendChild(hdr);
+
+    if(isOpen){
+      const body=document.createElement('div');body.className='st-body';
+      const nsm=document.createElement('div');nsm.className='nsm';
+      nsm.innerHTML=`<div class="nsm-bar" style="background:${st.color}"></div><div><div class="nsm-eye">North Star Metric</div><div class="nsm-metric">${st.nsm.metric}</div><div class="nsm-desc">${st.nsm.why}</div></div>`;
+      body.appendChild(nsm);
+
+      st.groups.forEach((g,gi)=>{
+        const key=st.id+'-'+gi;
+        if(!(key in subOpen))subOpen[key]=false;
+        const sOpen=subOpen[key];
+        const gd=g.tasks.filter(t=>checked[t.id]).length;
+        const gh=document.createElement('div');gh.className='grp-hdr';
+        gh.innerHTML=`<span class="grp-name">${g.name}</span><span class="grp-count">${gd}/${g.tasks.length}</span><div class="caret${sOpen?' up':''}" style="margin-left:6px"></div>`;
+        gh.onclick=()=>{subOpen[key]=!subOpen[key];renderStages();};
+        body.appendChild(gh);
+
+        if(sOpen){
+          g.tasks.forEach(task=>{
+            const done=!!checked[task.id];
+            const expDetail=!!expanded['d-'+task.id];
+            const expRes=!!expanded['r-'+task.id];
+            const expNotes=!!expanded['n-'+task.id];
+            const hasRes=!!(RESOURCES[task.id]&&RESOURCES[task.id].length);
+            const row=document.createElement('div');
+            row.className='task-row'+(done?' done':'');
+            if(expDetail)row.classList.add('exp-detail');
+            if(expRes)row.classList.add('exp-resources');
+            if(expNotes)row.classList.add('exp-notes');
+
+            const area=AREAS[task.a];
+            const pills=`<span class="pill" style="background:${area.bg};color:${area.c}">${area.label}</span>`
+              +(task.p>0?`<span class="pill pill-pts">+${task.p} pts</span>`:'')
+              +(task.g?`<span class="pill pill-gate">Gate</span>`:'')
+              +(task.ns?`<span class="pill pill-ns">North Star</span>`:'');
+
+            const main=document.createElement('div');main.className='task-main';
+            main.innerHTML=`
+              <div class="chkbox${done?' on':''}" onclick="event.stopPropagation();toggleTask(${task.id})"></div>
+              <div class="t-body">
+                <div class="t-title">${task.t}</div>
+                <div class="t-pills">${pills}</div>
+              </div>
+              <div class="t-actions">
+                <button class="t-btn${expDetail?' active':''}" onclick="event.stopPropagation();toggleExpand('d-${task.id}')">Details</button>
+                ${hasRes?`<button class="t-btn${expRes?' active':''}" onclick="event.stopPropagation();toggleExpand('r-${task.id}')">Resources</button>`:''}
+                <button class="t-btn${expNotes?' active':''}" onclick="event.stopPropagation();toggleExpand('n-${task.id}')">Notes</button>
+              </div>`;
+            row.appendChild(main);
+
+            // Detail
+            const detail=document.createElement('div');detail.className='t-detail';
+            detail.innerHTML=`<div class="d-sec"><div class="d-lbl">Why it matters</div><div class="d-txt">${task.why}</div></div>
+              <div class="d-sec"><div class="d-lbl">How to do it</div><div class="d-txt">${task.how}</div></div>
+              <div class="d-sec"><div class="d-lbl">Evidence required</div><div class="d-txt">${task.ev}</div></div>`;
+            row.appendChild(detail);
+
+            // Resources
+            if(hasRes){
+              const res=document.createElement('div');res.className='t-resources';
+              const resCards=RESOURCES[task.id].map(r=>`
+                <a class="res-card" href="${r.url}" target="_blank" rel="noopener">
+                  <div class="res-type ${r.type}">${r.type.substring(0,3).toUpperCase()}</div>
+                  <div class="res-info">
+                    <div class="res-name">${r.title}</div>
+                    <div class="res-author">${r.author}</div>
+                    <div class="res-desc">${r.desc}</div>
+                  </div>
+                  <div class="res-arrow">&rsaquo;</div>
+                </a>`).join('');
+              res.innerHTML=`<div class="res-title">Recommended resources</div>${resCards}`;
+              row.appendChild(res);
+            }
+
+            // Notes
+            if(task.hasNotes){
+              const notesDiv=document.createElement('div');notesDiv.className='t-notes';
+              const savedNote=notes[task.id]||'';
+              const savedLink=links[task.id]||'';
+              notesDiv.innerHTML=`
+                <div class="notes-title">Your notes</div>
+                <div class="notes-prompt">${NOTE_PROMPTS[task.id]||'Add your notes here...'}</div>
+                <textarea class="notes-textarea" placeholder="Start writing..." onInput="scheduleNoteSave(${task.id},'text',this.value)">${savedNote}</textarea>
+                <div class="notes-link-row">
+                  <span class="notes-link-label">Link (Miro / Notion / Drive)</span>
+                  <input class="notes-link-input" type="url" placeholder="https://..." value="${savedLink}" onInput="scheduleNoteSave(${task.id},'link',this.value)"/>
+                </div>
+                <div class="notes-saved" id="saved-${task.id}">Saved</div>`;
+              row.appendChild(notesDiv);
+            }
+
+            body.appendChild(row);
+          });
+        }
+      });
+
+      const gf=document.createElement('div');gf.className='gate-ftr';
+      gf.innerHTML=`<strong>Stage gate:</strong> ${st.gate}`;
+      body.appendChild(gf);
+      div.appendChild(body);
+    }
+    con.appendChild(div);
+  });
+
+  // Locked stages
+  LOCKED_STAGES.forEach(st=>{
+    const div=document.createElement('div');div.className='locked-stage';
+    div.innerHTML=`
+      <div class="locked-stage-hdr">
+        <div class="st-num" style="background:#f0ede6;color:#aaa">${st.id}</div>
+        <div class="st-info"><div class="st-name" style="color:#aaa">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
+        <div class="st-right"><span class="locked-badge">Grow plan</span></div>
+      </div>
+      <div class="locked-preview">
+        <div class="locked-preview-title">What's inside</div>
+        ${st.tasks.map(t=>`<div class="locked-task-preview"><div class="locked-dot"></div>${t}</div>`).join('')}
+      </div>
+      <button class="locked-upgrade-btn" onclick="openModal('grow-overlay')">Unlock with Grow plan</button>`;
+    con.appendChild(div);
+  });
+}
+
+function toggleExpand(key){
+  expanded[key]=!expanded[key];
+  renderStages();
+}
+
+function toggleTask(id){
+  checked[id]=!checked[id];
+  scheduleSave();
+  renderAll();
+  checkGrowReady();
+}
+
+function checkGrowReady(){
+  if(isGrowReady()&&!growShown){
+    growShown=true;
+    document.getElementById('grow-banner').classList.add('show');
+    setTimeout(()=>openModal('grow-overlay'),600);
+    scheduleSave();
+  }
+  if(isGrowReady())document.getElementById('grow-banner').classList.add('show');
+}
+
+function renderAll(){
+  const s=calcScore();
+  renderTop(s);renderAreas();renderStages();
+}
+
+let noteTimers={};
+function scheduleNoteSave(taskId,type,val){
+  if(type==='text')notes[taskId]=val;
+  else links[taskId]=val;
+  clearTimeout(noteTimers[taskId]);
+  noteTimers[taskId]=setTimeout(()=>{
+    const el=document.getElementById('saved-'+taskId);
+    if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
+    scheduleSave();
+  },800);
+}
+
+let saveDebounce=null;
+function scheduleSave(){
+  clearTimeout(saveDebounce);
+  saveDebounce=setTimeout(()=>saveProgress(),500);
+}
+
+async function saveProgress(){
+  const data={checked,notes,links,stOpen,subOpen,growShown,expanded};
+  try{localStorage.setItem('sbj_stage1',JSON.stringify(data));}catch(e){}
+  if(!founderEmail)return;
+  try{
+    await sb.from('founder_journey_v2').upsert({
+      email:founderEmail,name:founderName,
+      checked:JSON.stringify(checked),
+      task_notes:JSON.stringify(notes),
+      task_links:JSON.stringify(links),
+      stage_open:JSON.stringify(stOpen),
+      grow_ready_shown:growShown,
+      score:calcScore(),
+      updated_at:new Date().toISOString()
+    },{onConflict:'email'});
+  }catch(e){console.log('Supabase save error:',e);}
+}
+
+async function loadProgress(){
+  // Try localStorage first
+  try{
+    const r=localStorage.getItem('sbj_stage1');
+    if(r){const d=JSON.parse(r);checked=d.checked||{1:true};notes=d.notes||{};links=d.links||{};stOpen=d.stOpen||{1:true};subOpen=d.subOpen||{'1-0':true};growShown=d.growShown||false;expanded=d.expanded||{1:true};}
+  }catch(e){}
+  // If email known, try Supabase
+  if(founderEmail){
+    try{
+      const {data}=await sb.from('founder_journey_v2').select('*').eq('email',founderEmail).single();
+      if(data){
+        if(data.checked)checked=JSON.parse(data.checked);
+        if(data.task_notes)notes=JSON.parse(data.task_notes);
+        if(data.task_links)links=JSON.parse(data.task_links);
+        if(data.stage_open)stOpen=JSON.parse(data.stage_open);
+        growShown=data.grow_ready_shown||false;
+      }
+    }catch(e){}
+  }
+  if(growShown)document.getElementById('grow-banner').classList.add('show');
+  renderAll();
+}
+
+async function startJourney(){
+  const name=document.getElementById('capture-name').value.trim();
+  const email=document.getElementById('capture-email').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter a valid email.');return;}
+  founderName=name;founderEmail=email;
+  localStorage.setItem('sbj_email',email);
+  localStorage.setItem('sbj_name',name);
+  document.getElementById('email-overlay').classList.add('hidden');
+  await loadProgress();
+}
+
+function resetAll(){
+  if(confirm('Reset all progress?')){
+    checked={};notes={};links={};stOpen={1:true};subOpen={'1-0':true};growShown=false;expanded={};
+    document.getElementById('grow-banner').classList.remove('show');
+    saveProgress();renderAll();
+  }
+}
+
+// Check if email already saved
+const savedEmail=localStorage.getItem('sbj_email');
+const savedName=localStorage.getItem('sbj_name');
+if(savedEmail){
+  founderEmail=savedEmail;founderName=savedName||'';
+  document.getElementById('email-overlay').classList.add('hidden');
+  loadProgress();
+} else {
+  renderAll(); // render empty state behind overlay
+}
+
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
+</script>
+</body>
+</html>
