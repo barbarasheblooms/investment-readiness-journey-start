@@ -118,12 +118,13 @@ export function JourneyDashboard() {
           <div className="sticky top-0 z-50 bg-[#F1F1F6] pb-2 pt-3">
             {/* Score Card */}
             <div className="mb-2.5 rounded-xl border border-[#d8d9e5] bg-white p-4">
-              <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#888]">
-                Your score
-              </div>
               <div className="mb-2 flex items-center gap-4">
-                {/* Ring */}
-                <div className="relative h-[72px] w-[72px] flex-shrink-0">
+                {/* Ring with label */}
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#888]">
+                    Your score
+                  </div>
+                  <div className="relative h-[72px] w-[72px]">
                   <svg width="72" height="72" viewBox="0 0 72 72" className="-rotate-90">
                     <circle cx="36" cy="36" r="28" fill="none" stroke="#d8d9e5" strokeWidth="6" />
                     <circle
@@ -142,6 +143,7 @@ export function JourneyDashboard() {
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="font-serif text-xl text-black">{journey?.score || 0}</span>
                     <span className="text-[10px] text-[#888]">/ {MAX_POINTS}</span>
+                  </div>
                   </div>
                 </div>
 
