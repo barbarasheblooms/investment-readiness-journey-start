@@ -33,13 +33,13 @@ export function EmailCapture({ onSubmit, isLoading }: EmailCaptureProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-2xl mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl mx-4">
         {/* Logo */}
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#657dfe]">
+        <div className="mb-5 flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#657dfe]">
             <svg
-              className="h-5 w-5 text-white"
+              className="h-4 w-4 text-white"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -52,22 +52,22 @@ export function EmailCapture({ onSubmit, isLoading }: EmailCaptureProps) {
               />
             </svg>
           </div>
-          <span className="text-xl font-semibold text-[#657dfe]">SheBlooms</span>
+          <span className="font-serif text-lg text-[#657dfe]">SheBlooms</span>
         </div>
 
         {/* Title */}
-        <h1 className="font-serif text-3xl font-bold text-foreground mb-3">
+        <h1 className="font-serif text-2xl font-bold text-foreground mb-2">
           Investment Readiness Journey
         </h1>
-        <p className="text-muted-foreground mb-8 leading-relaxed">
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
           Track your path to raise. Complete each checkpoint, watch your score climb, and know the exact moment you&apos;re ready to raise.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
               htmlFor="name"
-              className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+              className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
             >
               Your Name
             </label>
@@ -77,14 +77,14 @@ export function EmailCapture({ onSubmit, isLoading }: EmailCaptureProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
-              className="w-full rounded-xl border border-border bg-white px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 focus:border-[#657dfe] focus:outline-none focus:ring-2 focus:ring-[#657dfe]/20"
+              className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-[#657dfe] focus:outline-none focus:ring-2 focus:ring-[#657dfe]/20"
             />
           </div>
 
           <div>
             <label
               htmlFor="email"
-              className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+              className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground"
             >
               Your Email
             </label>
@@ -94,7 +94,7 @@ export function EmailCapture({ onSubmit, isLoading }: EmailCaptureProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="w-full rounded-xl border border-border bg-white px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 focus:border-[#657dfe] focus:outline-none focus:ring-2 focus:ring-[#657dfe]/20"
+              className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-[#657dfe] focus:outline-none focus:ring-2 focus:ring-[#657dfe]/20"
             />
           </div>
 
@@ -105,17 +105,17 @@ export function EmailCapture({ onSubmit, isLoading }: EmailCaptureProps) {
           <button
             type="submit"
             disabled={!isButtonEnabled}
-            className={`w-full rounded-xl px-4 py-4 font-medium transition-all ${
+            className={`w-full rounded-lg px-4 py-3 text-sm font-medium transition-all ${
               isButtonEnabled
                 ? "bg-[#657dfe] text-white hover:bg-[#5570f0] cursor-pointer"
-                : "bg-[#d8dce8] text-[#9ca3b8] cursor-not-allowed"
+                : "bg-[#e0e4f0] text-[#a0a8c0] cursor-not-allowed"
             }`}
           >
             {isLoading ? "Loading..." : "Start my journey"}
           </button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-muted-foreground">
+        <p className="mt-4 text-center text-xs text-muted-foreground">
           Your progress is saved and synced across devices.
         </p>
       </div>
