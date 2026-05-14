@@ -176,13 +176,13 @@ export function JourneyDashboard() {
                     ))}
                   </div>
                   <div className="relative mt-1.5 h-4 text-[9px] text-[#aaa]">
-                    {MILESTONES.map((ms) => (
+                    {MILESTONES.map((ms, i) => (
                       <span
                         key={ms.id}
                         className={`absolute whitespace-nowrap ${(journey?.score || 0) >= ms.minScore ? "font-semibold text-black" : ""}`}
                         style={{
                           left: `${(ms.minScore / MAX_POINTS) * 100}%`,
-                          transform: "translateX(-50%)",
+                          transform: i === 0 ? "translateX(0)" : i === MILESTONES.length - 1 ? "translateX(-100%)" : "translateX(-50%)",
                         }}
                       >
                         {ms.label}
