@@ -4,7 +4,7 @@ export const AREAS: Area[] = [
   { id: "market", label: "Market", color: "#657dfe" },
   { id: "product", label: "Product", color: "#8a9ffe" },
   { id: "traction", label: "Traction", color: "#00b894" },
-  { id: "bizmodel", label: "Biz Model", color: "#e17055" },
+  { id: "bizmodel", label: "Business Model", color: "#e17055" },
   { id: "team", label: "Team", color: "#a29bfe" },
 ];
 
