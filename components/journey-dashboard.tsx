@@ -195,7 +195,7 @@ export function JourneyDashboard() {
               {/* Stage Progress */}
               <div className="rounded-lg bg-[#F1F1F6] px-3 py-2">
                 <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#888]">
-                  Pre-seed Application
+                  Grow Application
                 </div>
                 <div className="mb-1 text-[12px] font-medium text-black">
                   {(journey?.score || 0) >= MAX_POINTS 
@@ -209,7 +209,7 @@ export function JourneyDashboard() {
                   />
                 </div>
                 <div className="text-[10px] text-[#888]">
-                  {Math.round(scorePercent)}% toward Pre-seed gate (min. {MAX_POINTS} pts)
+                  {Math.round(scorePercent)}% toward Grow gate (min. {MAX_POINTS} pts)
                 </div>
               </div>
             </div>
