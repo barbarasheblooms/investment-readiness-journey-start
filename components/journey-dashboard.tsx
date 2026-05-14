@@ -195,7 +195,7 @@ export function JourneyDashboard() {
               {/* Stage Progress */}
               <div className="rounded-lg bg-[#F1F1F6] px-3 py-2">
                 <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#888]">
-                  Grow Application
+                  Grow Ready
                 </div>
                 <div className="mb-1 text-[12px] font-medium text-black">
                   {(journey?.score || 0) >= MAX_POINTS 
