@@ -118,10 +118,10 @@ export function JourneyDashboard() {
           <div className="sticky top-0 z-50 bg-[#F1F1F6] pb-2 pt-3">
             {/* Score Card */}
             <div className="mb-2.5 rounded-xl border border-[#d8d9e5] bg-white p-4">
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#888]">
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#888]">
                 Your score
               </div>
-              <div className="mb-3 flex items-center gap-4">
+              <div className="mb-2 flex items-center gap-4">
                 {/* Ring */}
                 <div className="relative h-[72px] w-[72px] flex-shrink-0">
                   <svg width="72" height="72" viewBox="0 0 72 72" className="-rotate-90">
@@ -195,7 +195,7 @@ export function JourneyDashboard() {
               {/* Stage Progress */}
               <div className="rounded-lg bg-[#F1F1F6] px-3 py-2">
                 <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#888]">
-                  Grow Ready
+                  Pre-seed Ready
                 </div>
                 <div className="mb-1 text-[12px] font-medium text-black">
                   {(journey?.score || 0) >= MAX_POINTS 
@@ -209,7 +209,7 @@ export function JourneyDashboard() {
                   />
                 </div>
                 <div className="text-[10px] text-[#888]">
-                  {Math.round(scorePercent)}% toward Grow gate (min. {MAX_POINTS} pts)
+                  {Math.round(scorePercent)}% toward Pre-seed gate (min. {MAX_POINTS} pts)
                 </div>
               </div>
             </div>

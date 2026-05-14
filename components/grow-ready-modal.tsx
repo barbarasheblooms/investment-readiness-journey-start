@@ -26,7 +26,7 @@ export function GrowReadyModal({ onClose }: GrowReadyModalProps) {
         </h2>
         
         <p className="mt-4 text-muted-foreground">
-          You&apos;ve completed Stage 1 and achieved <strong>Grow Ready</strong> status
+          You&apos;ve completed Stage 1 and achieved <strong>Pre-seed Ready</strong> status
           for Problem Validation Fit!
         </p>
 

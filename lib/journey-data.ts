@@ -13,7 +13,7 @@ export const MILESTONES: Milestone[] = [
   { id: "exploring", label: "Exploring", minScore: 5, bgColor: "#e6f1fb", color: "#185fa5" },
   { id: "validating", label: "Validating", minScore: 10, bgColor: "#eeedfe", color: "#534ab7" },
   { id: "almost", label: "Almost There", minScore: 15, bgColor: "#fffaeb", color: "#92610a" },
-  { id: "grow-ready", label: "Grow Ready", minScore: 20, bgColor: "#e1f5ee", color: "#0f6e56" },
+  { id: "grow-ready", label: "Pre-seed Ready", minScore: 20, bgColor: "#e1f5ee", color: "#0f6e56" },
 ];
 
 export const MAX_POINTS = 20;
