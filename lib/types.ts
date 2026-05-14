@@ -1,39 +1,62 @@
-export interface Task {
-  id: string;
-  label: string;
-  points: number;
-  badges: ("gate" | "northstar")[];
-  why: string;
-  how: string;
-  evidence: string;
-  resources: Resource[];
-}
-
 export interface Resource {
   type: "article" | "video" | "book" | "podcast" | "tool";
   title: string;
+  author?: string;
   url: string;
+  description?: string;
+}
+
+export interface TaskDetail {
+  why?: string;
+  how?: string;
+  evidence?: string;
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  points: number;
+  area?: string;
+  badges?: ("gate" | "north-star")[];
+  detail?: TaskDetail;
+  gateMessage?: string;
+  notesPrompt?: string;
+  resources?: Resource[];
 }
 
 export interface TaskGroup {
   id: string;
-  title: string;
+  name: string;
   tasks: Task[];
+}
+
+export interface NorthStarMetric {
+  title: string;
+  description: string;
 }
 
 export interface Stage {
   id: number;
-  title: string;
+  name: string;
   subtitle: string;
-  pointsRange: [number, number];
+  color: string;
+  bgColor: string;
+  northStarMetric?: NorthStarMetric;
   groups: TaskGroup[];
-  locked: boolean;
 }
 
 export interface Milestone {
   id: string;
   label: string;
-  points: number;
+  minScore: number;
+  bgColor: string;
+  color: string;
+}
+
+export interface Area {
+  id: string;
+  label: string;
+  color: string;
 }
 
 export interface FounderJourney {
