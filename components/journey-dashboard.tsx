@@ -101,88 +101,88 @@ export function JourneyDashboard() {
       )}
 
       <div className="min-h-screen bg-[#F1F1F6] font-sans">
-        <div className="mx-auto max-w-[780px] px-5 pb-20 pt-8">
+        <div className="mx-auto max-w-[900px] px-6 pb-24 pt-10">
           {/* Brand */}
-          <div className="mb-5 flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#657dfe]">
-              <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#657dfe]">
+              <svg className="h-4 w-4" viewBox="0 0 14 14" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
                 <path d="M7 1v12M1 7h12" />
               </svg>
             </div>
-            <span className="font-serif text-[17px] text-[#657dfe]">SheBlooms</span>
-            <div className="mx-1 h-4 w-px bg-[#d8d9e5]" />
-            <span className="text-[13px] text-[#555]">Founder Journey</span>
+            <span className="font-serif text-xl text-[#657dfe]">SheBlooms</span>
+            <div className="mx-2 h-5 w-px bg-[#d8d9e5]" />
+            <span className="text-sm text-[#555]">Founder Journey</span>
           </div>
 
           {/* Sticky Header */}
-          <div className="sticky top-0 z-50 bg-[#F1F1F6] pb-2.5 pt-3">
+          <div className="sticky top-0 z-50 bg-[#F1F1F6] pb-3 pt-4">
             {/* Score Card */}
-            <div className="mb-2.5 rounded-[14px] border border-[#d8d9e5] bg-white p-4">
-              <div className="mb-3 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#888]">
+            <div className="mb-3 rounded-2xl border border-[#d8d9e5] bg-white p-5">
+              <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#888]">
                 Your score
               </div>
-              <div className="mb-3 flex items-center gap-3.5">
+              <div className="mb-4 flex items-center gap-5">
                 {/* Ring */}
-                <div className="relative h-[72px] w-[72px] flex-shrink-0">
-                  <svg width="72" height="72" viewBox="0 0 72 72" className="-rotate-90">
-                    <circle cx="36" cy="36" r="28" fill="none" stroke="#d8d9e5" strokeWidth="6" />
+                <div className="relative h-[90px] w-[90px] flex-shrink-0">
+                  <svg width="90" height="90" viewBox="0 0 90 90" className="-rotate-90">
+                    <circle cx="45" cy="45" r="36" fill="none" stroke="#d8d9e5" strokeWidth="7" />
                     <circle
-                      cx="36"
-                      cy="36"
-                      r="28"
+                      cx="45"
+                      cy="45"
+                      r="36"
                       fill="none"
                       stroke="#657dfe"
-                      strokeWidth="6"
+                      strokeWidth="7"
                       strokeLinecap="round"
-                      strokeDasharray="175.9"
-                      strokeDashoffset={ringOffset}
+                      strokeDasharray="226.2"
+                      strokeDashoffset={226.2 - (226.2 * scorePercent) / 100}
                       className="transition-all duration-500"
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-serif text-[22px] text-black">{journey?.score || 0}</span>
-                    <span className="text-[9px] text-[#888]">/ {MAX_POINTS}</span>
+                    <span className="font-serif text-3xl text-black">{journey?.score || 0}</span>
+                    <span className="text-xs text-[#888]">/ {MAX_POINTS}</span>
                   </div>
                 </div>
 
                 {/* Score Meta */}
                 <div className="min-w-0 flex-1">
                   <div
-                    className="mb-1.5 inline-block rounded-full px-2.5 py-0.5 text-[10px] font-medium"
+                    className="mb-2 inline-block rounded-full px-3 py-1 text-xs font-medium"
                     style={{ backgroundColor: currentMilestone.bgColor, color: currentMilestone.color }}
                   >
                     {currentMilestone.label}
                   </div>
-                  <div className="mb-2.5 text-[11px] text-[#555]">
+                  <div className="mb-3 text-sm text-[#555]">
                     {stats.completedTasks} of {stats.totalTasks} tasks complete
                   </div>
                   
                   {/* Milestone Track */}
-                  <div className="relative h-1 rounded-sm bg-[#d8d9e5]">
+                  <div className="relative h-1.5 rounded bg-[#d8d9e5]">
                     <div
-                      className="h-full rounded-sm bg-[#657dfe] transition-all duration-500"
+                      className="h-full rounded bg-[#657dfe] transition-all duration-500"
                       style={{ width: `${scorePercent}%` }}
                     />
                     {MILESTONES.map((ms) => (
                       <div
                         key={ms.id}
-                        className="absolute top-[-2px] h-2 w-2 rounded-full border-2 border-white shadow-[0_0_0_1px_#d8d9e5] transition-colors duration-300"
+                        className="absolute top-[-3px] h-3 w-3 rounded-full border-2 border-white shadow-[0_0_0_1px_#d8d9e5] transition-colors duration-300"
                         style={{
                           left: `${(ms.minScore / MAX_POINTS) * 100}%`,
+                          transform: "translateX(-50%)",
                           backgroundColor: (journey?.score || 0) >= ms.minScore ? "#657dfe" : "#d8d9e5",
                         }}
                       />
                     ))}
                   </div>
-                  <div className="relative mt-1 flex justify-between text-[8px] text-[#aaa]">
+                  <div className="relative mt-2 flex text-[10px] text-[#aaa]">
                     {MILESTONES.map((ms, i) => (
                       <span
                         key={ms.id}
-                        className={`${(journey?.score || 0) >= ms.minScore ? "font-semibold text-black" : ""}`}
+                        className={`absolute whitespace-nowrap ${(journey?.score || 0) >= ms.minScore ? "font-semibold text-black" : ""}`}
                         style={{
-                          position: i === 0 ? "relative" : i === MILESTONES.length - 1 ? "relative" : "absolute",
-                          left: i === 0 || i === MILESTONES.length - 1 ? "auto" : `${(ms.minScore / MAX_POINTS) * 100}%`,
-                          transform: i === 0 ? "none" : i === MILESTONES.length - 1 ? "none" : "translateX(-50%)",
+                          left: `${(ms.minScore / MAX_POINTS) * 100}%`,
+                          transform: i === 0 ? "translateX(0)" : i === MILESTONES.length - 1 ? "translateX(-100%)" : "translateX(-50%)",
                         }}
                       >
                         {ms.label}
@@ -193,46 +193,46 @@ export function JourneyDashboard() {
               </div>
 
               {/* Stage Progress */}
-              <div className="rounded-[10px] bg-[#F1F1F6] px-3 py-2.5">
-                <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#888]">
+              <div className="rounded-xl bg-[#F1F1F6] px-4 py-3">
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#888]">
                   Stage 1 Progress
                 </div>
-                <div className="mb-1.5 text-[13px] font-medium text-black">
+                <div className="mb-2 text-base font-medium text-black">
                   Complete gate tasks to advance
                 </div>
-                <div className="mb-1 h-0.5 overflow-hidden rounded-sm bg-[#d8d9e5]">
+                <div className="mb-1.5 h-1 overflow-hidden rounded bg-[#d8d9e5]">
                   <div
-                    className="h-full rounded-sm bg-[#657dfe] transition-all duration-500"
+                    className="h-full rounded bg-[#657dfe] transition-all duration-500"
                     style={{ width: `${scorePercent}%` }}
                   />
                 </div>
-                <div className="text-[10px] text-[#888]">
+                <div className="text-xs text-[#888]">
                   {Math.round(scorePercent)}% of Stage 1 complete
                 </div>
               </div>
             </div>
 
             {/* Areas Card */}
-            <div className="rounded-[14px] border border-[#d8d9e5] bg-white p-4">
-              <div className="mb-3 text-[9px] font-semibold uppercase tracking-[0.09em] text-[#888]">
+            <div className="rounded-2xl border border-[#d8d9e5] bg-white p-5">
+              <div className="mb-4 text-xs font-semibold uppercase tracking-wider text-[#888]">
                 How investors see you
               </div>
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-5 gap-4">
                 {AREAS.map((area) => {
                   const areaStats = stats.areaScores[area.id];
                   const percent = areaStats.total > 0 ? (areaStats.completed / areaStats.total) * 100 : 0;
                   return (
                     <div key={area.id}>
-                      <div className="mb-0.5 text-[11px] font-semibold" style={{ color: area.color }}>
+                      <div className="mb-1 text-sm font-semibold" style={{ color: area.color }}>
                         {area.label}
                       </div>
-                      <div className="mb-0.5 h-1 overflow-hidden rounded-sm bg-[#d8d9e5]">
+                      <div className="mb-1 h-1.5 overflow-hidden rounded bg-[#d8d9e5]">
                         <div
-                          className="h-full rounded-sm transition-all duration-500"
+                          className="h-full rounded transition-all duration-500"
                           style={{ width: `${percent}%`, backgroundColor: area.color }}
                         />
                       </div>
-                      <div className="text-[9px] text-[#aaa]">
+                      <div className="text-xs text-[#aaa]">
                         {areaStats.completed}/{areaStats.total}
                       </div>
                     </div>
@@ -242,29 +242,29 @@ export function JourneyDashboard() {
             </div>
           </div>
 
-          {/* Grow Ready Banner */}
+          {/* Pre-seed Ready Banner */}
           {(journey?.score || 0) >= MAX_POINTS && (
             <div
-              className="mb-3.5 flex cursor-pointer items-center gap-3.5 rounded-[14px] bg-gradient-to-br from-[#657dfe] to-[#8a9ffe] px-5 py-4 transition-opacity hover:opacity-95"
+              className="mb-4 flex cursor-pointer items-center gap-4 rounded-2xl bg-gradient-to-br from-[#657dfe] to-[#8a9ffe] px-6 py-5 transition-opacity hover:opacity-95"
               onClick={() => setShowGrowReady(true)}
             >
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-xl text-white">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-2xl text-white">
                 ✓
               </div>
               <div className="flex-1">
-                <div className="mb-0.5 text-sm font-semibold text-white">You&apos;re Grow Ready!</div>
-                <div className="text-[11px] text-white/85">
+                <div className="mb-1 text-base font-semibold text-white">You&apos;re Pre-seed Ready!</div>
+                <div className="text-sm text-white/85">
                   You&apos;ve validated your problem. Time to build and find PMF.
                 </div>
               </div>
-              <button className="flex-shrink-0 whitespace-nowrap rounded-full bg-white px-3.5 py-1.5 text-[11px] font-semibold text-[#657dfe] transition-colors hover:bg-[#eef0ff]">
-                Unlock Grow
+              <button className="flex-shrink-0 whitespace-nowrap rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#657dfe] transition-colors hover:bg-[#eef0ff]">
+                Unlock Next Stage
               </button>
             </div>
           )}
 
           {/* Stages */}
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {STAGES.map((stage) => {
               const stageTasksTotal = stage.groups.reduce((acc, g) => acc + g.tasks.length, 0);
               const stageTasksCompleted = stage.groups.reduce(
@@ -282,19 +282,19 @@ export function JourneyDashboard() {
 
               if (isLocked) {
                 return (
-                  <div key={stage.id} className="rounded-[14px] border border-[#d8d9e5] bg-white opacity-55">
-                    <div className="flex items-center gap-2.5 px-4 py-3">
+                  <div key={stage.id} className="rounded-2xl border border-[#d8d9e5] bg-white opacity-55">
+                    <div className="flex items-center gap-3 px-5 py-4">
                       <div
-                        className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold"
+                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-semibold"
                         style={{ backgroundColor: stage.bgColor, color: stage.color }}
                       >
                         {stage.id}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-sm font-medium text-black">{stage.name}</div>
-                        <div className="text-[11px] text-[#888]">{stage.subtitle}</div>
+                        <div className="text-base font-medium text-black">{stage.name}</div>
+                        <div className="text-sm text-[#888]">{stage.subtitle}</div>
                       </div>
-                      <span className="rounded-full bg-[#F1F1F6] px-2 py-0.5 text-[10px] font-medium text-[#aaa]">
+                      <span className="rounded-full bg-[#F1F1F6] px-3 py-1 text-xs font-medium text-[#aaa]">
                         Locked
                       </span>
                     </div>
@@ -305,36 +305,36 @@ export function JourneyDashboard() {
               return (
                 <div
                   key={stage.id}
-                  className="overflow-hidden rounded-[14px] border border-[#d8d9e5] bg-white transition-shadow hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                  className="overflow-hidden rounded-2xl border border-[#d8d9e5] bg-white transition-shadow hover:shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
                 >
                   {/* Stage Header */}
                   <div
-                    className="flex cursor-pointer select-none items-center gap-2.5 px-4 py-3 transition-colors hover:bg-[#f7f7fb]"
+                    className="flex cursor-pointer select-none items-center gap-3 px-5 py-4 transition-colors hover:bg-[#f7f7fb]"
                     onClick={() => toggleStage(stage.id)}
                   >
                     <div
-                      className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold"
+                      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-semibold"
                       style={{ backgroundColor: stage.bgColor, color: stage.color }}
                     >
                       {stage.id}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-black">{stage.name}</div>
-                      <div className="text-[11px] text-[#888]">{stage.subtitle}</div>
+                      <div className="text-base font-medium text-black">{stage.name}</div>
+                      <div className="text-sm text-[#888]">{stage.subtitle}</div>
                     </div>
-                    <div className="flex flex-shrink-0 items-center gap-2">
-                      <span className="text-xs font-semibold" style={{ color: stage.color }}>
+                    <div className="flex flex-shrink-0 items-center gap-3">
+                      <span className="text-sm font-semibold" style={{ color: stage.color }}>
                         {stagePoints}/{stageMaxPoints} pts
                       </span>
-                      <span className="text-[11px] text-[#888]">{stageTasksCompleted}/{stageTasksTotal}</span>
-                      <div className="h-0.5 w-[52px] overflow-hidden rounded-sm bg-[#d8d9e5]">
+                      <span className="text-sm text-[#888]">{stageTasksCompleted}/{stageTasksTotal}</span>
+                      <div className="h-1 w-16 overflow-hidden rounded bg-[#d8d9e5]">
                         <div
-                          className="h-full rounded-sm transition-all duration-300"
+                          className="h-full rounded transition-all duration-300"
                           style={{ width: `${stagePercent}%`, backgroundColor: stage.color }}
                         />
                       </div>
                       <ChevronDown
-                        className={`h-4 w-4 text-[#aaa] transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                        className={`h-5 w-5 text-[#aaa] transition-transform ${isExpanded ? "rotate-180" : ""}`}
                       />
                     </div>
                   </div>
