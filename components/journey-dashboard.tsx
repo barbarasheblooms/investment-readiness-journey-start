@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useJourney } from "@/hooks/use-journey";
-import { STAGES, MILESTONES, MAX_POINTS, AREAS } from "@/lib/journey-data";
+import { STAGES, MILESTONES, MAX_POINTS, AREAS, RAISE_GATE } from "@/lib/journey-data";
 import { EmailCapture } from "./email-capture";
 import { GrowReadyModal } from "./grow-ready-modal";
 import { ChevronDown } from "lucide-react";
@@ -142,7 +142,7 @@ export function JourneyDashboard() {
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="font-serif text-xl text-black">{journey?.score || 0}</span>
-                    <span className="text-[10px] text-[#888]">/ {MAX_POINTS}</span>
+                    <span className="text-[10px] text-[#888]">/ 100</span>
                   </div>
                   </div>
                 </div>
@@ -194,24 +194,24 @@ export function JourneyDashboard() {
                 </div>
               </div>
 
-              {/* Stage Progress */}
+              {/* Raise Application */}
               <div className="rounded-lg bg-[#F1F1F6] px-3 py-2">
                 <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#888]">
-                  Pre-seed Ready
+                  Raise Application
                 </div>
                 <div className="mb-1 text-[12px] font-medium text-black">
-                  {(journey?.score || 0) >= MAX_POINTS 
-                    ? "You're ready!" 
-                    : `Need ${MAX_POINTS - (journey?.score || 0)} more points`}
+                  {(journey?.score || 0) >= RAISE_GATE 
+                    ? "You're eligible!" 
+                    : `Need ${RAISE_GATE - (journey?.score || 0)} more points`}
                 </div>
                 <div className="mb-1 h-[3px] overflow-hidden rounded bg-[#d8d9e5]">
                   <div
                     className="h-full rounded bg-[#657dfe] transition-all duration-500"
-                    style={{ width: `${scorePercent}%` }}
+                    style={{ width: `${Math.min(100, ((journey?.score || 0) / RAISE_GATE) * 100)}%` }}
                   />
                 </div>
                 <div className="text-[10px] text-[#888]">
-                  {Math.round(scorePercent)}% toward Pre-seed gate (min. {MAX_POINTS} pts)
+                  {Math.round(((journey?.score || 0) / RAISE_GATE) * 100)}% toward Raise gate (min. {RAISE_GATE} pts)
                 </div>
               </div>
             </div>
@@ -246,23 +246,23 @@ export function JourneyDashboard() {
             </div>
           </div>
 
-          {/* Pre-seed Ready Banner */}
-          {(journey?.score || 0) >= MAX_POINTS && (
+          {/* Raise Eligible Banner */}
+          {(journey?.score || 0) >= RAISE_GATE && (
             <div
               className="mb-3 flex cursor-pointer items-center gap-3 rounded-xl bg-gradient-to-br from-[#657dfe] to-[#8a9ffe] px-4 py-3 transition-opacity hover:opacity-95"
               onClick={() => setShowGrowReady(true)}
             >
               <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-lg text-white">
-                ✓
+                &#9733;
               </div>
               <div className="flex-1">
-                <div className="text-[12px] font-semibold text-white">You&apos;re Pre-seed Ready!</div>
+                <div className="text-[12px] font-semibold text-white">You&apos;re eligible for Raise</div>
                 <div className="text-[11px] text-white/85">
-                  You&apos;ve validated your problem. Time to build and find PMF.
+                  Your score qualifies you to apply for the SheBlooms Raise program.
                 </div>
               </div>
               <button className="flex-shrink-0 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#657dfe] transition-colors hover:bg-[#eef0ff]">
-                Unlock Next Stage
+                Book a call
               </button>
             </div>
           )}
