@@ -90,12 +90,12 @@ export function JourneyDashboard() {
     );
   }
 
+  if (showEmailCapture) {
+    return <EmailCapture onSubmit={initializeJourney} isLoading={isLoading} />;
+  }
+
   return (
     <>
-      {showEmailCapture && (
-        <EmailCapture onSubmit={initializeJourney} isLoading={isLoading} />
-      )}
-
       {showGrowReady && (
         <GrowReadyModal onClose={() => setShowGrowReady(false)} />
       )}
