@@ -6,44 +6,20 @@
 <title>SheBlooms — Founder Journey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font-smoothing:antialiased}
 .page{max-width:780px;margin:0 auto;padding:32px 20px 80px}
-
-/* Email capture */
-.email-overlay{position:fixed;inset:0;background:rgba(10,10,8,.6);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
-.email-overlay.hidden{display:none}
-.email-box{background:#fff;border-radius:20px;padding:36px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.2)}
-.email-logo{display:flex;align-items:center;gap:8px;margin-bottom:24px}
-.email-logo-mark{width:24px;height:24px;background:#657dfe;border-radius:5px;display:flex;align-items:center;justify-content:center}
-.email-logo-mark svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
-.email-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:#657dfe}
-.email-headline{font-family:'DM Serif Display',serif;font-size:22px;color:#000;margin-bottom:8px;line-height:1.3}
-.email-sub{font-size:13px;color:#555;line-height:1.6;margin-bottom:24px}
-.email-field{margin-bottom:12px}
-.email-field label{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
-.email-field input{width:100%;padding:10px 12px;border:1px solid #d8d9e5;border-radius:8px;font-size:13px;font-family:inherit;color:#000;outline:none;transition:border .15s}
-.email-field input:focus{border-color:#657dfe}
-.email-btn{width:100%;padding:13px;background:#657dfe;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;margin-top:4px}
-.email-btn:hover{background:#4f6de0}
-.email-note{font-size:10px;color:#aaa;text-align:center;margin-top:10px}
-
-/* Brand */
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .brand-mark{width:28px;height:28px;background:#657dfe;border-radius:6px;display:flex;align-items:center;justify-content:center}
 .brand-mark svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
-.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:#657dfe}
+.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:#000}
 .brand-sep{width:1px;height:16px;background:#d8d9e5;margin:0 4px}
 .brand-sub{font-size:13px;color:#555}
-
-/* Top header - sticky */
-.top-header{position:sticky;top:0;z-index:50;background:#F1F1F6;padding:12px 0 10px;margin-bottom:10px}
+.top-header{position:sticky;top:0;z-index:50;background:#F1F1F6;padding:16px 0 10px;margin-bottom:6px}
+.top-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .card{background:#fff;border:1px solid #d8d9e5;border-radius:14px;padding:16px 18px}
 .card-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#888;margin-bottom:12px}
-
-/* Score card */
 .score-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
 .ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0}
 .ring-wrap svg{transform:rotate(-90deg)}
@@ -53,45 +29,29 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
 .ring-num{font-family:'DM Serif Display',serif;font-size:22px;color:#000}
 .ring-label{font-size:9px;color:#888;margin-top:1px}
 .score-meta{flex:1;min-width:0}
-.stage-badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:6px}
+.stage-badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:6px;transition:all .4s}
 .task-count{font-size:11px;color:#555;margin-bottom:10px}
 .ms-track{height:4px;background:#d8d9e5;border-radius:2px;position:relative;margin-top:2px}
 .ms-fill{height:100%;border-radius:2px;transition:width .6s}
-.ms-pip{width:8px;height:8px;border-radius:50%;border:2px solid #fff;position:absolute;top:-2px;box-shadow:0 0 0 1px #d8d9e5;transition:background .4s}
+.ms-pip{width:8px;height:8px;border-radius:50%;border:2px solid #fff;position:absolute;top:-2px;transition:background .4s;box-shadow:0 0 0 1px #d8d9e5}
 .ms-labels{position:relative;height:16px;margin-top:4px}
 .ms-lbl{font-size:8px;color:#aaa;position:absolute;transform:translateX(-50%);white-space:nowrap}
 .ms-lbl:first-child{transform:translateX(0)}
 .ms-lbl:last-child{transform:translateX(-100%)}
 .ms-lbl.cur{color:#000;font-weight:600}
-.raise-strip{background:#F1F1F6;border-radius:10px;padding:9px 11px}
+.raise-strip{background:#F1F1F6;border-radius:10px;padding:8px 10px}
 .raise-eyebrow{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#888;margin-bottom:3px}
 .raise-headline{font-size:13px;font-weight:500;color:#000;margin-bottom:6px}
 .raise-track{height:3px;background:#d8d9e5;border-radius:2px;overflow:hidden;margin-bottom:4px}
 .raise-fill{height:100%;border-radius:2px;background:#657dfe;transition:width .6s}
 .raise-pct{font-size:10px;color:#888}
-
-/* Areas */
-.area-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.area-row:last-child{margin-bottom:0}
-.area-lbl{font-size:11px;font-weight:600;width:auto;flex-shrink:0}
+.areas-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0 12px}
+.area-row{display:flex;flex-direction:column;gap:4px}
+.area-lbl{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .area-right{flex:1;min-width:0}
 .area-track{height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden;margin-bottom:2px}
 .area-bar{height:100%;border-radius:2px;transition:width .5s}
 .area-count{font-size:9px;color:#aaa}
-
-/* Grow banner */
-.grow-banner{display:none;align-items:center;gap:14px;background:linear-gradient(135deg,#657dfe,#8a9ffe);border-radius:14px;padding:16px 20px;margin-bottom:14px;cursor:pointer;animation:slidein .4s ease}
-.grow-banner.show{display:flex}
-.grow-banner:hover{opacity:.93}
-@keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.gb-icon{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;color:#fff}
-.gb-text{flex:1}
-.gb-headline{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
-.gb-sub{font-size:11px;color:rgba(255,255,255,.85)}
-.gb-cta{font-size:11px;font-weight:600;color:#657dfe;background:#fff;padding:7px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0;border:none;cursor:pointer;font-family:inherit}
-.gb-cta:hover{background:#eef0ff}
-
-/* Stages */
 .stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:10px;transition:box-shadow .2s}
 .stage:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
 .st-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .12s}
@@ -108,26 +68,17 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
 .caret{width:7px;height:7px;border-right:1.5px solid #aaa;border-bottom:1.5px solid #aaa;transform:rotate(45deg);transition:transform .2s;flex-shrink:0;margin-top:-2px}
 .caret.up{transform:rotate(-135deg);margin-top:2px}
 .st-body{border-top:1px solid #d8d9e5}
-
-/* NSM */
 .nsm{display:flex;align-items:flex-start;gap:10px;padding:11px 16px;background:#f7f7fb;border-bottom:1px solid #d8d9e5}
 .nsm-bar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:36px}
 .nsm-eye{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:#aaa;margin-bottom:2px}
 .nsm-metric{font-size:12px;font-weight:600;color:#000;margin-bottom:2px}
 .nsm-desc{font-size:11px;color:#555;line-height:1.5}
-
-/* Group */
 .grp-hdr{display:flex;align-items:center;gap:8px;padding:7px 16px;background:#f7f7fb;border-top:1px solid #d8d9e5;cursor:pointer;user-select:none;transition:background .12s}
 .grp-hdr:hover{background:#eeeef5}
 .grp-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;flex:1}
 .grp-count{font-size:10px;color:#aaa}
-
-/* Task */
-.task-row{border-top:1px solid #eeeef5;transition:background .1s}
-.task-main{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;cursor:pointer;transition:background .1s}
-.task-main:hover{background:#f7f7fb}
 .task-row.done .t-title{text-decoration:line-through;color:#aaa}
-.chkbox{width:16px;height:16px;border-radius:4px;border:1.5px solid #d8d9e5;flex-shrink:0;margin-top:2px;background:#fff;cursor:pointer;position:relative;transition:all .15s}
+.chkbox{width:16px;height:16px;border-radius:4px;border:1.5px solid #d8d9e5;flex-shrink:0;margin-top:1px;background:#fff;cursor:pointer;position:relative;transition:all .15s}
 .chkbox.on{background:#657dfe;border-color:#657dfe}
 .chkbox.on::after{content:'';position:absolute;top:2.5px;left:4px;width:6px;height:3.5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg)}
 .t-body{flex:1;min-width:0}
@@ -137,138 +88,179 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
 .pill-gate{background:#fffaeb;color:#92610a;border:1px solid #e8c86a}
 .pill-ns{background:#fffbf0;color:#7c5e0a;border:1px solid #d4a820}
 .pill-pts{background:#F1F1F6;color:#555}
-.t-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;padding-top:2px}
-.t-btn{font-size:9px;font-weight:600;padding:3px 8px;border-radius:20px;border:1px solid #d8d9e5;background:#fff;color:#888;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
-.t-btn:hover{background:#F1F1F6;color:#555}
-.t-btn.active{background:#eef0ff;color:#657dfe;border-color:#657dfe}
-
-/* Task detail */
-.t-detail{display:none;padding:0 16px 12px;background:#f7f7fb;border-top:1px solid #eeeef5}
-.task-row.exp-detail .t-detail{display:block}
-.d-sec{margin-bottom:8px;padding-top:10px}
+.t-detail{display:none;margin-top:9px;padding:10px 12px;background:#F1F1F6;border-radius:8px}
+.task-row.exp .t-detail{display:block}
+.d-sec{margin-bottom:8px}
 .d-sec:last-child{margin-bottom:0}
 .d-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin-bottom:3px}
-.d-txt{font-size:11px;color:#333;line-height:1.65}
-
-/* Resources */
-.t-resources{display:none;padding:0 16px 12px}
-.task-row.exp-resources .t-resources{display:block}
-.res-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px;padding-top:10px;border-top:1px solid #eeeef5}
-.res-card{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#fff;border:1px solid #d8d9e5;border-radius:10px;margin-bottom:6px;text-decoration:none;transition:border-color .15s,box-shadow .15s}
-.res-card:hover{border-color:#657dfe;box-shadow:0 2px 8px rgba(101,125,254,.1)}
-.res-card:last-child{margin-bottom:0}
-.res-type{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em}
-.res-type.book{background:#faeeda;color:#854f0b}
-.res-type.video{background:#fbeaf0;color:#993556}
-.res-type.article{background:#e6f1fb;color:#185fa5}
-.res-type.podcast{background:#eeedfe;color:#534ab7}
-.res-type.tool{background:#e1f5ee;color:#0f6e56}
-.res-info{flex:1;min-width:0}
-.res-name{font-size:11px;font-weight:600;color:#000;margin-bottom:2px}
-.res-author{font-size:10px;color:#888;margin-bottom:3px}
-.res-desc{font-size:10px;color:#aaa;line-height:1.5}
-.res-arrow{font-size:14px;color:#d8d9e5;flex-shrink:0;margin-top:6px}
-
-/* Notes */
-.t-notes{display:none;padding:0 16px 12px}
-.task-row.exp-notes .t-notes{display:block}
-.notes-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-bottom:8px;padding-top:10px;border-top:1px solid #eeeef5}
-.notes-prompt{font-size:11px;color:#aaa;margin-bottom:6px;font-style:italic}
-.notes-textarea{width:100%;padding:10px 12px;border:1px solid #d8d9e5;border-radius:8px;font-size:11px;font-family:inherit;color:#000;resize:vertical;min-height:80px;outline:none;transition:border .15s;background:#fff;line-height:1.6}
-.notes-textarea:focus{border-color:#657dfe}
-.notes-link-row{display:flex;gap:8px;margin-top:8px;align-items:center}
-.notes-link-label{font-size:10px;color:#888;font-weight:500;white-space:nowrap}
-.notes-link-input{flex:1;padding:7px 10px;border:1px solid #d8d9e5;border-radius:8px;font-size:11px;font-family:inherit;color:#000;outline:none;transition:border .15s;background:#fff}
-.notes-link-input:focus{border-color:#657dfe}
-.notes-link-input::placeholder{color:#aaa}
-.notes-saved{font-size:9px;color:#0f6e56;margin-top:5px;opacity:0;transition:opacity .3s}
-.notes-saved.show{opacity:1}
-
-/* Gate footer */
+.d-txt{font-size:11px;color:#222;line-height:1.65}
 .gate-ftr{padding:9px 16px;border-top:1px solid #e8c86a;background:#fffcf0;font-size:11px;color:#7a5008;line-height:1.5}
 .gate-ftr strong{font-weight:600}
-
-/* Locked stages */
-.locked-stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:10px;opacity:.55}
-.locked-stage-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px}
-.locked-badge{font-size:10px;color:#aaa;font-weight:500;padding:2px 8px;border-radius:20px;background:#F1F1F6}
-.locked-preview{padding:10px 16px 14px;border-top:1px solid #f0ede6}
-.locked-preview-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:8px}
-.locked-task-preview{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:11px;color:#aaa}
-.locked-dot{width:5px;height:5px;border-radius:50%;background:#d8d9e5;flex-shrink:0}
-.locked-upgrade-btn{display:block;width:calc(100% - 32px);margin:8px 16px 14px;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;transition:background .15s}
-.locked-upgrade-btn:hover{background:#4f6de0}
-
-/* Modals */
-.overlay{position:fixed;inset:0;background:rgba(10,10,8,.5);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-.overlay.show{opacity:1;pointer-events:all}
-.modal{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.18);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.34,1.4,.64,1);position:relative}
-.overlay.show .modal{transform:none}
-.modal-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:26px}
-.modal-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:8px}
-.modal-headline{font-family:'DM Serif Display',serif;font-size:24px;color:#000;margin-bottom:10px;line-height:1.2}
-.modal-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:20px}
-.modal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:14px;background:#F1F1F6;border-radius:10px}
-.modal-feature{display:flex;align-items:center;gap:10px;font-size:12px;color:#222}
-.modal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#657dfe}
-.modal-cta{width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:block;text-align:center;text-decoration:none;transition:background .15s;margin-bottom:8px}
-.mcta-blue{background:#657dfe;color:#fff}
-.mcta-blue:hover{background:#4f6de0}
-.mcta-ghost{background:#F1F1F6;color:#888}
-.mcta-ghost:hover{background:#e8e8f0}
-.modal-x{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:13px;color:#888;font-family:inherit;line-height:28px;text-align:center}
-
-/* Footer */
 .footer{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid #d8d9e5}
 .footer-text{font-size:11px;color:#aaa}
-.reset-btn{font-size:11px;color:#aaa;background:none;border:1px solid #d8d9e5;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit}
-.reset-btn:hover{color:#555}
+.reset-btn{font-size:11px;color:#aaa;background:none;border:1px solid #d8d9e5;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;transition:all .15s}
+.reset-btn:hover{color:#555;border-color:#aaa}
 
-/* Mobile */
 @media(max-width:600px){
   .page{padding:16px 12px 60px}
   .top-header{padding:10px 0 8px}
-  #arealist{grid-template-columns:repeat(3,1fr)!important;gap:6px 8px}
+  .score-row{gap:10px}
+  .ring-wrap{width:56px;height:56px}
+  .ring-num{font-size:17px}
+  .ring-wrap{width:56px!important;height:56px!important}
+  .ring-wrap svg{width:56px!important;height:56px!important;transform:rotate(-90deg) scale(0.78);transform-origin:center}
+  .stage-badge{font-size:9px;padding:2px 7px}
+  .task-count{font-size:10px;margin-bottom:7px}
+  .ms-lbl{font-size:7px}
+  #arealist{grid-template-columns:repeat(3,1fr)!important;gap:8px 10px}
+  .area-lbl{font-size:11px;width:auto}
+  .area-count{font-size:8px}
+  .st-name{font-size:13px}
+  .st-sub{font-size:10px}
   .st-tc{display:none}
-  .t-actions{flex-direction:column;gap:3px}
-  .t-btn{font-size:8px;padding:2px 6px}
+  .st-pb{width:36px}
+  .t-title{font-size:11px}
+  .pill{font-size:8px;padding:1px 5px}
+  .d-txt{font-size:10px}
+  .raise-headline{font-size:12px}
+  .card{padding:12px 14px}
+  .card-title{font-size:8px;margin-bottom:8px}
+  .nsm-metric{font-size:11px}
+  .nsm-desc{font-size:10px}
+  .grp-name{font-size:8px}
+  .task-row{padding:8px 12px}
+  .st-hdr{padding:10px 12px}
 }
+
+.raise-banner{display:none;align-items:center;gap:14px;background:linear-gradient(135deg,#657dfe,#8a9ffe);border-radius:14px;padding:16px 20px;margin-bottom:14px;cursor:pointer;transition:opacity .2s;animation:slidein .4s ease}
+.raise-banner.show{display:flex}
+.raise-banner:hover{opacity:.93}
+@keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.rb-icon{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;color:#fff}
+.rb-text{flex:1;min-width:0}
+.rb-headline{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
+.rb-sub{font-size:11px;color:rgba(255,255,255,.8)}
+.rb-cta{font-size:11px;font-weight:600;color:#657dfe;background:#fff;padding:7px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0;border:none;cursor:pointer;font-family:inherit;transition:background .15s}
+.rb-cta:hover{background:#eef0ff}
+.raise-overlay{position:fixed;inset:0;background:rgba(10,10,8,.5);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.raise-overlay.show{opacity:1;pointer-events:all}
+.raise-modal{background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.18);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.34,1.4,.64,1);position:relative}
+.raise-overlay.show .raise-modal{transform:none}
+.rm-icon{width:56px;height:56px;border-radius:16px;background:#eef0ff;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:26px}
+.rm-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9a9690;margin-bottom:8px}
+.rm-headline{font-family:'DM Serif Display',serif;font-size:24px;color:#000;margin-bottom:10px;line-height:1.2}
+.rm-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:20px}
+.rm-features{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;padding:14px;background:#F1F1F6;border-radius:10px}
+.rm-feature{display:flex;align-items:center;gap:10px;font-size:12px;color:#222}
+.rm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:#657dfe}
+.rm-btn-primary{width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:#657dfe;color:#fff;margin-bottom:8px;display:block;text-align:center;text-decoration:none;transition:background .15s}
+.rm-btn-primary:hover{background:#4f6de0}
+.rm-btn-ghost{width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;background:#F1F1F6;color:#888;display:block;text-align:center;transition:background .15s}
+.rm-btn-ghost:hover{background:#e8e8f0}
+.rm-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:13px;color:#888;font-family:inherit;line-height:28px;text-align:center}
+._xb{font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid #d8d9e5;background:#fff;color:#888;cursor:pointer;font-family:inherit;margin-right:4px}
+._xb:hover{background:#F1F1F6}
+._xb.on{background:#eef0ff;color:#657dfe;border-color:#657dfe}
+.task-row{display:flex;flex-direction:column;border-top:1px solid #eeeef5;cursor:pointer;transition:background .1s}
+.task-row-inner{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;width:100%}
+.task-row:hover>.task-row-inner{background:#f7f7fb}
+.eov{position:fixed;inset:0;background:rgba(10,10,8,.7);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.eov.hidden{display:none}
+.ebox{background:#fff;border-radius:20px;padding:36px;max-width:400px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.2)}
+.ebox-logo{font-family:'DM Serif Display',serif;font-size:18px;color:#657dfe;margin-bottom:24px}
+.ebox h2{font-family:'DM Serif Display',serif;font-size:22px;color:#000;margin-bottom:8px;line-height:1.3}
+.ebox p{font-size:13px;color:#555;line-height:1.6;margin-bottom:22px}
+.ebox-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888;display:block;margin-bottom:5px}
+.ebox-inp{width:100%;padding:10px 12px;border:1.5px solid #d8d9e5;border-radius:8px;font-size:13px;font-family:inherit;color:#000;outline:none;margin-bottom:12px;box-sizing:border-box;transition:border .15s}
+.ebox-inp:focus{border-color:#657dfe}
+.ebox-btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;background:#d8d9e5;color:#fff;cursor:not-allowed;transition:all .2s;box-sizing:border-box}
+.ebox-btn.ok{background:#657dfe;cursor:pointer}
+.ebox-btn.ok:hover{background:#4f6de0}
+.ebox-note{font-size:10px;color:#aaa;text-align:center;margin-top:8px}
 </style>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://fyswympbcriibpewkxnh.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5c3d5bXBiY3JpaWJwZXdreG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjIwMTcsImV4cCI6MjA5Mjc5ODAxN30.l5gy0L9JU_8g0vIjoFWmUqP7T7zyHOsE0wdmkC2kBo0';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function trackTaskComplete(taskId, taskName, stageId) {
+  try {
+    // Check if task already exists
+    const { data } = await sb
+      .from('journey_stats')
+      .select('id, times_completed')
+      .eq('task_id', taskId)
+      .single();
+    
+    if (data) {
+      // Update count
+      await sb
+        .from('journey_stats')
+        .update({ times_completed: data.times_completed + 1 })
+        .eq('task_id', taskId);
+    } else {
+      // Insert new
+      await sb
+        .from('journey_stats')
+        .insert({ task_id: taskId, task_name: taskName, stage: stageId, times_completed: 1 });
+    }
+  } catch(e) {
+    console.log('Supabase error:', e);
+  }
+}
+
+async function trackTaskUncomplete(taskId) {
+  try {
+    const { data } = await sb
+      .from('journey_stats')
+      .select('id, times_completed')
+      .eq('task_id', taskId)
+      .single();
+    
+    if (data && data.times_completed > 1) {
+      await sb
+        .from('journey_stats')
+        .update({ times_completed: data.times_completed - 1 })
+        .eq('task_id', taskId);
+    } else if (data) {
+      await sb
+        .from('journey_stats')
+        .delete()
+        .eq('task_id', taskId);
+    }
+  } catch(e) {
+    console.log('Supabase error:', e);
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
-<!-- Email capture overlay -->
-<div class="email-overlay" id="email-overlay">
-  <div class="email-box">
-    <div class="email-logo">
-      <div class="email-logo-mark"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12"/></svg></div>
-      <span class="email-logo-name">SheBlooms</span>
-    </div>
-    <div class="email-headline">Investment Readiness Journey</div>
-    <div class="email-sub">Track your path to raise. Complete each checkpoint, watch your score climb, and know the exact moment you're ready to raise.</div>
-    <div class="email-field">
-      <label>Your name</label>
-      <input type="text" id="capture-name" placeholder="Ana Silva" autocomplete="name"/>
-    </div>
-    <div class="email-field">
-      <label>Your email</label>
-      <input type="email" id="capture-email" placeholder="ana@startup.com" autocomplete="email"/>
-    </div>
-    <button class="email-btn" onclick="startJourney()">Start my journey</button>
-    <div class="email-note">Your progress is saved and synced across devices.</div>
+<div class="eov" id="eov">
+  <div class="ebox">
+    <div class="ebox-logo">SheBlooms</div>
+    <h2>Investment Readiness Journey</h2>
+    <p>Track your path to raise. Complete each checkpoint, watch your score climb, and know the exact moment you are ready to raise.</p>
+    <label class="ebox-lbl">Your name</label>
+    <input class="ebox-inp" type="text" id="cap-name" placeholder="Ana Silva" autocomplete="name"/>
+    <label class="ebox-lbl">Your email</label>
+    <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()"/>
+    <button class="ebox-btn" id="eov-btn" disabled onclick="eovStart()">Start my journey</button>
+    <div class="ebox-note">Your progress is saved automatically.</div>
   </div>
 </div>
-
 <div class="page">
   <div class="brand">
     <div class="brand-mark"><svg viewBox="0 0 14 14"><path d="M7 1v12M1 7h12"/></svg></div>
     <span class="brand-name">SheBlooms</span>
     <div class="brand-sep"></div>
     <span class="brand-sub">Founder Journey</span>
-  </div>
-
-  <div class="top-header">
-    <div class="card" style="margin-bottom:10px">
+  </div><div class="top-header">
+  <div class="top-grid">
+    <div class="card">
       <div class="card-title">Your score</div>
       <div class="score-row">
         <div class="ring-wrap">
@@ -276,500 +268,591 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
             <circle class="ring-bg" cx="36" cy="36" r="28"/>
             <circle class="ring-fg" id="ring" cx="36" cy="36" r="28" stroke="#657dfe" stroke-dashoffset="175.9"/>
           </svg>
-          <div class="ring-center"><div class="ring-num" id="snum">0</div><div class="ring-label">/ 20</div></div>
+          <div class="ring-center"><div class="ring-num" id="snum">0</div><div class="ring-label">/ 100</div></div>
         </div>
         <div class="score-meta">
-          <div class="stage-badge" id="sbadge">Getting started</div>
-          <div class="task-count" id="tcnt">0 of 13 tasks complete</div>
-          <div class="ms-track"><div class="ms-fill" id="msfill" style="width:0%;background:#657dfe"></div><div id="msdots"></div></div>
+          <div class="stage-badge" id="sbadge">Exploring</div>
+          <div class="task-count" id="tcnt">0 of 47 tasks complete</div>
+          <div class="ms-track"><div class="ms-fill" id="msfill" style="width:0%"></div><div id="msdots"></div></div>
           <div class="ms-labels" id="mslbls"></div>
         </div>
       </div>
       <div class="raise-strip">
-        <div class="raise-eyebrow">Stage 1 Progress</div>
-        <div class="raise-headline" id="stage-progress-text">Complete gate tasks to advance</div>
-        <div class="raise-track"><div class="raise-fill" id="stage-progress-bar" style="width:0%"></div></div>
-        <div class="raise-pct" id="stage-progress-pct">0% of Stage 1 complete</div>
+        <div class="raise-eyebrow">Raise Application</div>
+        <div class="raise-headline" id="raise-headline">Need 75 more points</div>
+        <div class="raise-track"><div class="raise-fill" id="raise-fill" style="width:0%"></div></div>
+        <div class="raise-pct" id="raise-pct">0% toward Raise gate (min. 75 pts)</div>
       </div>
     </div>
     <div class="card">
       <div class="card-title">How investors see you</div>
-      <div id="arealist" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0 12px;align-items:start"></div>
+      <div id="arealist"></div>
     </div>
   </div>
-
-  <!-- Grow Ready banner -->
-  <div class="grow-banner" id="grow-banner" onclick="openModal('grow-overlay')">
-    <div class="gb-icon">&#10003;</div>
-    <div class="gb-text">
-      <div class="gb-headline">You're Grow Ready!</div>
-      <div class="gb-sub">You've validated your problem. Time to build and find PMF.</div>
-    </div>
-    <button class="gb-cta">Unlock Grow</button>
   </div>
 
+  <!-- Raise banner -->
+  <div class="raise-banner" id="raise-banner" onclick="openRaiseModal()">
+    <div class="rb-icon">&#9733;</div>
+    <div class="rb-text">
+      <div class="rb-headline" id="raise-banner-title">You're eligible for Raise</div>
+      <div class="rb-sub" id="raise-banner-sub">Your score qualifies you to apply for the SheBlooms Raise program.</div>
+    </div>
+    <button class="rb-cta">Book a call</button>
+  </div>
   <div id="stages-con"></div>
-
   <div class="footer">
     <span class="footer-text">SheBlooms Venture &middot; Founder Journey &copy; 2026</span>
     <button class="reset-btn" onclick="resetAll()">Reset progress</button>
   </div>
 </div>
-
-<!-- Grow Ready Modal -->
-<div class="overlay" id="grow-overlay">
-  <div class="modal">
-    <button class="modal-x" onclick="closeModal('grow-overlay')">&#x2715;</button>
-    <div class="modal-icon" style="background:#eef0ff">&#10003;</div>
-    <div class="modal-tag">Stage 1 Complete</div>
-    <div class="modal-headline">You're Grow Ready.</div>
-    <div class="modal-body">You've validated a real problem with real people. That's the hardest part. Upgrade to Grow to unlock Product Market Fit, Business Model Validation, and the path to Raise.</div>
-    <div class="modal-features">
-      <div class="modal-feature"><div class="modal-dot"></div>Product Market Fit stage unlocked</div>
-      <div class="modal-feature"><div class="modal-dot"></div>Business Model Validation unlocked</div>
-      <div class="modal-feature"><div class="modal-dot"></div>Growth &amp; Raise pathway unlocked</div>
-      <div class="modal-feature"><div class="modal-dot"></div>Accountability circle + mentor office hours</div>
-    </div>
-    <button class="modal-cta mcta-blue" onclick="closeModal('grow-overlay')">Upgrade to Grow</button>
-    <button class="modal-cta mcta-ghost" onclick="closeModal('grow-overlay')">Continue exploring for now</button>
-  </div>
-</div>
-
 <script>
-const SUPABASE_URL='https://fyswympbcriibpewkxnh.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5c3d5bXBiY3JpaWJwZXdreG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjIwMTcsImV4cCI6MjA5Mjc5ODAxN30.l5gy0L9JU_8g0vIjoFWmUqP7T7zyHOsE0wdmkC2kBo0';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-const AREAS={
-  market:{label:"Market",c:"#0f6e56",bg:"#e1f5ee"},
-  product:{label:"Product",c:"#185fa5",bg:"#e6f1fb"},
-  traction:{label:"Traction",c:"#993556",bg:"#fbeaf0"},
-  bizmodel:{label:"Biz Model",c:"#854f0b",bg:"#faeeda"},
-  team:{label:"Team",c:"#534ab7",bg:"#eeedfe"}
-};
-
-const MS=[{score:0,label:"Start"},{score:5,label:"Exploring"},{score:12,label:"Validating"},{score:18,label:"Almost"},{score:20,label:"Grow Ready"}];
-const MSC=["#d8d9e5","#ba7517","#657dfe","#185fa5","#0f6e56"];
-const MSBG=["#F1F1F6","#faeeda","#eef0ff","#e6f1fb","#e1f5ee"];
-
-const RESOURCES={
-  1:[
-    {type:'article',title:'How to write a problem statement investors believe',author:'Shreyas Doshi',url:'https://www.lennysnewsletter.com/p/how-to-define-your-problem-statement',desc:'Framework for writing sharp problem statements from a former Stripe & Google PM.'},
-    {type:'video',title:'Obviously Awesome — Positioning your product',author:'April Dunford',url:'https://www.youtube.com/watch?v=OzbPRBaM_Z0',desc:'How problem framing shapes everything that follows — from a world-class positioning expert.'}
-  ],
-  2:[
-    {type:'article',title:'Jobs to Be Done: Theory to Practice',author:'Clayton Christensen — HBR',url:'https://hbr.org/2016/09/know-your-customers-jobs-to-be-done',desc:'Understanding who really has the problem and why they hire solutions — foundational theory.'},
-    {type:'tool',title:'Stakeholder Map Template',author:'Miro',url:'https://miro.com/templates/stakeholder-map/',desc:'Ready-to-use visual template to map all stakeholders around your problem.'}
-  ],
-  6:[
-    {type:'book',title:'The Mom Test',author:'Rob Fitzpatrick',url:'https://www.momtestbook.com/',desc:'The essential guide to customer interviews. Learn to ask questions that get honest answers, not politeness.'},
-    {type:'podcast',title:'How to talk to users — The Mom Test',author:'Rob Fitzpatrick on Lenny's Podcast',url:'https://www.lennysnewsletter.com/p/the-mom-test',desc:'60-min conversation on getting real insights from customer conversations.'},
-    {type:'video',title:'Customer discovery — how to talk to users',author:'Y Combinator',url:'https://www.youtube.com/watch?v=MT4Ig2uqjTc',desc:'Y Combinator on customer discovery before building anything.'}
-  ],
-  4:[
-    {type:'tool',title:'Affinity Mapping Template',author:'Miro',url:'https://miro.com/templates/affinity-diagram/',desc:'Visual tool to group interview insights and find recurring patterns — digital and collaborative.'},
-    {type:'article',title:'How to analyse qualitative research',author:'Nielsen Norman Group',url:'https://www.nngroup.com/articles/affinity-diagram/',desc:'Step-by-step guide to turning interview notes into actionable insights.'}
-  ],
-  5:[
-    {type:'article',title:'Competitive analysis that actually helps startups',author:'First Round Capital',url:'https://review.firstround.com/the-competitive-analysis-that-actually-helps-startups-see-their-market-clearly/',desc:'Framework for mapping alternatives honestly — not just direct competitors.'},
-    {type:'book',title:'Blue Ocean Strategy',author:'W. Chan Kim & Renée Mauborgne',url:'https://www.blueoceanstrategy.com/',desc:'How to find uncontested market space by mapping what alternatives offer and miss.'}
-  ],
-  7:[
-    {type:'article',title:'Finding your Ideal Customer Profile',author:'Lenny Rachitsky',url:'https://www.lennysnewsletter.com/p/finding-your-icp',desc:'Why most ICPs are too vague to be useful, and how to define one that actually guides decisions.'},
-    {type:'video',title:'How to find your ideal customer',author:'April Dunford',url:'https://www.youtube.com/watch?v=q8d9uuPIV-Y',desc:'Identifying the customer type where your product wins every single time.'}
-  ],
-  8:[
-    {type:'article',title:'Elements of enduring companies — Market sizing',author:'Sequoia Capital',url:'https://www.sequoiacap.com/article/elements-of-enduring-companies/',desc:'Sequoia's framework for thinking about market size in a way investors respect.'},
-    {type:'video',title:'How to estimate your market size',author:'First Round Capital',url:'https://www.youtube.com/watch?v=a9N3mpsbdcY',desc:'Bottom-up vs top-down market sizing with real startup examples.'}
-  ],
-  9:[
-    {type:'article',title:'Do Things That Don't Scale',author:'Paul Graham',url:'https://paulgraham.com/ds.html',desc:'Paul Graham's iconic essay on finding early demand the unscalable way — and why it works.'},
-    {type:'article',title:'A guide to finding your first customers',author:'Y Combinator',url:'https://www.ycombinator.com/library/4A-a-guide-to-finding-your-first-customers',desc:'Tactical guide on finding demand signals from people who don't know you yet.'}
-  ],
-  10:[
-    {type:'video',title:'Crazy 8s — Design Sprint Method',author:'Google Ventures',url:'https://www.youtube.com/watch?v=yz4g87XapQ0',desc:'8 sketches in 8 minutes. The fastest way to generate multiple solution ideas without getting stuck.'},
-    {type:'tool',title:'Crazy 8s Template',author:'Miro',url:'https://miro.com/templates/crazy-eights/',desc:'Digital template to run a Crazy 8s session solo or with your co-founder.'}
-  ],
-  11:[
-    {type:'article',title:'How to prototype ideas quickly',author:'IDEO Design Thinking',url:'https://designthinking.ideo.com/blog/prototyping-to-test-learn-iterate',desc:'IDEO's approach to testing solution concepts before writing a single line of code.'},
-    {type:'video',title:'How to run concept tests with users',author:'Y Combinator',url:'https://www.youtube.com/watch?v=MT4Ig2uqjTc',desc:'Getting real reactions to your solution ideas with minimal effort and time.'}
-  ],
-  12:[
-    {type:'book',title:'Obviously Awesome',author:'April Dunford',url:'https://www.aprildunford.com/obviously-awesome',desc:'The definitive book on product positioning — how to articulate what makes your solution different.'},
-    {type:'tool',title:'Value Proposition Canvas',author:'Strategyzer',url:'https://www.strategyzer.com/library/the-value-proposition-canvas',desc:'Visual tool to align your solution with what customers actually care about.'}
-  ],
-  13:[
-    {type:'tool',title:'Business Model Canvas',author:'Strategyzer / Alex Osterwalder',url:'https://www.strategyzer.com/library/the-business-model-canvas',desc:'The one-page business model framework used by millions of founders worldwide.'},
-    {type:'video',title:'Business Model Canvas explained',author:'Alex Osterwalder',url:'https://www.youtube.com/watch?v=QoAOzMTLP5s',desc:'15-min video where Alex Osterwalder walks through each block of the canvas.'}
-  ]
-};
-
-const NOTE_PROMPTS={
-  1:"Write your problem statement: 'People who [context] struggle with [problem] because [reason].'",
-  2:"List your stakeholders and their relation to the problem...",
-  6:"Document your interview findings and the severity scores from each conversation...",
-  4:"What patterns emerged from your interviews? List the top 3-5 recurring themes.",
-  5:"Map the alternatives your customers use today and where they fall short...",
-  7:"Describe your ICP — give them a name, their context, and quote a real interviewee.",
-  8:"Write your TAM estimate and the methodology you used to calculate it.",
-  9:"Document your 3 inorganic demand signals — name, context, and signal type.",
-  10:"Describe your 3 different solutions. What is each one and how does it work?",
-  11:"Which concept resonated most with your 3 testers, and why?",
-  12:"Write your value proposition: 'For [ICP], [product] is the only [category] that [benefit], unlike [alternative] which [limitation].'",
-  13:"Who pays? How much? How often? What is the core revenue logic?"
-};
-
-const D=[{
-  id:1,title:"Problem Validation Fit",color:"#657dfe",bgc:"#eef0ff",
-  subtitle:"0 → 20 pts · 3–6 months",maxPts:20,
-  nsm:{metric:"Pain Severity: 70%+ score 4-5 out of 5",why:"If 70%+ of real strangers rate the pain at 4-5, the problem is worth solving. Below this threshold, no product will generate consistent demand."},
-  gate:"Score ≥20 · Pain severity 70%+ · 3 inorganic demand signals",
-  groups:[
-    {name:"Foundation",tasks:[
-      {id:1,t:"Problem Statement",p:2,a:"market",hasNotes:true,why:"Describes the problem from the customer’s POV in 1 sentence, without mentioning the solution. This is the compass for everything that follows.",how:"Use format: ‘People who [context] struggle with [problem] because [reason].’ The sentence is correct if any external person can identify whether they have the problem without the founder’s help.",ev:"The sentence exists in writing."},
-      {id:2,t:"Stakeholder Mapping",p:3,a:"market",hasNotes:true,why:"Identifies who has the problem, who feels it most intensely, who has decision-making power, and who influences that decision.",how:"Create a diagram with at least 3 stakeholder types. For each: relation to the problem, whether they pay or use, and how intense the pain is.",ev:"Diagram with 3+ stakeholder types, problem relation, and payer vs. user separation."}
-    ]},
-    {name:"Research & Evidence",tasks:[
-      {id:6,t:"Pain Interviews (20+) + Severity Score",p:8,a:"market",g:true,ns:true,hasNotes:true,
-        why:"Conduct 20+ interviews with people who live the problem — not friends, family, or colleagues. At the end of each conversation, ask them to rate the pain intensity on a 1-5 scale. This is the most critical checkpoint of Stage 1: 70%+ must score 4 or 5.",
-        how:"Step 1 — Run each interview for 30 min using the Mom Test (ask about their life, not your idea). Step 2 — At the end of each interview ask: ‘On a scale of 1-5, how intense is this problem for you?’ Document the score. Step 3 — After 20 interviews, calculate: what % scored 4 or 5? If below 70%, revise your segment or problem framing and repeat.",
-        ev:"Record with name, date, 3+ direct quotes per interview, and severity score. 70%+ at 4 or 5."},
-      {id:4,t:"Find the Pattern",p:4,a:"market",hasNotes:true,why:"Synthesize what was learned in interviews and identify patterns: which problems repeat, which phrases appear consistently, what surprises.",how:"Use a thematic analysis matrix: group quotes by recurring theme. Identify the 3–5 truths that appear in 60%+ of conversations.",ev:"Doc with identified patterns, key insights, and supporting quotes."},
-      {id:5,t:"Alternative Mapping",p:3,a:"market",hasNotes:true,why:"Document what people use today to solve the problem: competitors, spreadsheets, WhatsApp, hiring someone, doing nothing.",how:"For each alternative: what works, what fails, cost in time and money. Analysis must be based exclusively on interview data.",ev:"Table with 5+ current alternatives and gap analysis based on interview data."}
-    ]},
-    {name:"ICP & Market Size",tasks:[
-      {id:7,t:"ICP Definition",p:2,a:"market",hasNotes:true,why:"Define a specific archetype of the primary customer. A generic ICP does not guide product or marketing decisions. A specific ICP does.",how:"Based on interview patterns, identify the subgroup that feels the pain most intensely. Give a fictional name, describe the life context, and cite a real interview quote.",ev:"1-page archetype doc with fictional name, context, and a real interviewee quote."},
-      {id:8,t:"TAM Estimate",p:2,a:"market",hasNotes:true,why:"Estimate how many people have the problem. Needs to have a defensible logic. Investors always ask about market size.",how:"Use a bottom-up approach: ICP count × % experiencing the problem × annual revenue per customer.",ev:"TAM/SAM/SOM estimate with cited methodology. Bottom-up preferred."},
-      {id:9,t:"Inorganic Demand Signals (3+)",p:0,a:"market",g:true,hasNotes:true,why:"Identify at least 3 demand signals from people the founder did not previously know. Signals from friends do not count.",how:"Valid signals: someone who spontaneously asked if a solution exists, signed up to a waitlist, or shared the problem on social media.",ev:"3+ demand signals with verifiable origin from previously unknown people."}
-    ]},
-    {name:"Solution Exploration",tasks:[
-      {id:10,t:"Sketch 3 Possible Solutions (Crazy 8s)",p:0,a:"product",hasNotes:true,why:"The first idea is rarely the best. Forcing 3 different options breaks confirmation bias. Use the Crazy 8s method from Google Ventures Design Sprint.",how:"Set a timer for 8 minutes. Sketch 8 different solution ideas quickly. Then select the 3 most distinct ones to develop further.",ev:"Doc with 3 distinct solutions and their value logic."},
-      {id:11,t:"Test 3 Concepts with 3+ People",p:0,a:"product",hasNotes:true,why:"The market decides which solution resonates, not the founder. Testing before building saves months of work in the wrong direction.",how:"Present the 3 concepts (no code) to at least 3 ICP people. Ask: Which seems most useful? Why? What would you change?",ev:"Notes from 3+ tests with feedback on each concept and preference comparison."},
-      {id:12,t:"Choose Winning Solution + Value Prop",p:0,a:"product",hasNotes:true,why:"Commit to one direction based on evidence, not personal preference. A clear value proposition is the foundation of all future communication.",how:"Use format: For [ICP], [product] is the only [category] that [benefit], unlike [alternative] which [limitation].",ev:"Written value proposition justified with reference to test feedback."},
-      {id:13,t:"Sketch Basic Business Model",p:0,a:"bizmodel",hasNotes:true,why:"Define how the business makes money before starting to build. Without this clarity, the product may be built incompatibly with the monetization model.",how:"Answer: who pays? How much? How often? Use the Business Model Canvas from Strategyzer.",ev:"Simple doc: who pays, how much, how often, and the revenue logic."}
-    ]}
-  ]
-}];
-
-const LOCKED_STAGES=[
-  {id:2,title:"Product Market Fit",color:"#185fa5",bgc:"#e6f1fb",subtitle:"21 → 50 pts · 3–6 months",
-   tasks:["Build No-Code MVP","Get 10 users to test it","Test willingness to pay","Week 2 retention >30%","Sean Ellis Test >40%","Month 2 cohort ≥20%"]},
-  {id:3,title:"Business Model Validation",color:"#854f0b",bgc:"#faeeda",subtitle:"51 → 75 pts · 3–6 months",
-   tasks:["First paid transaction","Unit economics (LTV/CAC ≥3:1)","3+ recurring renewals","3-year financial model"]},
-  {id:4,title:"Growth",color:"#3d1a6b",bgc:"#eeedfe",subtitle:"76 → 100 pts · Raise program",
-   tasks:["MoM growth ≥15% x 3 months","Team beyond founders","Complete data room","Investor narrative + pitch"]}
+const AREAS={market:{label:"Market",c:"#0f6e56",bg:"#e1f5ee"},product:{label:"Product",c:"#185fa5",bg:"#e6f1fb"},traction:{label:"Traction",c:"#993556",bg:"#fbeaf0"},bizmodel:{label:"Business Model",c:"#854f0b",bg:"#faeeda"},team:{label:"Team",c:"#534ab7",bg:"#eeedfe"}};
+const MS=[{score:0,label:"Exploring"},{score:20,label:"Pre-seed"},{score:50,label:"Seed-ready"},{score:75,label:"Seed+"},{score:100,label:"Series A"}];
+const MSC=["#888","#ba7517","#657dfe","#657dfe","#3d1a6b"];
+const MSBG=["#F1F1F6","#faeeda","#eef0ff","#eef0ff","#eeedfe"];
+const D=[
+{id:1,title:"Problem Validation Fit",color:"#657dfe",bgc:"#eef0ff",subtitle:"0 → 20 pts · 3–6 months",maxPts:20,
+nsm:{metric:"Pain Severity: 70%+ score 4-5 out of 5",why:"If 70%+ of real strangers rate the pain at 4-5, the problem is worth solving. Below this threshold, no product will generate consistent demand."},
+gate:"Score ≥20 · Pain severity 70%+ · 3 inorganic demand signals",
+groups:[
+{name:"Foundation",tasks:[
+{id:1,t:"Problem Statement",p:2,a:"market",why:"Describes the problem from the customer’s POV in 1 sentence, without mentioning the solution. This is the compass for everything that follows.",how:"Use format: ‘People who [context] struggle with [problem] because [reason].’ The sentence is correct if any external person can identify whether they have the problem without the founder’s help.",ev:"The sentence exists in writing."},
+{id:2,t:"Stakeholder Mapping",p:3,a:"market",why:"Identifies who has the problem, who feels it most intensely, who has decision-making power, and who influences that decision.",how:"Create a diagram with at least 3 stakeholder types. For each: relation to the problem, whether they pay or use, and how intense the pain is.",ev:"Diagram with 3+ stakeholder types, problem relation, and payer vs. user separation."}]},
+{name:"Research & Evidence",tasks:[
+{id:3,t:"Pain Interviews — 20+ real people",p:4,a:"market",why:"Conduct 20+ interviews with people who live the problem — not friends, family, or colleagues. The goal is to listen, not convince.",how:"Each interview must last at least 30 minutes without presenting the solution. Use Rob Fitzpatrick’s Mom Test: ask about the interviewee’s life, not the idea.",ev:"Record with name, date and 3+ direct quotes per interview."},
+{id:4,t:"Find the Pattern",p:4,a:"market",why:"Synthesize what was learned in interviews and identify patterns: which problems repeat, which phrases appear consistently, what surprises.",how:"Use a thematic analysis matrix: group quotes by recurring theme. Identify the 3–5 truths that appear in 60%+ of conversations.",ev:"Doc with identified patterns, key insights, and supporting quotes."},
+{id:5,t:"Alternative Mapping",p:3,a:"market",why:"Document what people use today to solve the problem: competitors, spreadsheets, WhatsApp, hiring someone, doing nothing.",how:"For each alternative: what works, what fails, cost in time and money. Analysis must be based exclusively on interview data.",ev:"Table with 5+ current alternatives and gap analysis based on interview data."},
+{id:6,t:"Pain Severity — 70%+ score 4-5",p:4,a:"market",g:true,ns:true,why:"70%+ of interviewees must rate severity at 4 or 5 on a 1-5 scale. Below that threshold, the problem is not painful enough to generate a purchase.",how:"At the end of each interview, ask the interviewee to rate problem intensity on a 1-5 scale. If average falls below 4, revise the segment or problem framing.",ev:"Score distribution from 15+ interviewees with 70%+ at 4 or 5."}]},
+{name:"ICP & Market Size",tasks:[
+{id:7,t:"ICP Definition",p:2,a:"market",why:"Define a specific archetype of the primary customer. A generic ICP does not guide product or marketing decisions. A specific ICP does.",how:"Based on interview patterns, identify the subgroup that feels the pain most intensely. Give a fictional name, describe the life context, and cite a real interview quote.",ev:"1-page archetype doc with fictional name, context, and a real interviewee quote."},
+{id:8,t:"TAM Estimate",p:2,a:"market",why:"Estimate how many people have the problem. Needs to have a defensible logic. Investors always ask about market size.",how:"Use a bottom-up approach: ICP count × % experiencing the problem × annual revenue per customer.",ev:"TAM/SAM/SOM estimate with cited methodology. Bottom-up preferred."},
+{id:9,t:"Inorganic Demand Signals (3+)",p:0,a:"market",g:true,why:"Identify at least 3 demand signals from people the founder did not previously know. Signals from friends do not count.",how:"Valid signals: someone who spontaneously asked if a solution exists, signed up to a waitlist, or shared the problem on social media.",ev:"3+ demand signals with verifiable origin from previously unknown people."}]},
+{name:"Solution Exploration",tasks:[
+{id:10,t:"Sketch 3 Possible Solutions",p:0,a:"product",why:"The first idea is rarely the best. Forcing 3 different options breaks confirmation bias and creates space for more creative thinking.",how:"For each solution: main mechanism, who pays, how it delivers value, and implementation effort. The 3 options must be genuinely different.",ev:"Doc with 3 distinct solutions and their value logic."},
+{id:11,t:"Test 3 Concepts with 3+ People",p:0,a:"product",why:"The market decides which solution resonates, not the founder. Testing before building saves months of work in the wrong direction.",how:"Present the 3 concepts (no code) to at least 3 ICP people. Ask: Which seems most useful? Why? What would you change?",ev:"Notes from 3+ tests with feedback on each concept and preference comparison."},
+{id:12,t:"Choose Winning Solution + Value Prop",p:0,a:"product",why:"Commit to one direction based on evidence, not personal preference. A clear value proposition is the foundation of all future communication.",how:"Use format: For [ICP], [product] is the only [category] that [benefit], unlike [alternative] which [limitation].",ev:"Written value proposition justified with reference to test feedback."},
+{id:13,t:"Sketch Basic Business Model",p:0,a:"bizmodel",why:"Define how the business makes money before starting to build. Without this clarity, the product may be built incompatibly with the monetization model.",how:"Answer: who pays? How much? How often? Use simplified Business Model Canvas.",ev:"Simple doc: who pays, how much, how often, and the revenue logic."}]}]},
+{id:2,title:"Product Market Fit",color:"#185fa5",bgc:"#e6f1fb",subtitle:"21 → 50 pts · 3–6 months",maxPts:29,
+nsm:{metric:"Sean Ellis Test: 40%+ answer ‘very disappointed’",why:"When 40%+ of active users say they would be very disappointed if the product disappeared, it has crossed from useful to essential. This is the universally accepted PMF threshold."},
+gate:"Score ≥50 · Week 2 retention >30% · Sean Ellis >40% · Month 2 cohort ≥20% in 2 consecutive cohorts",
+groups:[
+{name:"No-Code MVP",tasks:[
+{id:14,t:"Build First No-Code MVP",p:2,a:"product",why:"Create the simplest possible version of the solution, without writing code. The goal is to test a hypothesis, not to build a product.",how:"Use no-code tools: Typeform, Notion, Canva, WhatsApp. Criterion: can a stranger use it without the founder’s help?",ev:"Functional shareable link usable by a stranger without assistance."},
+{id:15,t:"Get 10 People to Use the MVP",p:2,a:"product",why:"Observe how real people interact with the product without guidance. Usage patterns reveal what is confusing, what delights, and what is ignored.",how:"Organize observation sessions: do not explain how it works, just observe. Note where people get stuck, what they click first, what they say spontaneously.",ev:"Notes from 10 observation sessions with observed behaviors and identified patterns."},
+{id:16,t:"Test Willingness to Pay",p:2,a:"bizmodel",why:"I would use this and I would pay for this are completely different questions. Testing willingness to pay early avoids building a loved product with no business model.",how:"Present a real price proposal, not hypothetical. Ask: This costs X per month. Would you buy? Observe the reaction, not just the answer.",ev:"Record of 10+ price conversations with responses, objections, and willingness-to-pay patterns."},
+{id:17,t:"Decide: Pivot, Persevere or Stop",p:2,a:"product",why:"Make a data-based decision, not driven by fear or stubbornness. Many founders keep building when data says they should change direction.",how:"Based on results from tasks 14-16: do the data justify continuing? If pivoting, on what specifically? Document the decision and logic.",ev:"Doc with decision (pivot/persevere/stop) and data-based justification."}]},
+{name:"Launch & First Users",tasks:[
+{id:18,t:"Improve MVP and First Launch",p:3,a:"product",why:"Launch an improved version based on feedback received. The criterion is not perfection, it is usability by a stranger without assistance.",how:"Incorporate the 3 biggest problems from observation sessions. Publish in at least 1 channel. Do not wait to be ready.",ev:"Public working link + evidence of sharing on at least 1 external channel."},
+{id:19,t:"Register the Company",p:0,a:"team",why:"Existing legally as a company is a prerequisite for any conversation with investors, partners, or corporate clients.",how:"Research which legal structure makes sense for the business model and operating country. Open a business bank account.",ev:"Company registration certificate + business bank account open."},
+{id:20,t:"Write the Founder Story",p:4,a:"team",why:"The story of why the founder is building this is the most important slide in any early pitch. Investors fund people before they fund products.",how:"Answer in 1 paragraph: what made you notice this problem? What was the moment you decided to act? Be specific.",ev:"Founder story paragraph written, tested with 3 people who do not know the business."},
+{id:21,t:"First 25 Committed Users",p:4,a:"traction",why:"25 is the minimum for statistically significant behavioral patterns. These users cannot be the team or friend-testers.",how:"Define committed user: someone who used the product at least once independently. Activate ICP-targeted acquisition channels.",ev:"List of 25+ users with first-use date and acquisition channel."}]},
+{name:"Measurement & Retention",tasks:[
+{id:22,t:"Define PMF Signal — 3 Metrics",p:0,a:"product",why:"Knowing in advance what constitutes PMF forces objective criteria and avoids moving the goalposts when results disappoint.",how:"Define 3 metrics that, if achieved, will prove PMF for the defined ICP.",ev:"Doc with 3 PMF metrics, target values, and measurement method for each."},
+{id:23,t:"Usage Tracking — 4 Weeks",p:4,a:"product",why:"Without usage data, retention is an assumption. You need to know how many times each user returned, how long they spent, and what they did.",how:"Set up a minimal tracking system: Google Analytics, Mixpanel free tier, or a manually updated spreadsheet.",ev:"Dashboard or spreadsheet with 30-day usage data for first 25 users."},
+{id:24,t:"Week 2 Retention >30%",p:5,a:"product",g:true,ns:true,why:">30% of week 1 users returned in week 2 without being contacted by the founder. Week 2 is the first honest signal that the product solves the problem.",how:"Create a simple cohort table: week 1 users vs. who returned in week 2, without any active contact from the founder.",ev:"Week 1 vs. week 2 retention table for first 25 users."},
+{id:25,t:"Sean Ellis Test >40%",p:5,a:"product",g:true,ns:true,why:">40% of active users would be very disappointed if the product ceased to exist. This is the PMF threshold (Sean Ellis, Superhuman).",how:"Send a survey to 40+ active users: How would you feel if you could no longer use this product? Options: very disappointed / somewhat disappointed / would not mind.",ev:"Response distribution from 40+ users with >40% in the very disappointed category."},
+{id:26,t:"Verbatim Evidence — 5+ Quotes",p:3,a:"traction",why:"5+ specific user quotes explaining value in their own words. These quotes are the most powerful pitch material.",how:"Collect verbatim quotes from users (with permission). At least 3 of 5 must mention a quantifiable benefit or behavioral change.",ev:"Quote bank with name, context, and exact text. 3+ mention quantifiable benefit."},
+{id:27,t:"Redefine ICP Based on Data",p:3,a:"market",why:"The initial ICP was built with hypotheses. Now there is real data: who retained most, who gave the strongest quotes, who referred others.",how:"Compare the profile of users with highest retention and satisfaction with the original ICP. Adjust based on real patterns.",ev:"Updated ICP with justification based on retention and satisfaction data."},
+{id:28,t:"Iteration Evidence — 3+ Cycles",p:3,a:"product",why:"Having changed the product 3+ times based on real feedback proves the founder learns and acts.",how:"For each iteration: the feedback that motivated it, the change made, and the measured impact in metrics (before and after).",ev:"Iteration log with date, source feedback, change made, and before/after metric. Minimum 3 cycles."},
+{id:29,t:"Month 2 Cohort Retention ≥20%",p:3,a:"product",g:true,why:"Month 2 retention ≥20% for 2+ consecutive cohorts. Week 2 proves it works short-term; month 2 proves it works over time.",how:"Build a monthly cohort table: users who started in month X, how many returned in month X+1 and X+2.",ev:"Cohort table with months 1 and 2 for 2+ cohorts started in different months."}]}]},
+{id:3,title:"Business Model Validation",color:"#854f0b",bgc:"#faeeda",subtitle:"51 → 75 pts · 3–6 months",maxPts:25,
+nsm:{metric:"LTV/CAC ≥3:1 + 3 unprompted renewals",why:"An LTV 3x higher than the cost to acquire proves the business can grow profitably. Three spontaneous renewals confirm customers see ongoing value."},
+gate:"Score ≥75 · Recurring revenue ≥3 customers · LTV/CAC ≥3:1 · 3-year financial model",
+groups:[
+{name:"First Revenue",tasks:[
+{id:30,t:"First Paid Transaction",p:5,a:"traction",why:"1 customer paid real money. The transaction was initiated by the customer. The most honest signal of real willingness to pay.",how:"The transaction must have been initiated by the customer after using the product. Set up a simple payment system: Stripe, PayPal, bank transfer.",ev:"Proof of transaction (receipt, Stripe, transfer) with date and customer origin."},
+{id:31,t:"Price Testing — 2+ Price Points",p:4,a:"bizmodel",why:"Test 2+ different price points with real customers, not in intent surveys. Know which converts more and what changes in buying behavior.",how:"Create 2 versions of the price proposal and present to different groups. Document: conversion rate per price, objections, qualitative feedback.",ev:"Record of 2+ tests with conversion results, qualitative feedback, and justified current price."},
+{id:32,t:"Reach 10 Paying Customers",p:0,a:"traction",why:"10 paying customers is the minimum for statistically significant buying behavior patterns. Allows calculation of real unit economics.",how:"Equivalent for pre-monetization = 100 active users with a clear path to monetization.",ev:"List of 10+ customers with first purchase date, value, and acquisition channel."}]},
+{name:"Unit Economics & Structure",tasks:[
+{id:33,t:"Unit Economics with Real Data",p:4,a:"bizmodel",ns:true,why:"Know CAC, LTV, and payback period with real data. LTV/CAC ≥3:1 for a healthy business.",how:"CAC = total spent on acquisition / customers acquired. LTV = avg revenue per customer × avg customer lifetime.",ev:"Spreadsheet with CAC, LTV, and payback with real data and declared sources."},
+{id:34,t:"Define and Measure Churn",p:0,a:"bizmodel",why:"Churn is the metric that tells if people really want to stay. A product with high churn is not a business, it is a leaky bucket.",how:"Define churn: monthly cancellations / customers at start of month. Measure last 90 days.",ev:"Churn rate calculated for last 90 days + top 3 cancellation reasons."},
+{id:35,t:"Recurring Revenue — 3+ Renewals",p:5,a:"traction",g:true,ns:true,why:"3+ customers paid twice without being contacted. Transforms we have customers into we have a recurring business.",how:"Monitor active customers and identify who renewed spontaneously. If renewal happened after active founder follow-up, it does not count.",ev:"List of 3+ customers with proof of 2 transactions and dates."}]},
+{name:"Go-to-Market & Growth",tasks:[
+{id:36,t:"Acquisition Channel Map",p:0,a:"traction",why:"Know where customers come from and which channel has the best conversion rate. Without this map, growth is accidental.",how:"For each active channel: number of leads, conversion rate, channel-specific CAC, and acquired customer quality.",ev:"Channel table with volume, conversion rate, and CAC per channel."},
+{id:37,t:"Document 3 Product Iterations",p:0,a:"product",why:"Prove the product evolved in response to real paying customer data. Seed investors want to see the ability to learn and adapt.",how:"For each iteration: the feedback that motivated it, the implemented change, and the measured impact.",ev:"Log of 3 iterations with source feedback, change made, and measured impact."},
+{id:38,t:"Define GTM Strategy",p:0,a:"traction",why:"Articulate in 1 page: which customer, which channel, which message, and which price, all aligned.",how:"Use Geoffrey Moore’s framework: target segment, main need, positioning vs. alternatives, purchase reason.",ev:"1-page doc with: ICP, main channel, positioning message, and price."},
+{id:39,t:"Set and Hit 90-Day Revenue Goal",p:0,a:"traction",why:"Commit to a specific revenue goal and hit it. This is the execution competence that distinguishes founders who build businesses.",how:"Define a revenue goal for the next 90 days. Share the goal with an accountability group. Document the result.",ev:"Revenue goal defined + result documented at end of 90 days."}]},
+{name:"Financial Model",tasks:[
+{id:40,t:"Revenue Model Defined and Proven",p:4,a:"bizmodel",why:"The revenue model is tested and the founder knows exactly how it scales: type, growth drivers, and how margin evolves with volume.",how:"Create a 1-page doc with: model type, growth drivers, cost structure, and current gross margin.",ev:"Doc with revenue model, drivers, cost structure, and current gross margin."},
+{id:41,t:"3-Year Financial Model",p:3,a:"bizmodel",g:true,why:"3-year model built with real assumptions. The founder knows the breakeven, the runway, and what needs to happen to reach sustainability.",how:"Use a financial model with P&L + cash flow. Each line must have a justified assumption. Build 3 scenarios: base, pessimistic, optimistic.",ev:"P&L projection + cash flow + list of justified assumptions. 3 scenarios included."}]}]},
+{id:4,title:"Growth",color:"#3d1a6b",bgc:"#eeedfe",subtitle:"76 → 100 pts · Raise program",maxPts:25,
+nsm:{metric:"MoM growth 15%+ for 3 consecutive months",why:"Consistent month-over-month growth of 15%+ proves the business has repeatable traction, not a lucky month. Consistency is what investors need to consider a Series A."},
+gate:"Score ≥76 · SheBlooms application approved · First investor meeting scheduled",
+groups:[
+{name:"Acquisition & Growth",tasks:[
+{id:42,t:"Repeatable Acquisition — 2+ Channels",p:4,a:"traction",why:"2+ acquisition channels with known, consistent CAC. 1 channel with 3 months of consistent data is worth more than 5 channels tested once.",how:"For each channel: exact acquisition process, marginal cost of scaling, the acquired customer profile, and retention vs. other channels.",ev:"Channel analysis with CAC per channel, monthly volume for last 3 months, and customer retention by channel."},
+{id:43,t:"MoM Growth ≥15% — 3 Consecutive Months",p:5,a:"traction",g:true,ns:true,why:"15%+ month-over-month growth for 3+ consecutive months. Each month is measured independently. The criterion is consistency, not peaks.",how:"Create a MoM chart for the last 6 months. The 3 most recent must show 15%+ each.",ev:"MoM chart for last 6 months with the 3 most recent showing 15%+."}]},
+{name:"Team & Operations",tasks:[
+{id:44,t:"Team Beyond Founders — 3+ Full-Time",p:4,a:"team",g:true,why:"Team with 3+ full-time people covering product/technology, growth/marketing, and operations. The founder is not the single point of failure.",how:"Map the 3 critical functions and confirm there is a responsible person in each. Test: does the business function without the CEO for 2 weeks?",ev:"Org chart with roles and responsibilities + documented answer to the 2-week-without-CEO test."}]},
+{name:"Investor Readiness",tasks:[
+{id:45,t:"Complete Data Room — 25 Documents",p:5,a:"team",why:"Investor-grade data room with 25 documents across 5 categories. The founder can answer any due diligence question in less than 24 hours.",how:"Organize in an indexed folder with 25 documents confirmed by SheBlooms advisor. Categories: Commercial, Legal, Financial, Marketing, General.",ev:"Indexed folder with 25 documents confirmed by SheBlooms advisor."},
+{id:46,t:"Investor Narrative — Final Pitch",p:4,a:"team",why:"Complete and rehearsed pitch: thesis (why now, market, team), ask (how much, at what valuation), use of funds.",how:"Use Andy Raskin’s narrative pitch framework. Rehearse at least 10 times in different contexts.",ev:"Final deck (15 slides max) + 1-pager + complete investor FAQ (20 questions). Pitch rehearsed 10+ times."},
+{id:47,t:"Raise Gate — Round is Open",p:3,a:"team",g:true,why:"Score 76+ + approved application + first investor meeting scheduled. SheBlooms advisor accompanies until close.",how:"Complete the Raise program application with data room and investor narrative. Prepare list of 30+ target investors.",ev:"SheBlooms approval confirmation + confirmed presence at first investor event."}]}]}
 ];
 
-let founderEmail='',founderName='';
-let checked={1:true},expanded={1:true},stOpen={1:true},subOpen={'1-0':true},notes={},links={};
-let growShown=false;
-let saveTimer=null;
-
-const CIRC=175.9,MAX_PTS=20;
-
-function allT(){const r=[];D[0].groups.forEach(g=>g.tasks.forEach(t=>r.push(t)));return r;}
-function gateT(){return allT().filter(t=>t.g);}
-function isGrowReady(){return gateT().every(t=>!!checked[t.id]);}
-function calcScore(){let r=0;allT().forEach(t=>{if(checked[t.id])r+=t.p;});return Math.min(20,r);}
+let checked={},expanded={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true},stOpen={1:true,2:false,3:false,4:false},subOpen={};
+const CIRC=175.9,MAX_PTS=D.reduce((s,st)=>s+st.maxPts,0);
+function allT(){const r=[];D.forEach(s=>s.groups.forEach(g=>g.tasks.forEach(t=>r.push(t))));return r;}
+function gateT(sid){const r=[];const st=D.find(s=>s.id===sid);if(st)st.groups.forEach(g=>g.tasks.forEach(t=>{if(t.g)r.push(t);}));return r;}
+function isUnlocked(sid){return sid===1||window._isGrowPlan===true;}
+function calcScore(){let r=0;allT().forEach(t=>{if(checked[t.id])r+=t.p;});return Math.min(100,Math.round(r/MAX_PTS*100));}
+function getRI(s){let i=0;for(let j=MS.length-1;j>=0;j--){if(s>=MS[j].score){i=j;break;}}return i;}
+function stPts(st){let s=0;st.groups.forEach(g=>g.tasks.forEach(t=>{if(checked[t.id])s+=t.p;}));return s;}
 function totalDone(){return allT().filter(t=>checked[t.id]).length;}
-function aStats(){
-  const s={};Object.keys(AREAS).forEach(k=>s[k]={done:0,total:0});
-  allT().forEach(t=>{if(s[t.a]){s[t.a].total++;if(checked[t.id])s[t.a].done++;}});
-  return s;
-}
-
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
+function sk(sid,gi){return sid+'-'+gi;}
+function aStats(){const s={};Object.keys(AREAS).forEach(k=>s[k]={done:0,total:0});allT().forEach(t=>{if(s[t.a]){s[t.a].total++;if(checked[t.id])s[t.a].done++;}});return s;}
 
 function renderTop(score){
+  const r=getRI(score);
   document.getElementById('snum').textContent=score;
-  document.getElementById('ring').style.strokeDashoffset=CIRC*(1-score/MAX_PTS);
-  document.getElementById('tcnt').textContent=totalDone()+' of 13 tasks complete';
-  const ri=score>=20?4:score>=18?3:score>=12?2:score>=5?1:0;
-  const b=document.getElementById('sbadge');b.textContent=MS[ri].label;b.style.background=MSBG[ri];b.style.color=MSC[ri];
-  document.getElementById('msfill').style.width=(score/20*100)+'%';
+  document.getElementById('ring').style.strokeDashoffset=CIRC*(1-score/100);
+  document.getElementById('ring').style.stroke=MSC[r];
+  document.getElementById('tcnt').textContent=totalDone()+' of 47 tasks complete';
+  const b=document.getElementById('sbadge');b.textContent=MS[r].label;b.style.background=MSBG[r];b.style.color=MSC[r];
+  const mf=document.getElementById('msfill');mf.style.width=Math.min(100,score)+'%';mf.style.background=MSC[r];
   const dc=document.getElementById('msdots');dc.innerHTML='';
-  MS.forEach((m,i)=>{const p=document.createElement('div');p.className='ms-pip';p.style.left=(m.score/20*100)+'%';p.style.marginLeft='-4px';p.style.background=score>=m.score?MSC[i]:'#d8d9e5';dc.appendChild(p);});
-  const lc=document.getElementById('mslbls');lc.innerHTML='';
-  MS.forEach((m,i)=>{const l=document.createElement('div');l.className='ms-lbl'+(ri===i?' cur':'');l.textContent=m.label;l.style.left=(m.score/20*100)+'%';lc.appendChild(l);});
-  const gateDone=gateT().filter(t=>checked[t.id]).length;const gateTotal=gateT().length;
-  const gp=Math.round(score/20*100);
-  document.getElementById('stage-progress-bar').style.width=gp+'%';
-  document.getElementById('stage-progress-pct').textContent=gp+'% of Stage 1 complete';
-  document.getElementById('stage-progress-text').textContent=isGrowReady()?'Stage 1 complete — You are Grow Ready!':'Complete gate tasks to unlock Grow';
+  MS.forEach((m,i)=>{const p=document.createElement('div');p.className='ms-pip';p.style.left=m.score+'%';p.style.marginLeft='-4.5px';p.style.background=score>=m.score?MSC[i]:'#d8d9e5';if(r===i)p.style.boxShadow='0 0 0 2px '+MSC[i];dc.appendChild(p);});
+  const lc=document.getElementById('mslbls');lc.innerHTML='';MS.forEach((m,i)=>{
+  const l=document.createElement('div');
+  l.className='ms-lbl'+(r===i?' cur':'');
+  l.textContent=m.label;
+  l.style.left=m.score+'%';
+  lc.appendChild(l);
+});
+  const need=Math.max(0,75-score);
+  document.getElementById('raise-headline').textContent=need===0?'Seed+ reached - Raise application open!':'Need '+need+' more points for Seed+';
+  const rp=Math.min(100,Math.round(score/75*100));
+  document.getElementById('raise-fill').style.width=rp+'%';
+  document.getElementById('raise-pct').textContent=rp+'% toward Seed+ - Raise eligibility gate';
 }
 
 function renderAreas(){
-  const stats=aStats();const al=document.getElementById('arealist');al.innerHTML='';
-  Object.entries(AREAS).forEach(([k,v])=>{
-    const s=stats[k];if(s.total===0)return;
-    const pct=Math.round(s.done/s.total*100);
-    const row=document.createElement('div');row.style.cssText='display:flex;flex-direction:column;gap:4px';
-    row.innerHTML=`<span style="font-size:11px;font-weight:600;color:${v.c}">${v.label}</span><div style="height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${v.c};border-radius:2px;transition:width .5s"></div></div><span style="font-size:9px;color:#aaa">${s.done}/${s.total}</span>`;
-    al.appendChild(row);
-  });
+  const stats=aStats();const al=document.getElementById('arealist');al.innerHTML='';al.style.cssText='display:grid;grid-template-columns:repeat(5,1fr);gap:0 12px;align-items:start';
+  Object.entries(AREAS).forEach(([k,v])=>{const s=stats[k];const pct=s.total>0?Math.round(s.done/s.total*100):0;const row=document.createElement('div');row.className='area-row';row.style.cssText='display:flex;flex-direction:column;gap:4px';
+row.innerHTML=`<span style="font-size:11px;font-weight:600;color:${v.c};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.label}</span><div style="height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${v.c};border-radius:2px;transition:width .5s"></div></div><span style="font-size:9px;color:#aaa">${s.done}/${s.total}</span>`;al.appendChild(row);});
 }
 
 function renderStages(){
   const con=document.getElementById('stages-con');con.innerHTML='';
-  const score=calcScore();
-
   D.forEach(st=>{
-    const spts=score;const pct=Math.min(100,Math.round(spts/st.maxPts*100));
-    const allSt=allT();const doneSt=allSt.filter(t=>checked[t.id]).length;
-    const isOpen=!!stOpen[st.id];
-    const div=document.createElement('div');div.className='stage';
+    const ul=isUnlocked(st.id);
+    const spts=stPts(st),pct=Math.min(100,Math.round(spts/st.maxPts*100));
+    const allSt=[];st.groups.forEach(g=>g.tasks.forEach(t=>allSt.push(t)));
+    const doneSt=allSt.filter(t=>checked[t.id]).length;
+    const isOpen=stOpen[st.id]&&ul;
+    const div=document.createElement('div');div.className='stage'+(ul?'':' locked');
 
     const hdr=document.createElement('div');hdr.className='st-hdr';
-    hdr.innerHTML=`<div class="st-num" style="background:${st.bgc};color:${st.color}">${st.id}</div>
-      <div class="st-info"><div class="st-name">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
+    hdr.innerHTML=`<div class="st-num" style="background:${ul?st.bgc:'#F1F1F6'};color:${ul?st.color:'#aaa'}">${st.id}</div>
+      <div class="st-info"><div class="st-name" style="color:${ul?'#000':'#aaa'}">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
       <div class="st-right">
-        <span class="st-tc">${doneSt}/${allSt.length} tasks</span>
-        <span class="st-pts" style="color:${st.color}">${spts} pts</span>
-        <div class="st-pb"><div class="st-pf" style="width:${pct}%;background:${st.color}"></div></div>
-        <div class="caret${isOpen?' up':''}"></div>
+        ${ul?`<span class="st-tc">${doneSt}/${allSt.length} tasks</span><span class="st-pts" style="color:${st.color}">${spts} pts</span><div class="st-pb"><div class="st-pf" style="width:${pct}%;background:${st.color}"></div></div><div class="caret${isOpen?' up':''}"></div>`
+        :`<span style="font-size:10px;color:#aaa;font-weight:500;padding:2px 8px;border-radius:20px;background:#F1F1F6">Locked</span>`}
       </div>`;
-    hdr.onclick=()=>{stOpen[st.id]=!stOpen[st.id];renderStages();};
+    if(ul)hdr.onclick=()=>{stOpen[st.id]=!stOpen[st.id];renderStages();};
     div.appendChild(hdr);
 
-    if(isOpen){
+    if(!ul){
+      const lb=document.createElement('div');lb.style.cssText='padding:16px';
+      lb.innerHTML=`<div style="font-size:11px;color:#888;margin-bottom:12px">This stage is part of the <strong style="color:#000">SheBlooms Grow plan</strong>. Complete Stage 1 and upgrade to unlock.</div><button onclick="document.getElementById('_grov').style.display='flex'" style="width:100%;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer" class="_stripe-link" href="https://buy.stripe.com/eVqeVd87y9ST3XFaiQ1kA01" target="_blank" style="display:block;width:100%;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box">Upgrade to unlock</a>`;
+      div.appendChild(lb);
+    } else if(isOpen){
       const body=document.createElement('div');body.className='st-body';
       const nsm=document.createElement('div');nsm.className='nsm';
       nsm.innerHTML=`<div class="nsm-bar" style="background:${st.color}"></div><div><div class="nsm-eye">North Star Metric</div><div class="nsm-metric">${st.nsm.metric}</div><div class="nsm-desc">${st.nsm.why}</div></div>`;
       body.appendChild(nsm);
-
       st.groups.forEach((g,gi)=>{
-        const key=st.id+'-'+gi;
-        if(!(key in subOpen))subOpen[key]=false;
-        const sOpen=subOpen[key];
-        const gd=g.tasks.filter(t=>checked[t.id]).length;
+        const key=sk(st.id,gi);if(!(key in subOpen))subOpen[key]=(st.id===1);
+        const sOpen=subOpen[key];const gd=g.tasks.filter(t=>checked[t.id]).length;
         const gh=document.createElement('div');gh.className='grp-hdr';
         gh.innerHTML=`<span class="grp-name">${g.name}</span><span class="grp-count">${gd}/${g.tasks.length}</span><div class="caret${sOpen?' up':''}" style="margin-left:6px"></div>`;
-        gh.onclick=()=>{subOpen[key]=!subOpen[key];renderStages();};
-        body.appendChild(gh);
-
+        gh.onclick=()=>{subOpen[key]=!subOpen[key];renderStages();};body.appendChild(gh);
         if(sOpen){
           g.tasks.forEach(task=>{
-            const done=!!checked[task.id];
-            const expDetail=!!expanded['d-'+task.id];
-            const expRes=!!expanded['r-'+task.id];
-            const expNotes=!!expanded['n-'+task.id];
-            const hasRes=!!(RESOURCES[task.id]&&RESOURCES[task.id].length);
-            const row=document.createElement('div');
-            row.className='task-row'+(done?' done':'');
-            if(expDetail)row.classList.add('exp-detail');
-            if(expRes)row.classList.add('exp-resources');
-            if(expNotes)row.classList.add('exp-notes');
-
-            const area=AREAS[task.a];
-            const pills=`<span class="pill" style="background:${area.bg};color:${area.c}">${area.label}</span>`
-              +(task.p>0?`<span class="pill pill-pts">+${task.p} pts</span>`:'')
-              +(task.g?`<span class="pill pill-gate">Gate</span>`:'')
-              +(task.ns?`<span class="pill pill-ns">North Star</span>`:'');
-
-            const main=document.createElement('div');main.className='task-main';
-            main.innerHTML=`
-              <div class="chkbox${done?' on':''}" onclick="event.stopPropagation();toggleTask(${task.id})"></div>
-              <div class="t-body">
-                <div class="t-title">${task.t}</div>
-                <div class="t-pills">${pills}</div>
-              </div>
-              <div class="t-actions">
-                <button class="t-btn${expDetail?' active':''}" onclick="event.stopPropagation();toggleExpand('d-${task.id}')">Details</button>
-                ${hasRes?`<button class="t-btn${expRes?' active':''}" onclick="event.stopPropagation();toggleExpand('r-${task.id}')">Resources</button>`:''}
-                <button class="t-btn${expNotes?' active':''}" onclick="event.stopPropagation();toggleExpand('n-${task.id}')">Notes</button>
-              </div>`;
-            row.appendChild(main);
-
-            // Detail
-            const detail=document.createElement('div');detail.className='t-detail';
-            detail.innerHTML=`<div class="d-sec"><div class="d-lbl">Why it matters</div><div class="d-txt">${task.why}</div></div>
-              <div class="d-sec"><div class="d-lbl">How to do it</div><div class="d-txt">${task.how}</div></div>
-              <div class="d-sec"><div class="d-lbl">Evidence required</div><div class="d-txt">${task.ev}</div></div>`;
-            row.appendChild(detail);
-
-            // Resources
-            if(hasRes){
-              const res=document.createElement('div');res.className='t-resources';
-              const resCards=RESOURCES[task.id].map(r=>`
-                <a class="res-card" href="${r.url}" target="_blank" rel="noopener">
-                  <div class="res-type ${r.type}">${r.type.substring(0,3).toUpperCase()}</div>
-                  <div class="res-info">
-                    <div class="res-name">${r.title}</div>
-                    <div class="res-author">${r.author}</div>
-                    <div class="res-desc">${r.desc}</div>
-                  </div>
-                  <div class="res-arrow">&rsaquo;</div>
-                </a>`).join('');
-              res.innerHTML=`<div class="res-title">Recommended resources</div>${resCards}`;
-              row.appendChild(res);
+            const done=!!checked[task.id],exp=!!expanded[task.id];const area=AREAS[task.a];
+            const row=document.createElement('div');row.className='task-row'+(done?' done':'')+(exp?' exp':'');row.dataset.tid=task.id;
+            const chk=document.createElement('div');chk.className='chkbox'+(done?' on':'');chk.onclick=e=>{e.stopPropagation();toggleTask(task.id);};
+            const tb=document.createElement('div');tb.className='t-body';
+            const pills=`<span class="pill" style="background:${area.bg};color:${area.c}">${area.label}</span>`+(task.p>0?`<span class="pill pill-pts">+${task.p} pts</span>`:''  )+(task.g?`<span class="pill pill-gate">Gate</span>`:''  )+(task.ns?`<span class="pill pill-ns">North Star</span>`:'');
+            const det=exp?`<div class="t-detail"><div class="d-sec"><div class="d-lbl">Why it matters</div><div class="d-txt">${task.why}</div></div><div class="d-sec"><div class="d-lbl">How to do it</div><div class="d-txt">${task.how}</div></div><div class="d-sec"><div class="d-lbl">Evidence required</div><div class="d-txt">${task.ev}</div></div></div>`:'<div class="t-detail"></div>';
+            const _sn=(_sbN&&_sbN[task.id])||"";
+            const _sl=(_sbL&&_sbL[task.id])||"";
+            const _pr=(_sbNP&&_sbNP[task.id])||"";
+            const _hr=!!(_sbR&&_sbR[task.id]&&_sbR[task.id].length);
+            const _noOpen=!!(exp&&_sbNO&&_sbNO[task.id]);
+            const _roOpen=!!(exp&&_sbRO&&_sbRO[task.id]);
+            // Build detail element (replaces det in innerHTML)
+            const _dtEl=document.createElement("div");_dtEl.id="_dt"+task.id;
+            _dtEl.style.cssText=(exp?"display:block":"display:none")+";margin-top:9px;padding:10px 12px;background:#F1F1F6;border-radius:8px";
+            if(task.why){const _ws=document.createElement("div");_ws.className="d-sec";_ws.innerHTML='<div class="d-lbl">Why it matters</div><div class="d-txt">'+task.why+'</div>';_dtEl.appendChild(_ws);}
+            if(task.how){const _hs=document.createElement("div");_hs.className="d-sec";_hs.innerHTML='<div class="d-lbl">How to do it</div><div class="d-txt">'+task.how+'</div>';_dtEl.appendChild(_hs);}
+            if(task.ev){const _es=document.createElement("div");_es.className="d-sec";_es.innerHTML='<div class="d-lbl">Evidence required</div><div class="d-txt">'+task.ev+'</div>';_dtEl.appendChild(_es);}
+            tb.innerHTML=`<div class="t-title">${task.t}</div><div class="t-pills">${pills}</div><div style="margin-top:8px"><button class="_xb" id="_wd${task.id}" onclick="event.stopPropagation();_sbTpDt(${task.id})">What to do</button>${_hr?'<button class="_xb" id="_rb'+task.id+'" onclick="event.stopPropagation();_sbTp('+task.id+',\'r\')">Resources</button>':""}<button class="_xb" id="_nb${task.id}" onclick="event.stopPropagation();_sbTp(${task.id},'n')">Notes</button></div>`;
+            tb.appendChild(_dtEl);
+            const _ri=document.createElement('div');_ri.className='task-row-inner';
+            _ri.appendChild(chk);_ri.appendChild(tb);
+            row.appendChild(_ri);
+            // row click only for checkbox area
+            // Notes panel
+            const _npEl=document.createElement("div");_npEl.id="_np"+task.id;
+            _npEl.style.cssText=(_noOpen?"display:block":"display:none")+";margin-top:9px;padding:10px 12px;background:#F1F1F6;border-radius:8px;box-sizing:border-box";
+            const _nlbl=document.createElement("div");_nlbl.style.cssText="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:4px";_nlbl.textContent="Your notes";
+            const _ppl=document.createElement("div");_ppl.style.cssText="font-size:10px;color:#aaa;font-style:italic;margin-bottom:6px";_ppl.textContent=_pr;
+            const _ta=document.createElement("textarea");_ta.style.cssText="width:100%;padding:8px 10px;border:1px solid #d8d9e5;border-radius:7px;font-size:11px;font-family:inherit;color:#000;resize:vertical;min-height:70px;outline:none;background:#fff;line-height:1.6;box-sizing:border-box";_ta.value=_sn;
+            _ta.addEventListener("input",function(){_sbSn(task.id,"n",_ta.value);});_ta.addEventListener("focus",function(){_ta.style.borderColor="#657dfe";});_ta.addEventListener("blur",function(){_ta.style.borderColor="#d8d9e5";});
+            const _llbl=document.createElement("div");_llbl.style.cssText="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:4px;margin-top:10px";_llbl.textContent="Link (Miro / Notion / Drive)";
+            const _li=document.createElement("input");_li.type="url";_li.placeholder="https://...";_li.value=_sl;_li.style.cssText="width:100%;padding:6px 10px;border:1px solid #d8d9e5;border-radius:7px;font-size:11px;font-family:inherit;outline:none;background:#fff;box-sizing:border-box";
+            _li.addEventListener("input",function(){_sbSn(task.id,"l",_li.value);});_li.addEventListener("focus",function(){_li.style.borderColor="#657dfe";});_li.addEventListener("blur",function(){_li.style.borderColor="#d8d9e5";});
+            const _sv=document.createElement("div");_sv.id="_ns"+task.id;_sv.textContent="Saved";_sv.style.cssText="font-size:9px;color:#0f6e56;margin-top:4px;opacity:0;transition:opacity .3s";
+            if(_pr)_npEl.appendChild(_ppl);
+            _npEl.appendChild(_nlbl);_npEl.appendChild(_ta);_npEl.appendChild(_llbl);_npEl.appendChild(_li);_npEl.appendChild(_sv);
+            tb.appendChild(_npEl);
+            // Resources panel
+            if(_hr){
+              const _rpEl=document.createElement("div");_rpEl.id="_rp"+task.id;
+              _rpEl.style.cssText=(_roOpen?"display:block":"display:none")+";margin-top:9px;padding:10px 12px;background:#F1F1F6;border-radius:8px;box-sizing:border-box";
+              const _rt=document.createElement("div");_rt.style.cssText="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:8px";_rt.textContent="Recommended resources";_rpEl.appendChild(_rt);
+              _sbR[task.id].forEach(function(r){
+                const c=_sbMkC(r.t);
+                const _a=document.createElement("a");_a.href=r.u;_a.target="_blank";_a.rel="noopener";_a.style.cssText="display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:#fff;border:1px solid #d8d9e5;border-radius:9px;margin-bottom:6px;text-decoration:none";
+                _a.addEventListener("mouseover",function(){_a.style.borderColor="#657dfe";});_a.addEventListener("mouseout",function(){_a.style.borderColor="#d8d9e5";});
+                const _ic=document.createElement("div");_ic.style.cssText="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;text-transform:uppercase;background:"+c.bg+";color:"+c.c;_ic.textContent=r.t.substring(0,3).toUpperCase();
+                const _in=document.createElement("div");_in.style.cssText="flex:1;min-width:0";
+                const _rn=document.createElement("div");_rn.style.cssText="font-size:11px;font-weight:600;color:#000;margin-bottom:1px";_rn.textContent=r.n;
+                const _ra=document.createElement("div");_ra.style.cssText="font-size:10px;color:#888;margin-bottom:2px";_ra.textContent=r.a;
+                const _rd=document.createElement("div");_rd.style.cssText="font-size:10px;color:#aaa;line-height:1.45";_rd.textContent=r.d;
+                _in.appendChild(_rn);_in.appendChild(_ra);_in.appendChild(_rd);
+                _a.appendChild(_ic);_a.appendChild(_in);_rpEl.appendChild(_a);
+              });
+              tb.appendChild(_rpEl);
             }
-
-            // Notes
-            if(task.hasNotes){
-              const notesDiv=document.createElement('div');notesDiv.className='t-notes';
-              const savedNote=notes[task.id]||'';
-              const savedLink=links[task.id]||'';
-              notesDiv.innerHTML=`
-                <div class="notes-title">Your notes</div>
-                <div class="notes-prompt">${NOTE_PROMPTS[task.id]||'Add your notes here...'}</div>
-                <textarea class="notes-textarea" placeholder="Start writing..." onInput="scheduleNoteSave(${task.id},'text',this.value)">${savedNote}</textarea>
-                <div class="notes-link-row">
-                  <span class="notes-link-label">Link (Miro / Notion / Drive)</span>
-                  <input class="notes-link-input" type="url" placeholder="https://..." value="${savedLink}" onInput="scheduleNoteSave(${task.id},'link',this.value)"/>
-                </div>
-                <div class="notes-saved" id="saved-${task.id}">Saved</div>`;
-              row.appendChild(notesDiv);
-            }
-
+            // Sync button active state
+            if(exp){const wd=document.getElementById("_wd"+task.id);if(wd)wd.classList.add("on");}
+            if(_noOpen){const nb=document.getElementById("_nb"+task.id);if(nb)nb.classList.add("on");}
+            if(_roOpen){const rb=document.getElementById("_rb"+task.id);if(rb)rb.classList.add("on");}
             body.appendChild(row);
           });
         }
       });
-
-      const gf=document.createElement('div');gf.className='gate-ftr';
-      gf.innerHTML=`<strong>Stage gate:</strong> ${st.gate}`;
-      body.appendChild(gf);
-      div.appendChild(body);
+      const gf=document.createElement('div');gf.className='gate-ftr';gf.innerHTML=`<strong>Stage gate:</strong> ${st.gate}`;
+      body.appendChild(gf);div.appendChild(body);
     }
     con.appendChild(div);
   });
+}
 
-  // Locked stages
-  LOCKED_STAGES.forEach(st=>{
-    const div=document.createElement('div');div.className='locked-stage';
-    div.innerHTML=`
-      <div class="locked-stage-hdr">
-        <div class="st-num" style="background:#f0ede6;color:#aaa">${st.id}</div>
-        <div class="st-info"><div class="st-name" style="color:#aaa">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
-        <div class="st-right"><span class="locked-badge">Grow plan</span></div>
-      </div>
-      <div class="locked-preview">
-        <div class="locked-preview-title">What's inside</div>
-        ${st.tasks.map(t=>`<div class="locked-task-preview"><div class="locked-dot"></div>${t}</div>`).join('')}
-      </div>
-      <button class="locked-upgrade-btn" onclick="openModal('grow-overlay')">Unlock with Grow plan</button>`;
-    con.appendChild(div);
+function renderAll(){const s=calcScore();renderTop(s);renderAreas();renderStages();checkRaise(s);}
+function toggleTask(id){
+  const wasChecked = !!checked[id];
+  checked[id]=!checked[id];
+  save();
+  renderAll();
+  var _s1t=[1,2,3,4,5,6,7,8,9,10,11,12,13];if(_s1t.every(function(i){return !!checked[i];})){_sbGrow=true;_sbSave();setTimeout(function(){document.getElementById("_grov").style.display="flex";},500);}
+  // Find task info for tracking
+  allT().forEach(t=>{
+    if(t.id===id){
+      const st=D.find(s=>s.groups.some(g=>g.tasks.includes(t)));
+      if(checked[id]){
+        trackTaskComplete(id, t.t, st?st.id:0);
+      } else {
+        trackTaskUncomplete(id);
+      }
+    }
   });
 }
+function resetAll(){if(confirm('Reset all progress?')){checked={};expanded={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};stOpen={1:true,2:false,3:false,4:false};subOpen={};raiseShown75=false;raiseShown100=false;_sbGrow=false;_sbNO={};_sbRO={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};_sbSave();document.getElementById('raise-banner').classList.remove('show');save();renderAll();}}
+function save(){try{localStorage.setItem('sbj2',JSON.stringify({checked,stOpen,subOpen}));}catch(e){}}
+function load(){try{const r=localStorage.getItem('sbj2');if(r){const d=JSON.parse(r);checked=d.checked||{};stOpen=d.stOpen||{1:true,2:false,3:false,4:false};subOpen=d.subOpen||{};raiseShown75=d.raiseShown75||false;raiseShown100=d.raiseShown100||false;}}catch(e){}if(calcScore()>=75)document.getElementById('raise-banner').classList.add('show');renderAll();}
 
-function toggleExpand(key){
-  expanded[key]=!expanded[key];
-  renderStages();
-}
-
-function toggleTask(id){
-  checked[id]=!checked[id];
-  scheduleSave();
-  renderAll();
-  checkGrowReady();
-}
-
-function checkGrowReady(){
-  if(isGrowReady()&&!growShown){
-    growShown=true;
-    document.getElementById('grow-banner').classList.add('show');
-    setTimeout(()=>openModal('grow-overlay'),600);
-    scheduleSave();
+var sb2=null;try{if(window.supabase){sb2=supabase.createClient("https://fyswympbcriibpewkxnh.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5c3d5bXBiY3JpaWJwZXdreG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjIwMTcsImV4cCI6MjA5Mjc5ODAxN30.l5gy0L9JU_8g0vIjoFWmUqP7T7zyHOsE0wdmkC2kBo0");}}catch(e){}
+var _sbN={},_sbL={},_sbGrow=false,_sbNT={};
+var _sbRO={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};
+var _sbNO={};
+try{var _st=localStorage.getItem("_sbx");if(_st){var _sd=JSON.parse(_st);_sbN=_sd.n||{};_sbL=_sd.l||{};_sbGrow=_sd.g||false;_sbRO=_sd.ro||_sbRO;_sbNO=_sd.no||{};}}catch(e){}
+function _sbSave(){try{localStorage.setItem("_sbx",JSON.stringify({n:_sbN,l:_sbL,g:_sbGrow,ro:_sbRO,no:_sbNO}));}catch(e){}}
+function _sbSn(tid,type,val){if(type==="n")_sbN[tid]=val;else _sbL[tid]=val;clearTimeout(_sbNT[tid]);_sbNT[tid]=setTimeout(function(){_sbSave();var el=document.getElementById("_ns"+tid);if(el){el.style.opacity=1;setTimeout(function(){el.style.opacity=0;},2000);}},800);}
+function _sbTp(tid,type){
+  var np=document.getElementById("_np"+tid),rp=document.getElementById("_rp"+tid);
+  var nb=document.getElementById("_nb"+tid),rb=document.getElementById("_rb"+tid);
+  if(type==="n"){
+    var s=np&&np.style.display!=="block";
+    if(np)np.style.display=s?"block":"none";
+    _sbNO[tid]=!!s;_sbSave();
+    if(nb)nb.classList.toggle("on",!!s);
+  }else{
+    var s2=rp&&rp.style.display!=="block";
+    if(rp)rp.style.display=s2?"block":"none";
+    _sbRO[tid]=!!s2;_sbSave();
+    if(rb&&rb.classList)rb.classList.toggle("on",!!s2);
   }
-  if(isGrowReady())document.getElementById('grow-banner').classList.add('show');
+}
+function _sbTpDt(tid){
+  var dt=document.getElementById("_dt"+tid);
+  var wd=document.getElementById("_wd"+tid);
+  var open=dt&&dt.style.display!=="block";
+  if(dt)dt.style.display=open?"block":"none";
+  if(wd)wd.classList.toggle("on",!!open);
+  expanded[tid]=!!open;
+  save();
+}
+function _sbMkC(t){return t==="book"?{bg:"#faeeda",c:"#854f0b"}:t==="video"?{bg:"#fbeaf0",c:"#993556"}:t==="article"?{bg:"#e6f1fb",c:"#185fa5"}:t==="podcast"?{bg:"#eeedfe",c:"#534ab7"}:{bg:"#e1f5ee",c:"#0f6e56"};}
+var _sbNP={1:"Problem statement: People who [context] struggle with [problem] because [reason].",2:"List your stakeholders and their relation to the problem...",3:"Document your interview findings: quotes, patterns, surprises.",4:"What 3-5 patterns emerged from your interviews?",5:"Map the alternatives your customers use today...",6:"Severity scores: who gave 4-5 and what they said.",7:"Describe your ICP: name, context, and a real interviewee quote.",8:"TAM estimate and methodology used.",9:"Your 3 inorganic demand signals.",10:"Your 3 different solutions.",11:"Which concept resonated most and why?",12:"Value prop: For [ICP], [product] is the only [category] that [benefit]...",13:"Who pays? How much? How often?"};
+var _sbR={
+  1:[{t:"book",n:"The Mom Test",a:"Rob Fitzpatrick",u:"https://www.momtestbook.com/",d:"Chapter 1: framing a problem statement without biasing feedback. The starting point for every problem definition."},
+     {t:"article",n:"How to Get Startup Ideas",a:"Paul Graham - Y Combinator",u:"https://paulgraham.com/startupideas.html",d:"Paul Graham on identifying problems worth solving. Foundational for a sharp problem statement."}],
+  2:[{t:"article",n:"Jobs to Be Done: Theory to Practice",a:"Clayton Christensen - Harvard Business Review",u:"https://hbr.org/2016/09/know-your-customers-jobs-to-be-done",d:"Maps who has the problem, in what context, and what outcome they are trying to achieve."},
+     {t:"book",n:"Continuous Discovery Habits",a:"Teresa Torres - SVPG",u:"https://www.producttalk.org/continuous-discovery-habits/",d:"Torres stakeholder segmentation approach. Practical for early-stage discovery and mapping decision influencers."},
+     {t:"tool",n:"Stakeholder Map Template",a:"Miro",u:"https://miro.com/templates/stakeholder-map/",d:"Visual template to map who has the problem, who pays, who influences the buying decision."}],
+  3:[{t:"book",n:"The Mom Test",a:"Rob Fitzpatrick",u:"https://www.momtestbook.com/",d:"The definitive reference for anti-bias customer interviews. Mandatory reading before the first conversation."},
+     {t:"podcast",n:"The Mom Test - Customer Interviews",a:"Rob Fitzpatrick on Lenny Podcast",u:"https://www.lennysnewsletter.com/p/the-mom-test",d:"90-min deep dive on the methodology. Lenny Podcast is the number 1 product and growth podcast globally."},
+     {t:"video",n:"How to Talk to Users",a:"Y Combinator - Gustaf Alstromer",u:"https://www.youtube.com/watch?v=MT4Ig2uqjTc",d:"YC official customer discovery guide. Covers structuring interviews and extracting signal."},
+     {t:"article",n:"Customer Discovery Playbook",a:"First Round Review",u:"https://review.firstround.com/the-founder-to-founder-guide-to-customer-discovery",d:"Practical guide to running customer interviews as a first-time founder."}],
+  4:[{t:"article",n:"Opportunity Solution Trees",a:"Teresa Torres - Product Talk",u:"https://www.producttalk.org/2016/08/opportunity-solution-tree/",d:"Torres framework for synthesising interview insights into actionable patterns. Used by top product teams globally."},
+     {t:"tool",n:"Affinity Diagram Template",a:"Miro",u:"https://miro.com/templates/affinity-diagram/",d:"Industry-standard visual tool for grouping interview data into themes."},
+     {t:"article",n:"Affinity Diagramming for Qualitative Research",a:"Nielsen Norman Group",u:"https://www.nngroup.com/articles/affinity-diagram/",d:"Step-by-step guide to turning interview notes into actionable patterns."}],
+  5:[{t:"book",n:"Obviously Awesome - Chapter 3",a:"April Dunford",u:"https://www.aprildunford.com/obviously-awesome",d:"Dunford method for mapping what customers actually use today. The most practical framework for alternative mapping."},
+     {t:"article",n:"Competitive Analysis That Actually Helps",a:"First Round Review",u:"https://review.firstround.com/the-competitive-analysis-that-actually-helps-startups-see-their-market-clearly/",d:"How to map alternatives from the customer perspective, not the founder perspective."}],
+  6:[{t:"book",n:"The Mom Test - Chapters 3-4",a:"Rob Fitzpatrick",u:"https://www.momtestbook.com/",d:"How to measure pain intensity during interviews without leading the interviewee."},
+     {t:"podcast",n:"How to Know If You Have PMF",a:"Lenny Rachitsky - Lenny Podcast",u:"https://www.lennysnewsletter.com/p/how-to-know-if-you-have-product-market",d:"Signals that indicate real pain - applicable to building the severity scoring methodology."},
+     {t:"article",n:"How to Validate a Startup Idea",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/El-how-to-validate-your-startup-idea",d:"YC structured approach to validating pain severity before building."}],
+  7:[{t:"book",n:"Obviously Awesome",a:"April Dunford",u:"https://www.aprildunford.com/obviously-awesome",d:"The world reference on ICP and positioning. Entire chapters on identifying best-fit customers with surgical precision."},
+     {t:"article",n:"The ICP Framework",a:"OpenView Partners",u:"https://openviewpartners.com/blog/ideal-customer-profile/",d:"OpenView operational ICP framework for early-stage B2B. Actionable and specific."},
+     {t:"article",n:"Finding Product-Market Fit",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/finding-product-market-fit",d:"Data-driven ICP framework based on 200+ founder interviews."}],
+  8:[{t:"article",n:"Market Sizing for Startups",a:"Sequoia Capital",u:"https://www.sequoiacap.com/article/elements-of-enduring-companies/",d:"Sequoia bottom-up market sizing. The approach they expect from every founder they meet."},
+     {t:"article",n:"How to Size a Market",a:"Andreessen Horowitz (a16z)",u:"https://a16z.com/how-to-size-a-market/",d:"TAM, SAM and SOM: the mental models investors use to evaluate market size claims."},
+     {t:"article",n:"Market Size and Growth Curves",a:"NFX - James Currier",u:"https://www.nfx.com/post/market-size-growth-curves",d:"NFX on how to frame market size to make it compelling to investors at early stage."}],
+  9:[{t:"article",n:"Do Things That Do Not Scale",a:"Paul Graham - Y Combinator",u:"https://paulgraham.com/ds.html",d:"The canonical essay on finding early demand signals the unscalable way. Mandatory reading."},
+     {t:"article",n:"How to Find Your First Customers",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/4A-a-guide-to-finding-your-first-customers",d:"YC step-by-step guide to finding the first people who have the problem you are solving."},
+     {t:"article",n:"Finding Early Evangelists",a:"Steve Blank",u:"https://steveblank.com/2010/03/11/the-customer-development-manifesto-the-path-of-warriors-and-winners/",d:"Steve Blank on identifying and converting early evangelists - the foundation of inorganic demand signals."}],
+  10:[{t:"video",n:"Crazy 8s - Design Sprint",a:"Google Ventures",u:"https://www.youtube.com/watch?v=yz4g87XapQ0",d:"Google Ventures original walkthrough of Crazy 8s. The source of the method."},
+      {t:"book",n:"Sprint",a:"Jake Knapp - Google Ventures",u:"https://www.thesprintbook.com/",d:"The book that introduced the Design Sprint. Chapter 4 covers Crazy 8s in detail."},
+      {t:"tool",n:"Crazy 8s Template",a:"Miro",u:"https://miro.com/templates/crazy-eights/",d:"Ready-to-use digital template for running Crazy 8s solo or with a co-founder."}],
+  11:[{t:"book",n:"Continuous Discovery Habits - Chapter 7",a:"Teresa Torres - SVPG",u:"https://www.producttalk.org/continuous-discovery-habits/",d:"Torres structured assumption testing framework. The most rigorous approach to concept testing before building."},
+      {t:"article",n:"Design Thinking: Prototype to Learn",a:"IDEO",u:"https://designthinking.ideo.com/blog/prototyping-to-test-learn-iterate",d:"IDEO on low-fidelity prototyping to test solution resonance before any development."}],
+  12:[{t:"book",n:"Obviously Awesome",a:"April Dunford",u:"https://www.aprildunford.com/obviously-awesome",d:"The definitive reference for value proposition and positioning."},
+      {t:"article",n:"The Greatest Sales Deck Ever Made",a:"Andy Raskin",u:"https://medium.com/the-mission/the-greatest-sales-deck-ive-ever-seen-4f4ef3391ba0",d:"Andy Raskin narrative framework - directly applicable to articulating a value proposition that resonates."},
+      {t:"tool",n:"Value Proposition Canvas",a:"Alex Osterwalder - Strategyzer",u:"https://www.strategyzer.com/library/the-value-proposition-canvas",d:"Visual framework for mapping customer jobs, pains and gains to your solution."}],
+  13:[{t:"tool",n:"Business Model Canvas",a:"Alex Osterwalder - Strategyzer",u:"https://www.strategyzer.com/library/the-business-model-canvas",d:"Standard framework for mapping how the business creates, delivers and captures value."},
+      {t:"article",n:"Pricing Strategy for Startups",a:"OpenView Partners",u:"https://openviewpartners.com/blog/startup-pricing-strategy/",d:"OpenView practical guide to pricing - critical for the monetization component of the business model."},
+      {t:"book",n:"Business Model Generation",a:"Alex Osterwalder and Yves Pigneur",u:"https://www.strategyzer.com/books/business-model-generation",d:"The reference for business model design."}],
+  14:[{t:"article",n:"How to Build an MVP",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/4Q-how-to-build-an-mvp",d:"YC official guide. Defines what an MVP is and how to build the simplest version."},
+      {t:"book",n:"The Lean Startup",a:"Eric Ries",u:"https://theleanstartup.com/",d:"Eric Ries introduced the MVP concept. The foundational reference for build-measure-learn cycles."}],
+  15:[{t:"article",n:"Do Things That Do Not Scale",a:"Paul Graham - Y Combinator",u:"https://paulgraham.com/ds.html",d:"Paul Graham on manually recruiting first users. The most important reference for this task."},
+      {t:"article",n:"How to Get Your First Users",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/how-the-biggest-consumer-apps-got",d:"Lenny analysis of early acquisition strategies across 60+ top apps."}],
+  16:[{t:"article",n:"Startup Pricing 101",a:"OpenView Partners",u:"https://openviewpartners.com/blog/startup-pricing-strategy/",d:"OpenView most practical guide to testing willingness to pay with real customers."},
+      {t:"article",n:"SaaS Pricing Strategy",a:"Patrick Campbell - ProfitWell",u:"https://www.profitwell.com/recur/all/saas-pricing-strategy",d:"Patrick Campbell on measuring willingness to pay and price sensitivity."}],
+  17:[{t:"book",n:"The Lean Startup - Chapter 8",a:"Eric Ries",u:"https://theleanstartup.com/",d:"Eric Ries original pivot-or-persevere framework based on data."},
+      {t:"article",n:"How to Know When to Pivot",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/Et-how-to-pivot",d:"YC practical guide to recognising when to change direction without destroying the team."}],
+  18:[{t:"article",n:"How to Launch",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/6C-how-to-launch",d:"YC definitive guide to launching: what to do, in what order, and how to maximise signal."},
+      {t:"article",n:"How to Get Your First 1,000 Users",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/how-the-biggest-consumer-apps-got",d:"Actionable analysis of early acquisition strategies across 60+ top apps."}],
+  20:[{t:"article",n:"The Founder Story: What Investors Look For",a:"First Round Review",u:"https://review.firstround.com/the-investors-guide-to-evaluating-founder-stories",d:"First Round on what makes a founder story credible and compelling to investors."},
+      {t:"article",n:"The Greatest Sales Deck Ever Made",a:"Andy Raskin",u:"https://medium.com/the-mission/the-greatest-sales-deck-ive-ever-seen-4f4ef3391ba0",d:"Andy Raskin narrative framework - the structure behind the most compelling founder stories."},
+      {t:"article",n:"How to Tell a Powerful Founder Narrative",a:"NFX - James Currier",u:"https://www.nfx.com/post/founder-narrative",d:"NFX on how the founder narrative becomes the company origin story and investor magnet."}],
+  21:[{t:"article",n:"Do Things That Do Not Scale",a:"Paul Graham - Y Combinator",u:"https://paulgraham.com/ds.html",d:"The canonical reference for manually acquiring first committed users."},
+      {t:"article",n:"How the Biggest Apps Got Their First Users",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/how-the-biggest-consumer-apps-got",d:"Data-driven analysis of early acquisition strategies across 60+ top apps."}],
+  22:[{t:"article",n:"How to Know If You Have PMF",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/how-to-know-if-you-have-product-market",d:"The most comprehensive framework for defining and measuring PMF signals."},
+      {t:"article",n:"Quantitative PMF Signals",a:"Brian Balfour - Reforge",u:"https://brianbalfour.com/essays/product-market-fit",d:"Brian Balfour on the metrics that objectively indicate PMF at early stage."}],
+  23:[{t:"article",n:"North Star Metric Guide",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/north-star-metric",d:"Lenny definitive guide to defining a North Star metric and the leading indicators around it."},
+      {t:"article",n:"The Only Metric That Matters",a:"Josh Elman - a16z",u:"https://a16z.com/the-only-metric-that-matters/",d:"Framework for identifying the one metric that proves your product is working."}],
+  24:[{t:"article",n:"What Is Good Retention?",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/what-is-good-retention-benchmarks",d:"Industry benchmark for retention by business type. The most-cited reference for what good looks like."},
+      {t:"article",n:"Retention Is the Foundation of Growth",a:"Brian Balfour - Reforge",u:"https://brianbalfour.com/essays/retention-is-the-most-important-metric",d:"Why week 2 retention is the most predictive early signal of long-term product success."},
+      {t:"article",n:"Measuring Retention: A Practical Guide",a:"Andrew Chen - a16z",u:"https://andrewchen.com/retention-is-king/",d:"Andrew Chen on retention measurement and cohort analysis."}],
+  25:[{t:"article",n:"How Superhuman Found Product-Market Fit",a:"First Round Review",u:"https://review.firstround.com/how-superhuman-built-an-engine-to-find-product-market-fit",d:"The article that established the 40% test as the PMF benchmark."},
+      {t:"article",n:"The Startup Pyramid",a:"Sean Ellis",u:"https://www.startup-marketing.com/the-startup-pyramid/",d:"Sean Ellis original essay introducing the very disappointed question and the 40% threshold."},
+      {t:"article",n:"Measuring PMF Practically",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/how-to-know-if-you-have-product-market",d:"Practical guide to running the Sean Ellis survey and interpreting results."}],
+  26:[{t:"book",n:"The Mom Test - Chapter 5",a:"Rob Fitzpatrick",u:"https://www.momtestbook.com/",d:"Rob Fitzpatrick on collecting and using verbatim user quotes as evidence."},
+      {t:"article",n:"Customer Voice in Your Pitch",a:"First Round Review",u:"https://review.firstround.com/the-investors-guide-to-evaluating-founder-stories",d:"How investor-grade evidence uses verbatim customer quotes to prove demand."}],
+  27:[{t:"book",n:"Obviously Awesome",a:"April Dunford",u:"https://www.aprildunford.com/obviously-awesome",d:"Framework for iterating on ICP definition based on retention and engagement data."},
+      {t:"article",n:"ICP Refinement After First Users",a:"OpenView Partners",u:"https://openviewpartners.com/blog/ideal-customer-profile/",d:"OpenView guide to refining ICP based on real usage patterns after first cohort."}],
+  28:[{t:"book",n:"The Lean Startup",a:"Eric Ries",u:"https://theleanstartup.com/",d:"Foundational framework for structured product iteration with before/after metrics."},
+      {t:"book",n:"Inspired",a:"Marty Cagan - SVPG",u:"https://svpg.com/inspired-how-to-create-tech-products-customers-love/",d:"Marty Cagan framework for running discovery and delivery cycles with measurable improvement."}],
+  29:[{t:"article",n:"What Is Good Retention?",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/what-is-good-retention-benchmarks",d:"Guide to building cohort tables and interpreting month 2 retention as a PMF signal."},
+      {t:"article",n:"SaaS Retention Benchmarks",a:"Bessemer Venture Partners",u:"https://www.bvp.com/atlas/eight-components-of-software-investment",d:"Bessemer cohort analysis benchmarks - the standard investors use to evaluate retention quality."}],
+  30:[{t:"article",n:"Charging for Your Product from Day One",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/6d-pricing-your-product",d:"YC on why and how to charge from the first transaction."},
+      {t:"article",n:"Founder-Led Sales",a:"OpenView Partners",u:"https://openviewpartners.com/blog/founder-led-sales/",d:"OpenView on the founder-led sales motion to close first transactions without a sales team."}],
+  31:[{t:"article",n:"Startup Pricing Strategy",a:"Patrick Campbell - ProfitWell",u:"https://www.profitwell.com/recur/all/saas-pricing-strategy",d:"Patrick Campbell framework for testing price points with real customers."},
+      {t:"article",n:"How to Find the Right Price",a:"OpenView Partners",u:"https://openviewpartners.com/blog/startup-pricing-strategy/",d:"OpenView guide to running price tests and measuring conversion at different price points."}],
+  32:[{t:"article",n:"Founder-Led Sales Playbook",a:"OpenView Partners",u:"https://openviewpartners.com/blog/founder-led-sales/",d:"OpenView guide to the founder-led sales motion from 1 to 10 paying customers."},
+      {t:"article",n:"The Early-Stage Sales Playbook",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/the-sales-playbook",d:"Lenny guide to running sales as a non-sales founder."}],
+  33:[{t:"article",n:"SaaS Metrics 2.0",a:"David Skok - For Entrepreneurs",u:"https://www.forentrepreneurs.com/saas-metrics-2/",d:"The classic reference for CAC, LTV, payback period, and unit economics. Mandatory reading for any SaaS founder."},
+      {t:"article",n:"SaaS Unit Economics",a:"Bessemer Venture Partners",u:"https://www.bvp.com/atlas/eight-components-of-software-investment",d:"Bessemer framework for evaluating unit economics - the standard VCs use to assess scalability."},
+      {t:"article",n:"SaaS Benchmark Report",a:"OpenView Partners",u:"https://openviewpartners.com/blog/saas-benchmarks/",d:"OpenView annual SaaS benchmarks - real data to compare unit economics against peers."}],
+  34:[{t:"article",n:"SaaS Churn Rate Benchmark",a:"David Skok - For Entrepreneurs",u:"https://www.forentrepreneurs.com/saas-metrics-2/",d:"David Skok formula for calculating and benchmarking churn. The industry standard."},
+      {t:"article",n:"Fighting Churn: A Practical Guide",a:"Patrick Campbell - ProfitWell",u:"https://www.profitwell.com/recur/all/churn-rate",d:"ProfitWell operational guide to measuring, diagnosing, and reducing churn."},
+      {t:"article",n:"Churn Is a Growth Problem",a:"Brian Balfour - Reforge",u:"https://brianbalfour.com/essays/churn-is-a-growth-problem",d:"Brian Balfour on churn as a product signal - how to identify why customers are leaving."}],
+  35:[{t:"article",n:"Net Revenue Retention",a:"David Skok - For Entrepreneurs",u:"https://www.forentrepreneurs.com/saas-metrics-2/",d:"David Skok on why NRR is the proof of a repeatable business."},
+      {t:"article",n:"NRR Benchmark",a:"Bessemer Venture Partners",u:"https://www.bvp.com/atlas/eight-components-of-software-investment",d:"Bessemer benchmarks for net revenue retention - the standard investors compare against."}],
+  36:[{t:"article",n:"Growth Loops Framework",a:"Brian Balfour - Reforge",u:"https://reforge.com/blog/growth-loops",d:"Brian Balfour framework for mapping acquisition channels as compounding loops."},
+      {t:"book",n:"Traction - 19 Acquisition Channels",a:"Gabriel Weinberg",u:"https://tractionbook.com/",d:"Gabriel Weinberg taxonomy of 19 acquisition channels with frameworks for testing each one."},
+      {t:"article",n:"How Top B2B Companies Find Growth Channels",a:"OpenView Partners",u:"https://openviewpartners.com/blog/b2b-growth-channels/",d:"OpenView on identifying and doubling down on the one acquisition channel that works at early stage."}],
+  37:[{t:"book",n:"Inspired",a:"Marty Cagan - SVPG",u:"https://svpg.com/inspired-how-to-create-tech-products-customers-love/",d:"Marty Cagan framework for running discovery and delivery cycles with measurable improvement."},
+      {t:"book",n:"The Lean Startup",a:"Eric Ries",u:"https://theleanstartup.com/",d:"The foundational framework for structured product iteration with before/after metrics."}],
+  38:[{t:"book",n:"Crossing the Chasm",a:"Geoffrey Moore",u:"https://www.crossing-the-chasm.com/",d:"The essential GTM framework for crossing from early adopters to mainstream."},
+      {t:"article",n:"Go-to-Market Strategy for Startups",a:"Andreessen Horowitz (a16z)",u:"https://a16z.com/go-to-market/",d:"a16z framework for GTM at early stage: ICP, channel, message, and motion."},
+      {t:"article",n:"The GTM Playbook",a:"OpenView Partners",u:"https://openviewpartners.com/blog/go-to-market-strategy/",d:"OpenView operational GTM guide. The most actionable reference for early-stage B2B founders."}],
+  39:[{t:"article",n:"How YC Companies Set Revenue Targets",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/5C-how-to-set-kpis-and-goals",d:"YC on setting ambitious but grounded revenue goals."},
+      {t:"article",n:"OKRs for Early-Stage Startups",a:"Lenny Rachitsky - Lenny Newsletter",u:"https://www.lennysnewsletter.com/p/okrs-for-startups",d:"Practical guide to setting 90-day goals as OKRs with real startup examples."}],
+  40:[{t:"article",n:"SaaS Revenue Model Design",a:"David Skok - For Entrepreneurs",u:"https://www.forentrepreneurs.com/saas-metrics-2/",d:"David Skok on revenue model design, pricing structure, and the economics of different SaaS models."},
+      {t:"article",n:"How to Choose a Revenue Model",a:"OpenView Partners",u:"https://openviewpartners.com/blog/saas-pricing-models/",d:"OpenView guide to selecting the right revenue model for your business type and growth motion."}],
+  41:[{t:"article",n:"Financial Planning for Startups",a:"Sequoia Capital",u:"https://www.sequoiacap.com/article/financial-planning-for-startups/",d:"Sequoia guide to building a 3-year financial model."},
+      {t:"article",n:"SaaS Financial Model",a:"David Skok - For Entrepreneurs",u:"https://www.forentrepreneurs.com/saas-metrics-2/",d:"Comprehensive financial modeling framework including P&L and cash flow assumptions."},
+      {t:"article",n:"How to Build a Startup Financial Model",a:"First Round Review",u:"https://review.firstround.com/how-to-build-a-financial-model",d:"First Round on building financial models that founders actually use and investors actually trust."}],
+  42:[{t:"article",n:"Growth Loops Framework",a:"Brian Balfour - Reforge",u:"https://reforge.com/blog/growth-loops",d:"Brian Balfour on building repeatable acquisition loops. Most actionable for scaling acquisition."},
+      {t:"article",n:"How to Scale Acquisition Channels",a:"Andrew Chen - a16z",u:"https://andrewchen.com/how-to-grow/",d:"Andrew Chen on scaling from 1 to N channels with repeatable, measurable unit economics per channel."},
+      {t:"article",n:"CAC Payback Benchmark",a:"OpenView Partners",u:"https://openviewpartners.com/blog/saas-benchmarks/",d:"OpenView on CAC payback by acquisition channel - essential for knowing which channels to scale."}],
+  43:[{t:"article",n:"Startup = Growth",a:"Paul Graham - Y Combinator",u:"https://paulgraham.com/growth.html",d:"The most important essay on startup growth. Defines the 7% weekly growth benchmark."},
+      {t:"article",n:"The Reforge Growth Model",a:"Brian Balfour - Reforge",u:"https://reforge.com/blog/growth-model",d:"Framework for building a growth model that explains where growth comes from and how to sustain it."},
+      {t:"article",n:"How Investors Evaluate Growth",a:"Andreessen Horowitz (a16z)",u:"https://a16z.com/the-guide-to-growth-metrics/",d:"a16z growth metrics by stage - the benchmarks investors use to evaluate a Series A candidate."}],
+  44:[{t:"article",n:"How to Hire Your First 10 Employees",a:"First Round Review",u:"https://review.firstround.com/how-to-hire-your-first-10-employees",d:"First Round guide to building the founding team - who to hire first and how to evaluate candidates."},
+      {t:"article",n:"How to Hire",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/6f-how-to-hire",d:"YC on structuring the founding team and making the first critical hires."},
+      {t:"article",n:"What Investors Look For in a Team",a:"Sequoia Capital",u:"https://www.sequoiacap.com/article/elements-of-enduring-companies/",d:"Sequoia on what makes a team investor-grade and how to demonstrate team quality."}],
+  45:[{t:"article",n:"Complete Fundraising Guide",a:"First Round Review",u:"https://review.firstround.com/the-complete-guide-to-fundraising-in-2023/",d:"First Round comprehensive fundraising guide - complete data room checklist for Seed and Series A."},
+      {t:"article",n:"How to Build an Investor-Grade Data Room",a:"NFX - James Currier",u:"https://www.nfx.com/post/fundraising-data-room",d:"NFX on what goes in a data room and what investors actually look at during diligence."},
+      {t:"article",n:"Due Diligence Checklist",a:"Bessemer Venture Partners",u:"https://www.bvp.com/atlas/the-startup-fundraising-guide",d:"Bessemer due diligence checklist from the investor perspective."}],
+  46:[{t:"article",n:"The Greatest Sales Deck Ever Made",a:"Andy Raskin",u:"https://medium.com/the-mission/the-greatest-sales-deck-ive-ever-seen-4f4ef3391ba0",d:"The reference on investor narrative structure. Deconstructs the Zuora pitch - mandatory reading."},
+      {t:"article",n:"How to Pitch Your Startup",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/6q-how-to-pitch-your-startup",d:"YC official pitch guide - structure, content, and delivery of a compelling investor presentation."},
+      {t:"article",n:"How to Raise a Seed Round",a:"NFX - James Currier",u:"https://www.nfx.com/post/how-to-raise-a-seed-round",d:"NFX practical Seed fundraising guide - narrative structure, investor targeting, and pitch mechanics."},
+      {t:"article",n:"Storytelling for Startups",a:"Sequoia Capital",u:"https://www.sequoiacap.com/article/writing-a-business-plan/",d:"Sequoia framework for investor narrative from market insight to business model to team."}],
+  47:[{t:"article",n:"The Fundraising Playbook",a:"First Round Review",u:"https://review.firstround.com/the-complete-guide-to-fundraising-in-2023/",d:"First Round end-to-end fundraising guide - from preparing the data room to closing the round."},
+      {t:"article",n:"How to Run a Fundraising Process",a:"NFX - James Currier",u:"https://www.nfx.com/post/fundraising-process",d:"NFX on running a tight fundraising process - targeting, sequencing, and creating momentum."},
+      {t:"article",n:"How to Raise a Seed Round",a:"Y Combinator Library",u:"https://www.ycombinator.com/library/8T-how-to-raise-a-seed-round",d:"YC guide to the full fundraising process from investor list to close."}]
+};
+
+load();
+
+let raiseShown75=false, raiseShown100=false;
+
+function openRaiseModal(){document.getElementById('raise-overlay').classList.add('show');}
+function closeRaiseModal(){document.getElementById('raise-overlay').classList.remove('show');}
+
+function checkRaise(score){
+  if(score>=75&&!raiseShown75){
+    raiseShown75=true;
+    saveRaise();
+    document.getElementById('raise-banner').classList.add('show');
+    document.getElementById('raise-banner-title').textContent="You're eligible for Raise";
+    document.getElementById('raise-banner-sub').textContent="You've reached Seed+. Time to talk to investors.";
+    document.getElementById('rm-tag').textContent="Seed+ Reached";
+    document.getElementById('rm-headline').textContent="You're eligible for Raise.";
+    document.getElementById('rm-body').textContent="Your score and validated business model qualify you to apply for the SheBlooms Raise program — where a dedicated advisor takes everything to investor-grade and opens the round.";
+    setTimeout(()=>openRaiseModal(),600);
+  }
+  if(score>=100&&!raiseShown100){
+    raiseShown100=true;
+    saveRaise();
+    document.getElementById('raise-banner').classList.add('show');
+    document.getElementById('raise-banner-title').textContent="Series A ready — let's raise";
+    document.getElementById('raise-banner-sub').textContent="You've completed the full journey. Book your Raise call now.";
+    document.getElementById('rm-tag').textContent="Series A Ready";
+    document.getElementById('rm-headline').textContent="You've done it.";
+    document.getElementById('rm-body').textContent="You've completed the full SheBlooms Founder Journey. Your business is investor-ready. Book your call with a SheBlooms Raise advisor and let's open the round.";
+    setTimeout(()=>openRaiseModal(),600);
+  }
+  if(score>=75){document.getElementById('raise-banner').classList.add('show');}
 }
 
-function renderAll(){
-  const s=calcScore();
-  renderTop(s);renderAreas();renderStages();
-}
-
-let noteTimers={};
-function scheduleNoteSave(taskId,type,val){
-  if(type==='text')notes[taskId]=val;
-  else links[taskId]=val;
-  clearTimeout(noteTimers[taskId]);
-  noteTimers[taskId]=setTimeout(()=>{
-    const el=document.getElementById('saved-'+taskId);
-    if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
-    scheduleSave();
-  },800);
-}
-
-let saveDebounce=null;
-function scheduleSave(){
-  clearTimeout(saveDebounce);
-  saveDebounce=setTimeout(()=>saveProgress(),500);
-}
-
-async function saveProgress(){
-  const data={checked,notes,links,stOpen,subOpen,growShown,expanded};
-  try{localStorage.setItem('sbj_stage1',JSON.stringify(data));}catch(e){}
-  if(!founderEmail)return;
+function saveRaise(){
   try{
-    await sb.from('founder_journey_v2').upsert({
-      email:founderEmail,name:founderName,
-      checked:JSON.stringify(checked),
-      task_notes:JSON.stringify(notes),
-      task_links:JSON.stringify(links),
-      stage_open:JSON.stringify(stOpen),
-      grow_ready_shown:growShown,
-      score:calcScore(),
-      updated_at:new Date().toISOString()
-    },{onConflict:'email'});
-  }catch(e){console.log('Supabase save error:',e);}
-}
-
-async function loadProgress(){
-  // Try localStorage first
-  try{
-    const r=localStorage.getItem('sbj_stage1');
-    if(r){const d=JSON.parse(r);checked=d.checked||{1:true};notes=d.notes||{};links=d.links||{};stOpen=d.stOpen||{1:true};subOpen=d.subOpen||{'1-0':true};growShown=d.growShown||false;expanded=d.expanded||{1:true};}
+    const s=JSON.parse(localStorage.getItem('sbj2')||'{}');
+    s.raiseShown75=raiseShown75;s.raiseShown100=raiseShown100;
+    localStorage.setItem('sbj2',JSON.stringify(s));
   }catch(e){}
-  // If email known, try Supabase
-  if(founderEmail){
-    try{
-      const {data}=await sb.from('founder_journey_v2').select('*').eq('email',founderEmail).single();
-      if(data){
-        if(data.checked)checked=JSON.parse(data.checked);
-        if(data.task_notes)notes=JSON.parse(data.task_notes);
-        if(data.task_links)links=JSON.parse(data.task_links);
-        if(data.stage_open)stOpen=JSON.parse(data.stage_open);
-        growShown=data.grow_ready_shown||false;
-      }
-    }catch(e){}
+}
+
+document.querySelectorAll('.raise-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeRaiseModal();}));
+
+
+// ── Email capture ──
+var _founderEmail='',_founderName='';
+
+function eovCheck(){
+  var e=document.getElementById('cap-email').value.trim();
+  var btn=document.getElementById('eov-btn');
+  var ok=e.length>5&&e.indexOf('@')>0&&e.lastIndexOf('.')>e.indexOf('@');
+  btn.classList.toggle('ok',ok);
+  btn.disabled=!ok;
+}
+
+function eovStart(){
+  var email=document.getElementById('cap-email').value.trim();
+  var name=document.getElementById('cap-name').value.trim();
+  if(!email||email.indexOf('@')<0)return;
+  _founderEmail=email;
+  _founderName=name;
+  try{localStorage.setItem('_sbe',email);localStorage.setItem('_sbn',name);}catch(e){}
+  document.getElementById('eov').classList.add('hidden');
+  // Update Upgrade button to include email in Stripe link
+  _updateStripeLinks();
+  // Sync with Supabase in background
+  _syncFounder();
+}
+
+function _updateStripeLinks(){
+  var stripeBase='https://buy.stripe.com/eVqeVd87y9ST3XFaiQ1kA01';
+  var link=stripeBase+(_founderEmail?'?prefilled_email='+encodeURIComponent(_founderEmail):'');
+  document.querySelectorAll('._stripe-link').forEach(function(el){el.href=link;});
+}
+
+async function _syncFounder(){
+  if(!_founderEmail||!sb2)return;
+  try{
+    // Check if founder already exists and has a plan
+    const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).single();
+    if(data&&data.plan==='grow'){
+      _unlockGrow();
+    } else {
+      // Insert with start plan if new founder
+      await sb2.from('founder_journey_v2').upsert({
+        email:_founderEmail,
+        name:_founderName,
+        plan:'start',
+        updated_at:new Date().toISOString()
+      },{onConflict:'email',ignoreDuplicates:true});
+    }
+  }catch(e){console.log('Supabase sync error:',e);}
+}
+
+function _unlockGrow(){
+  // Remove lock from stages 2, 3, 4 by overriding isUnlocked
+  window._isGrowPlan=true;
+  // Re-render to show unlocked stages
+  if(window.renderAll)renderAll();
+}
+
+// Init: check if email already saved
+(function(){
+  var e=localStorage.getItem('_sbe');
+  if(e){
+    _founderEmail=e;
+    _founderName=localStorage.getItem('_sbn')||'';
+    document.getElementById('eov').classList.add('hidden');
+    _updateStripeLinks();
+    // Check plan in Supabase for returning founders
+    _syncFounder();
   }
-  if(growShown)document.getElementById('grow-banner').classList.add('show');
-  renderAll();
-}
+})();
 
-async function startJourney(){
-  const name=document.getElementById('capture-name').value.trim();
-  const email=document.getElementById('capture-email').value.trim();
-  if(!email||!email.includes('@')){alert('Please enter a valid email.');return;}
-  founderName=name;founderEmail=email;
-  localStorage.setItem('sbj_email',email);
-  localStorage.setItem('sbj_name',name);
-  document.getElementById('email-overlay').classList.add('hidden');
-  await loadProgress();
-}
-
-function resetAll(){
-  if(confirm('Reset all progress?')){
-    checked={};notes={};links={};stOpen={1:true};subOpen={'1-0':true};growShown=false;expanded={};
-    document.getElementById('grow-banner').classList.remove('show');
-    saveProgress();renderAll();
-  }
-}
-
-// Check if email already saved
-const savedEmail=localStorage.getItem('sbj_email');
-const savedName=localStorage.getItem('sbj_name');
-if(savedEmail){
-  founderEmail=savedEmail;founderName=savedName||'';
-  document.getElementById('email-overlay').classList.add('hidden');
-  loadProgress();
-} else {
-  renderAll(); // render empty state behind overlay
-}
-
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 </script>
+
+<!-- Raise modal -->
+<div class="raise-overlay" id="raise-overlay">
+  <div class="raise-modal">
+    <button class="rm-close" onclick="closeRaiseModal()">&#x2715;</button>
+    <div class="rm-icon">&#9733;</div>
+    <div class="rm-tag" id="rm-tag">Seed+ Reached</div>
+    <div class="rm-headline" id="rm-headline">You're eligible for Raise.</div>
+    <div class="rm-body" id="rm-body">Your score and validated business model qualify you to apply for the SheBlooms Raise program — where a dedicated advisor takes everything to investor-grade and opens the round.</div>
+    <div class="rm-features">
+      <div class="rm-feature"><div class="rm-dot"></div>Dedicated Raise advisor assigned</div>
+      <div class="rm-feature"><div class="rm-dot"></div>Investor-grade data room review</div>
+      <div class="rm-feature"><div class="rm-dot"></div>Access to SheBlooms Investor Network</div>
+      <div class="rm-feature"><div class="rm-dot"></div>Pitch Show + Investor Dinner</div>
+    </div>
+    <a class="rm-btn-primary" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ahOOMJy2vYURbWfVkZ50FQEZVTWj5mjELf8UZR2d09-6tETZjcbZkh1qq-KtAQpY6aUojMXIt" target="_blank">Book your Raise call</a>
+    <button class="rm-btn-ghost" onclick="closeRaiseModal()">I'll book later</button>
+  </div>
+</div>
+<div id="_grov" style="position:fixed;inset:0;background:rgba(10,10,8,.5);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px"><div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.18);position:relative"><button onclick="document.getElementById('_grov').style.display='none'" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:13px;color:#888;font-family:inherit">&#x2715;</button><div style="width:52px;height:52px;border-radius:14px;background:#eef0ff;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:#657dfe;font-size:26px;font-weight:700">&#10003;</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:8px">Stage 1 Complete</div><div style="font-family:'DM Serif Display',serif;font-size:24px;color:#000;margin-bottom:10px;line-height:1.2">You are Grow Ready.</div><div style="font-size:13px;color:#555;line-height:1.7;margin-bottom:18px">You have validated a real problem with real people. Upgrade to Grow to unlock Product Market Fit, Business Model Validation, and the path to Raise.</div><div style="padding:13px;background:#F1F1F6;border-radius:10px;margin-bottom:20px;display:flex;flex-direction:column;gap:7px"><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Product Market Fit unlocked</div><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Business Model Validation unlocked</div><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Growth and Raise pathway unlocked</div></div><a class="_stripe-link" href="https://buy.stripe.com/eVqeVd87y9ST3XFaiQ1kA01" target="_blank" style="display:block;width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:#657dfe;color:#fff;text-align:center;text-decoration:none;box-sizing:border-box">Upgrade to Grow</button></div></div>
 </body>
 </html>
