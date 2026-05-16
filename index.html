@@ -562,7 +562,23 @@ function toggleTask(id){
   });
 }
 function resetAll(){if(confirm('Reset all progress?')){checked={};expanded={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};stOpen={1:true,2:false,3:false,4:false};subOpen={};raiseShown75=false;raiseShown100=false;_sbGrow=false;_sbNO={};_sbRO={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};_sbSave();document.getElementById('raise-banner').classList.remove('show');save();renderAll();}}
-function save(){try{localStorage.setItem('sbj2',JSON.stringify({checked,stOpen,subOpen}));}catch(e){}}
+function save(){
+  try{localStorage.setItem('sbj2',JSON.stringify({checked,stOpen,subOpen}));}catch(e){}
+  // Sync to Supabase if founder is logged in
+  if(_founderEmail&&sb2){
+    clearTimeout(window._saveTimer);
+    window._saveTimer=setTimeout(function(){
+      sb2.from('founder_journey_v2').upsert({
+        email:_founderEmail,
+        name:_founderName,
+        checked:JSON.stringify(checked),
+        score:calcScore(),
+        stage_open:JSON.stringify(stOpen),
+        updated_at:new Date().toISOString()
+      },{onConflict:'email'}).catch(function(e){console.log('Supabase save error:',e);});
+    },1000);
+  }
+}
 function load(){try{const r=localStorage.getItem('sbj2');if(r){const d=JSON.parse(r);checked=d.checked||{};stOpen=d.stOpen||{1:true,2:false,3:false,4:false};subOpen=d.subOpen||{};raiseShown75=d.raiseShown75||false;raiseShown100=d.raiseShown100||false;}}catch(e){}if(calcScore()>=75)document.getElementById('raise-banner').classList.add('show');renderAll();}
 
 var sb2=null;try{if(window.supabase){sb2=supabase.createClient("https://fyswympbcriibpewkxnh.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5c3d5bXBiY3JpaWJwZXdreG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMjIwMTcsImV4cCI6MjA5Mjc5ODAxN30.l5gy0L9JU_8g0vIjoFWmUqP7T7zyHOsE0wdmkC2kBo0");}}catch(e){}
@@ -799,16 +815,20 @@ async function _syncFounder(){
   try{
     // Check if founder already exists and has a plan
     const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).single();
-    if(data&&data.plan==='grow'){
-      _unlockGrow();
+    if(data){
+      // Load saved progress from Supabase
+      if(data.checked){try{var _ch=JSON.parse(data.checked);if(Object.keys(_ch).length>0){checked=_ch;}}catch(e){}}
+      if(data.stage_open){try{stOpen=JSON.parse(data.stage_open);}catch(e){}}
+      if(data.plan==='grow'){_unlockGrow();}
+      renderAll();
     } else {
-      // Insert with start plan if new founder
+      // New founder — insert with start plan
       await sb2.from('founder_journey_v2').upsert({
         email:_founderEmail,
         name:_founderName,
         plan:'start',
         updated_at:new Date().toISOString()
-      },{onConflict:'email',ignoreDuplicates:true});
+      },{onConflict:'email'});
     }
   }catch(e){console.log('Supabase sync error:',e);}
 }
