@@ -345,7 +345,7 @@ async function trackTaskComplete(taskId, taskName, stageId) {
       .from('journey_stats')
       .select('id, times_completed')
       .eq('task_id', taskId)
-      .single();
+      .maybeSingle();
     
     if (data) {
       // Update count
@@ -370,7 +370,7 @@ async function trackTaskUncomplete(taskId) {
       .from('journey_stats')
       .select('id, times_completed')
       .eq('task_id', taskId)
-      .single();
+      .maybeSingle();
     
     if (data && data.times_completed > 1) {
       await sb
@@ -1138,7 +1138,7 @@ async function _syncFounder(){
   if(!_founderEmail||!sb2)return;
   try{
     // Check if founder already exists and has a plan
-    const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).single();
+    const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).maybeSingle();
     if(data){
       // Load saved progress from Supabase
       if(data.checked){try{var _ch=JSON.parse(data.checked);if(Object.keys(_ch).length>0){checked=_ch;}}catch(e){}}
