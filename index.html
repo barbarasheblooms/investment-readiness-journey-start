@@ -399,8 +399,8 @@ async function trackTaskUncomplete(taskId) {
     <label class="ebox-lbl">Your name</label>
     <input class="ebox-inp" type="text" id="cap-name" placeholder="Ana Silva" autocomplete="name"/>
     <label class="ebox-lbl">Your email</label>
-    <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()" onchange="eovCheck()" onblur="eovCheck()" onkeyup="eovCheck()"/>
-    <button class="ebox-btn ok" id="eov-btn" onclick="eovStart()">Start my journey</button>
+    <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()"/>
+    <button class="ebox-btn" id="eov-btn" disabled onclick="eovStart()">Start my journey</button>
     <div class="ebox-note">Your progress is saved automatically.</div>
   </div>
 </div>
@@ -1043,18 +1043,6 @@ function setView(v){
 
 load();
 
-// Detect browser autofill (Safari, Chrome) which doesn't trigger oninput
-(function detectAutofill(){
-  var attempts=0;
-  var t=setInterval(function(){
-    var el=document.getElementById('cap-email');
-    if(el&&el.value&&el.value.indexOf('@')>0){
-      eovCheck();
-      clearInterval(t);
-    }
-    if(++attempts>20)clearInterval(t);
-  },200);
-})();
 
 let raiseShown75=false, raiseShown100=false;
 
@@ -1062,7 +1050,7 @@ function openRaiseModal(){document.getElementById('raise-overlay').classList.add
 function closeRaiseModal(){document.getElementById('raise-overlay').classList.remove('show');}
 
 function checkGrow(){
-  if(_plan==='grow'){document.getElementById('grow-banner').classList.remove('show');return;}
+  if(window._isGrowPlan===true){document.getElementById('grow-banner').classList.remove('show');return;}
   const s1ids=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
   const s1done=s1ids.filter(id=>!!checked[id]).length;
   const gb=document.getElementById('grow-banner');
@@ -1120,20 +1108,17 @@ document.querySelectorAll('.raise-overlay').forEach(o=>o.addEventListener('click
 var _founderEmail='',_founderName='';
 
 function eovCheck(){
-  // Visual feedback only — button is always enabled
   var e=document.getElementById('cap-email').value.trim();
-  document.getElementById('cap-email').style.borderColor='';
+  var btn=document.getElementById('eov-btn');
+  var ok=e.length>5&&e.indexOf('@')>0&&e.lastIndexOf('.')>e.indexOf('@');
+  btn.classList.toggle('ok',ok);
+  btn.disabled=!ok;
 }
 
 function eovStart(){
   var email=document.getElementById('cap-email').value.trim();
   var name=document.getElementById('cap-name').value.trim();
-  if(!email||email.indexOf('@')<0||email.lastIndexOf('.')<email.indexOf('@')){
-    document.getElementById('cap-email').style.borderColor='#dc2626';
-    document.getElementById('cap-email').focus();
-    return;
-  }
-  document.getElementById('cap-email').style.borderColor='';
+  if(!email||email.indexOf('@')<0)return;
   _founderEmail=email;
   _founderName=name;
   try{localStorage.setItem('_sbe',email);localStorage.setItem('_sbn',name);}catch(e){}
@@ -1152,7 +1137,7 @@ async function _syncFounder(){
   if(!_founderEmail||!sb2)return;
   try{
     // Check if founder already exists and has a plan
-    const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).maybeSingle();
+    const {data}=await sb2.from('founder_journey_v2').select('plan').eq('email',_founderEmail).single();
     if(data){
       // Load saved progress from Supabase
       if(data.checked){try{var _ch=JSON.parse(data.checked);if(Object.keys(_ch).length>0){checked=_ch;}}catch(e){}}
