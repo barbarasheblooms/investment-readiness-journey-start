@@ -52,14 +52,14 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
 .area-track{height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden;margin-bottom:2px}
 .area-bar{height:100%;border-radius:2px;transition:width .5s}
 .area-count{font-size:10px;color:#aaa}
-.stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:10px;transition:box-shadow .2s}
+.stage{background:#fff;border:1px solid #d8d9e5;border-radius:14px;overflow:hidden;margin-bottom:6px;transition:box-shadow .2s}
 .stage:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.st-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .12s}
+.st-hdr{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;user-select:none;transition:background .12s}
 .st-hdr:hover{background:#f7f7fb}
-.st-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.st-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
 .st-info{flex:1;min-width:0}
-.st-name{font-size:14px;font-weight:500;color:#000;margin-bottom:1px}
-.st-sub{font-size:12px;color:#888}
+.st-name{font-size:13px;font-weight:500;color:#000;margin-bottom:0}
+.st-sub{font-size:11px;color:#888}
 .st-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .st-pts{font-size:10px;font-weight:600}
 .st-tc{font-size:10px;color:#888}
@@ -170,10 +170,13 @@ body{font-family:'DM Sans',sans-serif;background:#F1F1F6;color:#000;-webkit-font
   .nsm-desc{font-size:10px}
   .grp-name{font-size:8px}
   .task-row{padding:8px 12px}
-  .st-hdr{padding:10px 12px}
+  .st-hdr{padding:7px 10px}
 }
 
 .raise-banner{display:none;align-items:center;gap:14px;background:linear-gradient(135deg,#657dfe,#8a9ffe);border-radius:14px;padding:16px 20px;margin-bottom:14px;cursor:pointer;transition:opacity .2s;animation:slidein .4s ease}
+.grow-banner{display:none;align-items:center;gap:14px;background:linear-gradient(135deg,#5B75FE,#3d1a6b);border-radius:14px;padding:14px 18px;margin-bottom:10px;cursor:pointer;transition:opacity .2s;animation:slidein .4s ease}
+.grow-banner.show{display:flex}
+.grow-banner:hover{opacity:.93}
 .raise-banner.show{display:flex}
 .raise-banner:hover{opacity:.93}
 @keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
@@ -302,7 +305,7 @@ body{font-size:11px}
   .ms-lbl:nth-child(3){display:none}
 
   /* Stage header */
-  .st-hdr{padding:10px 12px}
+  .st-hdr{padding:7px 10px}
   .st-name{font-size:11px}
   .st-sub{font-size:9px}
   .st-tc{display:none}
@@ -324,7 +327,7 @@ body{font-size:11px}
   .raise-headline{font-size:13px}
 
   /* Locked */
-  .locked-stage .st-hdr{padding:10px 12px}
+  .locked-stage .st-hdr{padding:7px 10px}
 }
 </style>
 
@@ -441,6 +444,15 @@ async function trackTaskUncomplete(taskId) {
   </div>
 
   <!-- Raise banner -->
+  <div class="grow-banner" id="grow-banner" onclick="document.getElementById('_grov').style.display='flex'">
+    <div class="rb-icon">&#9650;</div>
+    <div class="rb-text">
+      <div class="rb-headline">Ready to go beyond Stage 1?</div>
+      <div class="rb-sub" id="grow-banner-sub">Unlock Product Market Fit, Business Model Validation and Growth.</div>
+    </div>
+    <button class="rb-cta">Join Grow →</button>
+  </div>
+
   <div class="raise-banner" id="raise-banner" onclick="openRaiseModal()">
     <div class="rb-icon">&#9733;</div>
     <div class="rb-text">
@@ -589,6 +601,8 @@ function renderAreas(){
 row.innerHTML=`<span style="font-size:11px;font-weight:600;color:${v.c};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.label}</span><div style="height:4px;background:#d8d9e5;border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${v.c};border-radius:2px;transition:width .5s"></div></div><span style="font-size:9px;color:#aaa">${s.done}/${s.total}</span>`;al.appendChild(row);});
 }
 
+
+
 function renderStages(){
   const con=document.getElementById('stages-con');con.innerHTML='';
   D.forEach(st=>{
@@ -597,22 +611,19 @@ function renderStages(){
     const allSt=[];st.groups.forEach(g=>g.tasks.forEach(t=>allSt.push(t)));
     const doneSt=allSt.filter(t=>checked[t.id]).length;
     const isOpen=stOpen[st.id]&&ul;
-    const div=document.createElement('div');div.className='stage'+(ul?'':' locked');
+    const div=document.createElement('div');div.className='stage';
 
     const hdr=document.createElement('div');hdr.className='st-hdr';
     hdr.innerHTML=`<div class="st-num" style="background:${ul?st.bgc:'#F1F1F6'};color:${ul?st.color:'#aaa'}">${st.id}</div>
       <div class="st-info"><div class="st-name" style="color:${ul?'#000':'#aaa'}">${st.title}</div><div class="st-sub">${st.subtitle}</div></div>
       <div class="st-right">
-        ${ul?`<span class="st-tc">${doneSt}/${allSt.length} tasks</span><span class="st-pts" style="color:${st.color}">${spts} pts</span><div class="st-pb"><div class="st-pf" style="width:${pct}%;background:${st.color}"></div></div><div class="caret${isOpen?' up':''}"></div>`
-        :`<span style="font-size:10px;color:#aaa;font-weight:500;padding:2px 8px;border-radius:20px;background:#F1F1F6">Locked</span>`}
+        <span class="st-tc">${doneSt}/${allSt.length} tasks</span><span class="st-pts" style="color:${st.color}">${spts} pts</span><div class="st-pb"><div class="st-pf" style="width:${pct}%;background:${st.color}"></div></div>${ul?`<div class="caret${isOpen?' up':''}"></div>`:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`}
       </div>`;
     if(ul)hdr.onclick=()=>{stOpen[st.id]=!stOpen[st.id];renderStages();};
     div.appendChild(hdr);
 
     if(!ul){
-      const lb=document.createElement('div');lb.style.cssText='padding:16px';
-      lb.innerHTML=`<div style="font-size:12px;color:#888;margin-bottom:12px">This stage is part of the <strong style="color:#000">SheBlooms Grow plan</strong>. Complete Stage 1 and upgrade to unlock.</div><button onclick="document.getElementById('_grov').style.display='flex'" style="width:100%;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer" class="_stripe-link" href="https://buy.stripe.com/eVqeVd87y9ST3XFaiQ1kA01" target="_blank" style="display:block;width:100%;padding:10px;background:#657dfe;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box">Upgrade to unlock</a>`;
-      div.appendChild(lb);
+      // No content shown for locked stages — card stays compact
     } else if(isOpen){
       const body=document.createElement('div');body.className='st-body';
       const nsm=document.createElement('div');nsm.className='nsm';
@@ -699,7 +710,7 @@ function renderStages(){
   });
 }
 
-function renderAll(){const s=calcScore();renderTop(s);renderAreas();renderStages();checkRaise(s);if(typeof _rvMode!=='undefined'&&_rvMode==='r')renderRaiseView();}
+function renderAll(){const s=calcScore();renderTop(s);renderAreas();renderStages();checkRaise(s);checkGrow();if(typeof _rvMode!=='undefined'&&_rvMode==='r')renderRaiseView();}
 function toggleTask(id){
   const wasChecked = !!checked[id];
   checked[id]=!checked[id];
@@ -718,7 +729,8 @@ function toggleTask(id){
     }
   });
 }
-function resetAll(){if(confirm('Reset all progress?')){checked={};expanded={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};stOpen={1:true,2:false,3:false,4:false};subOpen={};raiseShown75=false;raiseShown100=false;_sbGrow=false;_sbNO={};_sbRO={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};_sbSave();document.getElementById('raise-banner').classList.remove('show');save();renderAll();}}
+function resetAll(){if(confirm('Reset all progress?')){checked={};expanded={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};stOpen={1:true,2:false,3:false,4:false};subOpen={};raiseShown75=false;raiseShown100=false;_sbGrow=false;_sbNO={};_sbRO={1:true,2:true,3:true,4:true,5:true,6:true,7:true,8:true,9:true,10:true,11:true,12:true,13:true};_sbSave();document.getElementById('raise-banner').classList.remove('show');
+document.getElementById('grow-banner').classList.remove('show');save();renderAll();}}
 function save(){
   try{localStorage.setItem('sbj2',JSON.stringify({checked,stOpen,subOpen}));}catch(e){}
   // Sync to Supabase if founder is logged in
@@ -902,44 +914,44 @@ function _rvSave(){try{localStorage.setItem('_rvg',JSON.stringify(_rvGap));}catc
 const RV_MAP={
   preseed:{label:'Pre-Seed',color:'#1D9E75',threshold:70,
     items:[
-      {t:'Problem Statement + ICP definido',tasks:[1,7],ess:true},
-      {t:'Evidência do problema (20+ entrevistas)',tasks:[3,4,6],ess:true},
-      {t:'Story da fundadora escrita',tasks:[20],ess:true},
-      {t:'Empresa legalmente constituída',tasks:[19],ess:true},
-      {t:'Análise de alternativas / competidores',tasks:[5],ess:false},
-      {t:'Primeiros utilizadores reais (25+)',tasks:[21],ess:false},
-      {t:'Hipótese de modelo de negócio',tasks:[13],ess:false},
-      {t:'Cap table documentada e limpa',tasks:[],gk:'cap',ess:true},
-      {t:'Pitch deck básico (8–12 slides)',tasks:[],gk:'deck',ess:false},
-      {t:'Uso do capital e runway definidos',tasks:[],gk:'ask',ess:false}
+      {t:'Problem Statement + ICP defined',tasks:[1,7],ess:true},
+      {t:'Problem evidence (20+ interviews)',tasks:[3,4,6],ess:true},
+      {t:'Founder story written',tasks:[20],ess:true},
+      {t:'Company legally incorporated',tasks:[19],ess:true},
+      {t:'Competitive landscape analysis',tasks:[5],ess:false},
+      {t:'First real users (25+)',tasks:[21],ess:false},
+      {t:'Business model hypothesis',tasks:[13],ess:false},
+      {t:'Cap table documented and clean',tasks:[],gk:'cap',ess:true},
+      {t:'Basic pitch deck (8–12 slides)',tasks:[],gk:'deck',ess:false},
+      {t:'Use of capital and runway defined',tasks:[],gk:'ask',ess:false}
     ]},
   seed:{label:'Seed',color:'#185fa5',threshold:70,
     items:[
-      {t:'MVP funcional com utilizadores reais',tasks:[14,15,18],ess:true},
-      {t:'Métricas de engajamento e retenção',tasks:[22,23,24],ess:true},
-      {t:'PMF comprovado (Sean Ellis >40%)',tasks:[25],ess:true},
-      {t:'TAM/SAM/SOM com metodologia clara',tasks:[8],ess:true},
-      {t:'Unit economics reais (CAC, LTV, payback)',tasks:[33],ess:true},
-      {t:'Modelo financeiro 3 anos',tasks:[41],ess:true},
-      {t:'Análise competitiva documentada',tasks:[5],ess:false},
-      {t:'Primeiros clientes pagantes (10+)',tasks:[30,32],ess:false},
-      {t:'Burn rate e runway calculados',tasks:[40,41],ess:false},
-      {t:'Acordos de IP assinados pelos fundadores',tasks:[],gk:'ip',ess:true},
-      {t:'Vesting dos fundadores formalizado',tasks:[],gk:'vest',ess:true}
+      {t:'Functional MVP with real users',tasks:[14,15,18],ess:true},
+      {t:'Engagement and retention metrics',tasks:[22,23,24],ess:true},
+      {t:'PMF validated (Sean Ellis >40%)',tasks:[25],ess:true},
+      {t:'TAM/SAM/SOM with clear methodology',tasks:[8],ess:true},
+      {t:'Real unit economics (CAC, LTV, payback)',tasks:[33],ess:true},
+      {t:'3-year financial model',tasks:[41],ess:true},
+      {t:'Documented competitive analysis',tasks:[5],ess:false},
+      {t:'First paying customers (10+)',tasks:[30,32],ess:false},
+      {t:'Burn rate and runway calculated',tasks:[40,41],ess:false},
+      {t:'IP agreements signed by founders',tasks:[],gk:'ip',ess:true},
+      {t:'Founder vesting formalised',tasks:[],gk:'vest',ess:true}
     ]},
   seriesA:{label:'Series A',color:'#993556',threshold:75,
     items:[
-      {t:'PMF comprovado com cohort analysis',tasks:[25,29],ess:true},
-      {t:'MRR sólido e crescimento MoM 15%+',tasks:[32,35,43],ess:true},
-      {t:'Canal de aquisição escalável (2+ canais)',tasks:[42],ess:true},
+      {t:'PMF validated with cohort analysis',tasks:[25,29],ess:true},
+      {t:'Solid MRR and MoM growth 15%+',tasks:[32,35,43],ess:true},
+      {t:'Scalable acquisition channel (2+ channels)',tasks:[42],ess:true},
       {t:'GTM strategy + sales playbook',tasks:[38],ess:true},
-      {t:'LTV:CAC >3x com dados reais',tasks:[33],ess:true},
-      {t:'Modelo financeiro com cenários',tasks:[41],ess:true},
+      {t:'LTV:CAC >3x with real data',tasks:[33],ess:true},
+      {t:'Financial model with scenarios',tasks:[41],ess:true},
       {t:'Investor Narrative + pitch deck final',tasks:[46],ess:true},
-      {t:'Data room completo (25 documentos)',tasks:[45],ess:true},
-      {t:'Equipe além dos fundadores (3+ full-time)',tasks:[44],ess:false},
+      {t:'Complete data room (25 documents)',tasks:[45],ess:true},
+      {t:'Team beyond founders (3+ full-time)',tasks:[44],ess:false},
       {t:'Round Gate — first investor meeting scheduled',tasks:[47],ess:false},
-      {t:'Due diligence legal completa (IP, laboral, regulatório)',tasks:[],gk:'dd',ess:true}
+      {t:'Full legal due diligence (IP, employment, regulatory)',tasks:[],gk:'dd',ess:true}
     ]}
 };
 
@@ -1035,6 +1047,24 @@ let raiseShown75=false, raiseShown100=false;
 
 function openRaiseModal(){document.getElementById('raise-overlay').classList.add('show');}
 function closeRaiseModal(){document.getElementById('raise-overlay').classList.remove('show');}
+
+function checkGrow(){
+  if(_plan==='grow'){document.getElementById('grow-banner').classList.remove('show');return;}
+  const s1ids=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+  const s1done=s1ids.filter(id=>!!checked[id]).length;
+  const gb=document.getElementById('grow-banner');
+  if(s1done>=3){
+    gb.classList.add('show');
+    const done=s1ids.filter(id=>!!checked[id]).length;
+    const total=s1ids.length;
+    document.getElementById('grow-banner-sub').textContent=
+      done>=total
+        ? 'Stage 1 complete — unlock PMF, Business Model & Growth.'
+        : 'You're '+done+'/'+total+' through Stage 1. Upgrade now to see what's ahead.';
+  } else {
+    gb.classList.remove('show');
+  }
+}
 
 function checkRaise(score){
   if(score>=75&&!raiseShown75){
@@ -1167,6 +1197,39 @@ function _unlockGrow(){
     <button class="rm-btn-ghost" onclick="closeRaiseModal()">I'll book later</button>
   </div>
 </div>
-<div id="_grov" style="position:fixed;inset:0;background:rgba(10,10,8,.5);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px"><div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.18);position:relative"><button onclick="document.getElementById('_grov').style.display='none'" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:13px;color:#888;font-family:inherit">&#x2715;</button><div style="width:52px;height:52px;border-radius:14px;background:#eef0ff;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:#657dfe;font-size:26px;font-weight:700">&#10003;</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:8px">Stage 1 Complete</div><div style="font-family:'DM Serif Display',serif;font-size:24px;color:#000;margin-bottom:10px;line-height:1.2">You are Grow Ready.</div><div style="font-size:13px;color:#555;line-height:1.7;margin-bottom:18px">You have validated a real problem with real people. Upgrade to Grow to unlock Product Market Fit, Business Model Validation, and the path to Raise.</div><div style="padding:13px;background:#F1F1F6;border-radius:10px;margin-bottom:20px;display:flex;flex-direction:column;gap:7px"><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Product Market Fit unlocked</div><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Business Model Validation unlocked</div><div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:6px;height:6px;border-radius:50%;background:#657dfe;flex-shrink:0"></div>Growth and Raise pathway unlocked</div></div><a class="_stripe-link" href="https://buy.stripe.com/eVqeVd87y9ST3XFaiQ1kA01" target="_blank" style="display:block;width:100%;padding:13px;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:#657dfe;color:#fff;text-align:center;text-decoration:none;box-sizing:border-box">Upgrade to Grow</button></div></div>
+<div id="_grov" style="position:fixed;inset:0;background:rgba(10,10,8,.45);backdrop-filter:blur(4px);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px">
+<div style="background:#fff;border-radius:18px;padding:24px;max-width:360px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.15);position:relative;max-height:90vh;overflow-y:auto">
+  <button onclick="document.getElementById('_grov').style.display='none'" style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:#F1F1F6;border:none;cursor:pointer;font-size:14px;color:#888;font-family:inherit;display:flex;align-items:center;justify-content:center">✕</button>
+
+  <div style="font-family:'Instrument Serif',serif;font-size:22px;color:#5B75FE;margin-bottom:14px">SheBlooms</div>
+  <div style="font-size:18px;font-weight:600;color:#0A0A08;margin-bottom:6px;line-height:1.3">Join the Grow plan</div>
+  <div style="font-size:12px;color:#888;margin-bottom:22px;line-height:1.65">You've validated a real problem with real people. Now build something people actually want to keep using — and take it all the way to raise.</div>
+
+  <div style="background:#fff;border:1px solid #D8D9E5;border-radius:14px;padding:16px 18px;margin-bottom:18px;box-shadow:0 4px 20px rgba(0,0,0,.06)">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:14px">Everything in the Grow plan</div>
+
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#5B75FE;margin-bottom:8px">Journey & Templates</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Stages 2, 3 & 4 of the Investment Readiness Journey</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Full access to all Stage 2, 3 & 4 templates</div>
+
+    <div style="border-top:1px solid #D8D9E5;margin:12px 0"></div>
+
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#5B75FE;margin-bottom:8px">Community & Events</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Monthly pitch practice sessions with VCs</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Free access to exclusive networking & workshop events</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Monthly Q&A with experienced founders</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Monthly founder's roundtable</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:7px"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Free access to attend The Pitch Show</div>
+
+    <div style="border-top:1px solid #D8D9E5;margin:12px 0"></div>
+
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#5B75FE;margin-bottom:8px">Perks</div>
+    <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#333;margin-bottom:0"><span style="color:#5B75FE;font-weight:700;flex-shrink:0;margin-top:1px">✓</span>Partner discounts & exclusive perks</div>
+  </div>
+
+  <a class="_stripe-link" href="https://buy.stripe.com/14A4gz73u1mn8dV8aI1kA00" target="_blank" style="display:block;width:100%;padding:14px;border:none;border-radius:9px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:#5B75FE;color:#fff;text-align:center;text-decoration:none;box-sizing:border-box;transition:background .15s">Join the Grow plan →</a>
+  <button onclick="document.getElementById('_grov').style.display='none'" style="width:100%;margin-top:8px;padding:10px;background:transparent;border:none;font-family:inherit;font-size:12px;color:#aaa;cursor:pointer">Maybe later</button>
+</div>
+</div>
 </body>
 </html>
