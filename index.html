@@ -400,7 +400,7 @@ async function trackTaskUncomplete(taskId) {
     <input class="ebox-inp" type="text" id="cap-name" placeholder="Ana Silva" autocomplete="name"/>
     <label class="ebox-lbl">Your email</label>
     <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()" onchange="eovCheck()" onblur="eovCheck()" onkeyup="eovCheck()"/>
-    <button class="ebox-btn" id="eov-btn" disabled onclick="eovStart()">Start my journey</button>
+    <button class="ebox-btn ok" id="eov-btn" onclick="eovStart()">Start my journey</button>
     <div class="ebox-note">Your progress is saved automatically.</div>
   </div>
 </div>
@@ -1120,24 +1120,25 @@ document.querySelectorAll('.raise-overlay').forEach(o=>o.addEventListener('click
 var _founderEmail='',_founderName='';
 
 function eovCheck(){
+  // Visual feedback only — button is always enabled
   var e=document.getElementById('cap-email').value.trim();
-  var btn=document.getElementById('eov-btn');
-  var ok=e.length>5&&e.indexOf('@')>0&&e.lastIndexOf('.')>e.indexOf('@');
-  btn.classList.toggle('ok',ok);
-  btn.disabled=!ok;
+  document.getElementById('cap-email').style.borderColor='';
 }
 
 function eovStart(){
   var email=document.getElementById('cap-email').value.trim();
   var name=document.getElementById('cap-name').value.trim();
-  if(!email||email.indexOf('@')<0)return;
+  if(!email||email.indexOf('@')<0||email.lastIndexOf('.')<email.indexOf('@')){
+    document.getElementById('cap-email').style.borderColor='#dc2626';
+    document.getElementById('cap-email').focus();
+    return;
+  }
+  document.getElementById('cap-email').style.borderColor='';
   _founderEmail=email;
   _founderName=name;
   try{localStorage.setItem('_sbe',email);localStorage.setItem('_sbn',name);}catch(e){}
   document.getElementById('eov').classList.add('hidden');
-  // Update Upgrade button to include email in Stripe link
   _updateStripeLinks();
-  // Sync with Supabase in background
   _syncFounder();
 }
 
