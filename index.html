@@ -399,7 +399,7 @@ async function trackTaskUncomplete(taskId) {
     <label class="ebox-lbl">Your name</label>
     <input class="ebox-inp" type="text" id="cap-name" placeholder="Ana Silva" autocomplete="name"/>
     <label class="ebox-lbl">Your email</label>
-    <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()"/>
+    <input class="ebox-inp" type="email" id="cap-email" placeholder="ana@startup.com" autocomplete="email" oninput="eovCheck()" onchange="eovCheck()" onblur="eovCheck()" onkeyup="eovCheck()"/>
     <button class="ebox-btn" id="eov-btn" disabled onclick="eovStart()">Start my journey</button>
     <div class="ebox-note">Your progress is saved automatically.</div>
   </div>
@@ -1042,6 +1042,19 @@ function setView(v){
 }
 
 load();
+
+// Detect browser autofill (Safari, Chrome) which doesn't trigger oninput
+(function detectAutofill(){
+  var attempts=0;
+  var t=setInterval(function(){
+    var el=document.getElementById('cap-email');
+    if(el&&el.value&&el.value.indexOf('@')>0){
+      eovCheck();
+      clearInterval(t);
+    }
+    if(++attempts>20)clearInterval(t);
+  },200);
+})();
 
 let raiseShown75=false, raiseShown100=false;
 
